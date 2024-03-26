@@ -1,0 +1,21 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Hello AdminController!{% endblock %}
+
+{% block content %}
+<table>
+<tr>
+<td>
+id
+</td>
+</tr>
+{% for item in listeUser %}
+<tr>
+<td>
+{{item.id}}
+</td>
+</tr>
+{% endfor %}
+</table>
+
+{% endblock %}
