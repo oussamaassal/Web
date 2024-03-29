@@ -1,21 +1,13 @@
-{% extends 'baseBack.html.twig' %}
+{% extends '/admin/base.html.twig' %}
 
-{% block title %}Hello AdminController!{% endblock %}
+{% block body %}
+<title> {% block title %} Hello Controller! {% endblock %}</title>
+  <div class="content-body">
+			<div class="container-fluid">
+							<!--***************************start**********************
 
-{% block content %}
-<table>
-<tr>
-<td>
-id
-</td>
-</tr>
-{% for item in listeUser %}
-<tr>
-<td>
-{{item.id}}
-</td>
-</tr>
-{% endfor %}
-</table>
 
+              *******************************end*********************-->
+      </div>
+    </div>
 {% endblock %}
