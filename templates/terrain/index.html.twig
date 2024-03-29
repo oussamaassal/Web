@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<title>Hello TerrainController!</title>
+
+{% block body %}
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+
+    <div class="example-wrapper">
+        <div style="display: flex; align-items: center; justify-content: center">
+
+            <table border="1">
+                <thead>
+                <th>nom terrain</th>
+                <th>adresse</th>
+                <th>description</th>
+                <th>geo_x</th>
+                <th>geo_y</th>
+                <th>ouverture</th>
+                <th>fermeture</th>
+                <th>Modification</th>
+                <th>Suppression</th>
+                </thead>
+
+                <tbody>
+                {% for terrain in b %}
+                    <tr>
+                        <td>{{ terrain.NomTerrain }}</td>
+                        <td>{{ terrain.Adresse }}</td>
+                        <td>{{ terrain.Description }}</td>
+                        <td>{{ terrain.GeoX }}</td>
+                        <td>{{ terrain.GeoY }}</td>
+                        <td>{{ terrain.Ouverture|date('Y-m-d H:i:s') }}</td>
+                        <td>{{ terrain.Fermeture|date('Y-m-d H:i:s') }}</td>
+                        <td>
+                            <a href="{{ path('modifTerrain',{'id':terrain.id}) }}">Modifier</a>
+                        </td>
+                        <td>
+                            <a href="{{ path('deleteTerrain',{'id':terrain.id}) }}">Supprimer</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+
+            </table>
+
+        </div>
+    </div>
+{% endblock %}
