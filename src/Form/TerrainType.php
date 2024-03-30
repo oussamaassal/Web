@@ -20,7 +20,6 @@ class TerrainType extends AbstractType
             ->add('geo_y')
             ->add('ouverture')
             ->add('fermeture')
-            ->add('datedispo')
             ->add('ajouter',SubmitType::class)
         ;
     }
