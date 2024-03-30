@@ -11,9 +11,11 @@
 				<link href="{{ asset('assets_admin/vendor/jquery-nice-select/css/nice-select.css') }}" rel="stylesheet">
 				<link href="{{ asset('assets_admin/vendor/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
 				<link rel="stylesheet" href="{{ asset('assets_admin/vendor/nouislider/nouislider.min.css') }}">
-				<!-- Style css -->
 				<link href="{{ asset('assets_admin/css/style.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets_admin/vendor/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet">
+
       {% endblock %}
+      
 
 </head>
 <body>
@@ -29,7 +31,7 @@
       <script src="{{asset('assets_admin/vendor/global/global.min.js') }}"></script>
       <script src="{{asset('assets_admin/vendor/chart.js/Chart.bundle.min.js') }}"></script>
       <script src="{{asset('assets_admin/vendor/jquery-nice-select/js/jquery.nice-select.min.js') }}"></script>
-
+      <script src="{{asset('assets_admin/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
       <!-- Apex Chart -->
       <script src="{{asset('assets_admin/vendor/apexchart/apexchart.js') }}"></script>
 
@@ -39,8 +41,10 @@
       <script src="{{asset('assets_admin/vendor/peity/jquery.peity.min.js') }}"></script>
       <!-- Dashboard 1 -->
       <script src="{{asset('assets_admin/js/dashboard/dashboard-1.js') }}"></script>
+      <script src="{{asset('assets_admin/js/plugins-init/datatables.init.js') }}"></script>
 
       <script src="{{asset('assets_admin/vendor/owl-carousel/owl.carousel.js') }}"></script>
+      
 
       <script src="{{asset('assets_admin/js/custom.min.js') }}"></script>
       <script src="{{asset('assets_admin/js/dlabnav-init.js') }}"></script>
@@ -96,4 +100,6 @@
         </script>
 	  {% endblock %}
 </body>
+
+
 </html>
