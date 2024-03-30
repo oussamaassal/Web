@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Joueur;
+use App\Form\JoueurType;
 use App\Repository\JoueurRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -28,7 +31,7 @@ class JoueurController extends AbstractController
     }
 
     #[Route('/deleteJoueur/{id}', name: 'Joueur_delete')]
-    public function deleteBook(ManagerRegistry $manager , JoueurRepository $repo, $id):Response{
+    public function deleteJoueur(ManagerRegistry $manager , JoueurRepository $repo, $id):Response{
         $em = $manager->getManager();
 
         $Joueur = $repo->find($id);
@@ -37,5 +40,60 @@ class JoueurController extends AbstractController
         $em->flush();
         
         return $this->redirectToRoute('Joueur_list');
+    }
+
+    #[Route('/newJoueur', name: 'Joueur_add')]
+    public function addJoueur(Request $req,ManagerRegistry $manager):Response{
+
+        $em = $manager->getManager();
+
+        $Joueur = new Joueur();
+
+        $form = $this->createForm(JoueurType::class,$Joueur);
+
+        $form->handleRequest($req);
+        if($form->isSubmitted() && $form->isValid()) {
+
+                $file = $form['imagepath']->getData();
+            if ($file) {
+                // Generate a unique name for the file before saving it
+                $fileName = $Joueur->getId().$Joueur->getNom().'.'.$file->guessExtension();
+
+                // Move the file to the directory where images are stored
+                $file->move(
+                    $this->getParameter('image_directory'),
+                    $fileName
+                );
+                // Set the image path on the entity
+                $Joueur->setImagepath($fileName);
+            }
+                $em->persist($Joueur);
+                $em->flush();
+
+            return $this->redirectToRoute('Joueur_list');
+        }
+        return $this->renderForm('Joueur/addJoueur.html.twig',[
+            'f' => $form
+        ]);
+    }
+
+    #[Route('/EditJoueur/{id}', name: 'Joueur_edit')]
+    public function editJoueur($id, JoueurRepository $repo, Request $req,ManagerRegistry $manager):Response{
+
+        $em = $manager->getManager();
+
+        $Joueur = $repo->find($id);
+
+        $form = $this->createForm(JoueurType::class,$Joueur);
+        
+        $form->handleRequest($req);
+        if($form->isSubmitted()) {
+            $em->persist($Joueur);
+            $em->flush();
+            return $this->redirectToRoute('Joueur_list');
+        }
+        return $this->renderForm('joueur/updateJoueur.html.twig',[
+            'f' => $form
+        ]);
     }
 }

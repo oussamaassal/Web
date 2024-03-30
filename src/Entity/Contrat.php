@@ -25,8 +25,9 @@ class Contrat
     #[ORM\Column]
     private ?int $salaire =null;
 
-    #[ORM\ManyToOne(inversedBy:'Contrat')]
-    private $employee;
+    #[ORM\ManyToOne(targetEntity: Joueur::class, inversedBy: 'contrats')]
+    #[ORM\JoinColumn(name: 'employee_id', referencedColumnName: 'joueurId')]
+    private ?Joueur $employee;
 
     public function getContratId(): ?int
     {

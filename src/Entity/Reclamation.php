@@ -22,8 +22,9 @@ class Reclamation
     #[ORM\Column]
     private ?int $etat =null;
 
-    #[ORM\ManyToOne(inversedBy:'Reclamation')]
-    private $iduser;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'reclamations')]
+    #[ORM\JoinColumn(name: 'iduser_id', referencedColumnName: 'id')]
+    private ?User $iduser;
 
     public function getIdreclamation(): ?int
     {
