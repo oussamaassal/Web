@@ -11,7 +11,7 @@ class ListeTerrainController extends AbstractController
     #[Route('/testterrain', name: 'app_liste_terrain')]
     public function index(): Response
     {
-        return $this->render('liste_terrain/index.html.twig', [
+        return $this->render('admin/index.html.twig', [
             'controller_name' => 'ListeTerrainController',
         ]);
     }
