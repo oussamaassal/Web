@@ -23,8 +23,9 @@ class Commande
     #[ORM\Column]
     private ?int $quantite =null;
 
-    #[ORM\ManyToOne(inversedBy:'Commande')]
-    private $idproduit;
+    #[ORM\ManyToOne(targetEntity: Produit::class, inversedBy: 'commandes')]
+    #[ORM\JoinColumn(name: 'idproduit_id', referencedColumnName: 'id')]
+    private ?Produit $idproduit;
 
     public function getIdcommande(): ?int
     {
