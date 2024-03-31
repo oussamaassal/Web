@@ -23,8 +23,9 @@ class Article
     #[ORM\Column(length: 255)]
     private ?string $image;
 
-    #[ORM\ManyToOne(inversedBy:'Article')]
-    private $idjournaliste;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'articles')]
+    #[ORM\JoinColumn(name: 'idjournaliste_id', referencedColumnName: 'id')]
+    private ?User $idjournaliste;
 
     public function getIdarticle(): ?int
     {

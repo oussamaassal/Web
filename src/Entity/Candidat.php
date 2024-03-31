@@ -26,8 +26,9 @@ class Candidat
     #[ORM\Column(length: 255)]
     private ?string $imgcpath;
 
-    #[ORM\ManyToOne(inversedBy:'Candidat')]
-    private $idelection;
+    #[ORM\ManyToOne(targetEntity: Evenement::class, inversedBy: 'candidats')]
+    #[ORM\JoinColumn(name: 'idelection_id', referencedColumnName: 'id')]
+    private ?Evenement $idelection;
 
     public function getIdc(): ?int
     {
