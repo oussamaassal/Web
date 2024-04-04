@@ -19,13 +19,16 @@ class JoueurType extends AbstractType
     {
         $builder
             ->add('nom', TextType::class, [
-                'label' => 'Nom'
+                'label' => 'Nom',
+                'required' => false
             ])
             ->add('prenom', TextType::class, [
-                'label' => 'Prénom'
+                'label' => 'Prénom',
+                'required' => false
             ])
             ->add('age', IntegerType::class, [
-                'label' => 'Âge'
+                'label' => 'Âge',
+                'required' => false
             ])
             ->add('position', ChoiceType::class, [
                 'label' => 'Position',
@@ -44,20 +47,27 @@ class JoueurType extends AbstractType
                 'placeholder' => 'Select Position', 
                 'expanded' => false, 
                 'multiple' => false, 
+                'required' => false
             ])
             ->add('hauteur', IntegerType::class, [
-                'label' => 'Hauteur'
+                'label' => 'Hauteur',
+                'required' => false
             ])
             ->add('poids', IntegerType::class, [
-                'label' => 'Poids'
+                'label' => 'Poids',
+                'required' => false
             ])
             ->add('piedfort', ChoiceType::class, [
                 'label' => 'Pied fort',
                 'expanded' => true,
                 'choices' => [
-                    'Gauche' => 'Gauche',
-                    'Droite' => 'Droite',
+                    'Pied Gauche' => 'Gauche',
+                    'Pied Droite' => 'Droite',
                 ],
+                'required' => false,
+                'placeholder' => false, 
+
+                
             ])
             ->add('imagepath', FileType::class, [
                 'label' => false,
@@ -65,7 +75,8 @@ class JoueurType extends AbstractType
                 'required' => false, 
             ])
             ->add('link', TextType::class, [
-                'label' => 'Lien'
+                'label' => 'Lien',
+                'required' => false
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Submit',

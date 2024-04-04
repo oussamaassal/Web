@@ -23,7 +23,7 @@ class ContratType extends AbstractType
             ])
             ->add('date_debut', DateType::class)
             ->add('date_fin', DateType::class)
-            ->add('salaire', MoneyType::class) // Assuming Salaire is a currency value
+            ->add('salaire', MoneyType::class) 
             ->add('submit', SubmitType::class, [
                 'label' => 'Submit',
                 'attr' => ['class' => 'btn btn-primary'],

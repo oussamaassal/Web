@@ -3,11 +3,11 @@
 {% block body %}
 <title> {% block title %} Hello Controller! {% endblock %}</title>
   <div class="content-body">
-			<div class="container-fluid">
+	<div class="container-fluid">
         <div class="row page-titles">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item active"><a href="javascript:void(0)">Form</a></li>
-              <li class="breadcrumb-item"><a href="javascript:void(0)">Element</a></li>
+              <li class="breadcrumb-item active"><a href="javascript:void(0)">Joueurs</a></li>
+              <li class="breadcrumb-item"><a href="javascript:void(0)">Modifier</a></li>
             </ol>
         </div>
 							<!--***************************start**********************
@@ -16,7 +16,7 @@
                     <div class="col-xl-6 col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Horizontal Form</h4>
+                                <h4 class="card-title">Modifier joueur</h4>
                             </div>
                             <div class="card-body">
                                 <div class="basic-form">
@@ -57,12 +57,11 @@
                                               <div class="row">
                                                 <label class="col-form-label col-sm-3 pt-0">Pied fort</label>
                                                   <div class="col-sm-9">
-                                                    <div class="form-check">
-                                                        {{ form_row(f.piedfort.0, {'label_attr': {'class': 'form-check-label'}, 'attr': {'class': 'form-check-input'}}) }}
-                                                    </div>
-                                                    <div class="form-check">
-                                                        {{ form_row(f.piedfort.1, {'label_attr': {'class': 'form-check-label'}, 'attr': {'class': 'form-check-input'}}) }}
-                                                    </div>
+                                                   {% for choice in f.piedfort %}
+                                                        <div class="form-check">         
+                                                            {{ form_row(choice, {'label_attr': {'class': 'form-check-label'}, 'attr': {'class': 'form-check-input'}}) }}
+                                                        </div>
+                                                    {% endfor %}
                                                   </div>
                                               </div>
                                             </div>
@@ -86,3 +85,76 @@
       </div>
     </div>
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get the form and submit button
+            var form = document.querySelector('form');
+            var submitButton = document.querySelector('[type="submit"]');
+            var linkInput = document.getElementById('{{ f.link.vars.id }}');
+            var imagePathInput = document.getElementById('{{ f.imagepath.vars.id }}');
+            
+            // Add event listener to form submission
+            form.addEventListener('submit', function(event) {
+                // Check each input field for emptiness
+                var nomInput = document.getElementById('{{ f.nom.vars.id }}');
+                var prenomInput = document.getElementById('{{ f.prenom.vars.id }}');
+                var ageInput = document.getElementById('{{ f.age.vars.id }}');
+                var positionInput = document.getElementById('{{ f.position.vars.id }}');
+                var hauteurInput = document.getElementById('{{ f.hauteur.vars.id }}');
+                var poidsInput = document.getElementById('{{ f.poids.vars.id }}');
+                var imagePathInput = document.getElementById('{{ f.imagepath.vars.id }}');
+                var linkInput = document.getElementById('{{ f.link.vars.id }}');
+                var piedfortInputs = document.querySelectorAll('[name="{{ f.piedfort.vars.full_name }}"]');
+                
+                var isPiedfortEmpty = true;
+                piedfortInputs.forEach(function(input) {
+                    if (input.checked) {
+                        isPiedfortEmpty = false;
+                    }
+                });
+
+                if (isEmpty(nomInput) || isEmpty(prenomInput) || isEmpty(ageInput) || isEmpty(positionInput) ||
+                    isEmpty(hauteurInput) || isEmpty(poidsInput) || isEmpty(imagePathInput) || isEmpty(linkInput) ||
+                    isPiedfortEmpty) {
+                    // If any field is empty, prevent form submission
+                    event.preventDefault();
+                    alert('Please fill in all fields.');
+                }
+
+                // Check if linkInput follows a link protocol
+                if (!isValidLink(linkInput.value)) {
+                    event.preventDefault();
+                    alert('Please enter a valid link starting with http:// or https://');
+                }
+
+                // Check if imagePathInput ends with image file extensions
+                if (!isValidImagePath(imagePathInput.value)) {
+                    event.preventDefault();
+                    alert('Please enter a valid image path ending with .jpeg, .jpg, or .png');
+                }
+            });
+            
+            // Function to check if a field is empty
+            function isEmpty(inputField) {
+                return inputField.value.trim() === '';
+            }
+            
+            // Function to check if the link follows a link protocol
+            function isValidLink(link) {
+                return /^https?:\/\//.test(link);
+            }
+
+            // Function to check if the imagePathInput ends with image file extensions
+            function isValidImagePath(imagePath) {
+                return /\.(jpeg|jpg|png)$/i.test(imagePath);
+            }
+        });
+    </script>
+{% endblock %}
+
+
+
+

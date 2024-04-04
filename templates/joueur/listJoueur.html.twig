@@ -45,7 +45,7 @@
                                           <tbody>
                                             {% for Joueur in list %}
                                               <tr>
-                                                  <td><img class="rounded-circle" width="35" src="{{ asset('assets_admin/images/profile/small/pic1.jpg') }}" alt=""></td>
+                                                  <td><img class="rounded-circle" width="60" src="{{ asset('assets_admin/images/JoueurImg/' ~ Joueur.getImagepath() ) }}" alt=""></td>
                                                   <td>{{ Joueur.getId() }}</td>
                                                   <td>{{ Joueur.getNom() }}</td>
                                                   <td>{{ Joueur.getPrenom() }}</td>
