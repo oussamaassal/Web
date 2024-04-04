@@ -1,3 +1,89 @@
-{{ form_start(f) }}
+{% extends '/admin/base.html.twig' %}
 
-{{ form_end(f) }}
+{% block body %}
+    <div class="content-body">
+        <div class="container-fluid">
+
+            <div class="col-xl-6 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Ajouter Terrain</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="basic-form">
+                            {{ form_start(f) }}
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Nom</label>
+                                <div class="col-sm-9">
+                                    {{ form_widget(f.nom_terrain,{'attr':{'class':'form-control'}}) }}                            </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Adresse</label>
+                                <div class="col-sm-9">
+                                    {{ form_widget(f.adresse,{'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Description</label>
+                                <div class="col-sm-9">
+                                    {{ form_widget(f.description,{'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Geo_x</label>
+                                <div class="col-sm-9">
+                                    {{ form_widget(f.geo_x,{'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Geo_y</label>
+                                <div class="col-sm-9">
+                                    {{ form_widget(f.geo_y,{'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Ouverture</label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                        </div>
+                                        {{ form_widget(f.ouverture, {'attr': {'class': 'form-control', 'placeholder': 'YYYY-MM-DD HH:MM'}}) }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Fermeture</label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                        </div>
+                                        {{ form_widget(f.fermeture, {'attr': {'class': 'form-control', 'placeholder': 'YYYY-MM-DD HH:MM'}}) }}
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="mb-3 row">
+                                <div class="col-sm-10">
+                                    {{ form_widget(f.ajouter,{'attr':{'class':'btn btn-primary'}}) }}                            </div>
+                            </div>
+                            {{ form_end(f) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
