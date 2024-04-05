@@ -7,6 +7,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+
 
 class ArticleType extends AbstractType
 {
@@ -15,11 +18,19 @@ class ArticleType extends AbstractType
         $builder
             ->add('titre')
             ->add('description')
-            ->add('image')
+            ->add('image', FileType::class, [
+                'label' => false,
+                'mapped' => false,
+                'required' => false, 
+            ])
             ->add('idjournaliste',EntityType::class,[
                 'class' => 'App\Entity\User',
                 'choice_label' => 'idUser'
             ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Submit',
+                'attr' => ['class' => 'btn btn-primary'],
+            ]);
         ;
     }
 

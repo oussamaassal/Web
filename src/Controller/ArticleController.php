@@ -17,8 +17,8 @@ class ArticleController extends AbstractController
     #[Route('/show', name: 'app_article_index', methods: ['GET'])]
     public function index(ArticleRepository $articleRepository): Response
     {
-        return $this->render('article/index.html.twig', [
-            'articles' => $articleRepository->findAll(),
+        return $this->render('article/showArticles.html.twig', [
+            'Articles' => $articleRepository->findAll(),
         ]);
     }
 
@@ -36,9 +36,9 @@ class ArticleController extends AbstractController
             return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('article/new.html.twig', [
+        return $this->renderForm('article/newArticle.html.twig', [
             'article' => $article,
-            'form' => $form,
+            'f' => $form,
         ]);
     }
 
