@@ -1,0 +1,62 @@
+{% extends '/admin/base.html.twig' %}
+
+{% block body %}
+    <div class="content-body">
+        <div class="container-fluid">
+
+            <!--***************************start**********************
+      *******************************************************-->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Liste Produit</h4>
+                            <div class="mb-4">
+                                <a href="/addproduit" class="btn btn-outline-success btn-rounded fs-16">+ Nouveau produit</a>
+
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="example3" class="display" style="min-width: 845px">
+                                    <thead>
+                                    <tr>
+                                        <th>nom produit</th>
+                                        <th>taille produit</th>
+                                        <th>Type</th>
+                                        <th>Qauntite produit</th>
+                                        <th>image</th>
+
+                                        
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for produit in b %}
+                                    <tr>
+                                        <td>{{ produit.nomProduit }}</td>
+                                        <td>{{ produit.tailleProduit }}</td>
+                                        <td>{{ produit.Type }}</td>
+                                        <td>{{ produit.Qauntiteproduit }}</td>
+                                        <td>{{ produit.image }}</td>
+                                        
+                                        <td>
+                                            <div class="d-flex">
+                                               
+                                            </div>
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--******************************************************
+        *******************************end*********************-->
+    </div>
+    </div>
+{% endblock %}
