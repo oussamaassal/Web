@@ -31,10 +31,10 @@ class ProduitType extends AbstractType
             ->add('QauntiteProduit', TextType::class, [
                 'label' => 'Quantite du produit',
             ])
-            ->add('image', TextType::class, [
-                'label' => 'Chemin de l\'image',
-                'required' => false,
-                'attr' => ['readonly' => true]
+            ->add('image', FileType::class, [
+                'label' => false,
+                'mapped' => false,
+                'required' => false, 
             ])
             ->add('ajouter', SubmitType::class, [
                 'label' => 'Ajouter',
