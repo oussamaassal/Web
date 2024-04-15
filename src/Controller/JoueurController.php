@@ -61,7 +61,7 @@ class JoueurController extends AbstractController
 
                 // Move the file to the directory where images are stored
                 $file->move(
-                    $this->getParameter('image_directory'),
+                    $this->getParameter('joueurs_image_directory'),
                     $fileName
                 );
                 // Set the image path on the entity
