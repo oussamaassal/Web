@@ -34,12 +34,13 @@ class ProduitType extends AbstractType
             ->add('image', TextType::class, [
                 'label' => 'Chemin de l\'image',
                 'required' => false,
+                'attr' => ['readonly' => true]
             ])
             ->add('ajouter', SubmitType::class, [
                 'label' => 'Ajouter',
                 'attr' => ['class' => 'btn btn-primary'],
             ]);
-        ;
+        
     }
 
     public function configureOptions(OptionsResolver $resolver): void

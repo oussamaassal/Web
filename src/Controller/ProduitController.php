@@ -11,7 +11,7 @@ use App\Form\ProduitType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class ProduitController extends AbstractController
 {
@@ -33,6 +33,19 @@ class ProduitController extends AbstractController
         
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $file = $form['imagepath']->getData();
+            if ($file) {
+                // Generate a unique name for the file before saving it
+                $fileName = $Joueur->getId().$Joueur->getNom().'.'.$file->guessExtension();
+
+                // Move the file to the directory where images are stored
+                $file->move(
+                    $this->getParameter('image_directory'),
+                    $fileName
+                );
+                // Set the image path on the entity
+                $Joueur->setImagepath($fileName);
+            }
             $entityManager->persist($produit);
             $entityManager->flush();
 
@@ -41,5 +54,5 @@ class ProduitController extends AbstractController
 
         return $this->render('produit/ajout.html.twig', ['form' => $form->createView()]);
     }
-
+    
 }
