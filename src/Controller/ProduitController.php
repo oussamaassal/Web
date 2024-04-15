@@ -33,18 +33,18 @@ class ProduitController extends AbstractController
         
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $file = $form['imagepath']->getData();
+            $file = $form['image']->getData();
             if ($file) {
                 // Generate a unique name for the file before saving it
-                $fileName = $Joueur->getId().$Joueur->getNom().'.'.$file->guessExtension();
+                $fileName = $produit->getNomproduit().'.'.$file->guessExtension();
 
                 // Move the file to the directory where images are stored
                 $file->move(
-                    $this->getParameter('image_directory'),
+                    $this->getParameter('produit_image_directory'),
                     $fileName
                 );
                 // Set the image path on the entity
-                $Joueur->setImagepath($fileName);
+                $produit->setImage($fileName);
             }
             $entityManager->persist($produit);
             $entityManager->flush();
