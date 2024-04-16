@@ -37,9 +37,10 @@ class ProduitType extends AbstractType
                 'required' => false, 
             ])
             ->add('ajouter', SubmitType::class, [
-                'label' => 'Ajouter',
+                'label' => 'Enregistrer',
                 'attr' => ['class' => 'btn btn-primary'],
             ]);
+            
         
     }
 

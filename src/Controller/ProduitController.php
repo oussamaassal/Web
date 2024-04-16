@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class ProduitController extends AbstractController
 {
-    #[Route('/produit', name: 'app_produit')]
+    #[Route('/affichageproduit', name: 'app_produit')]
     public function index(): Response
     {
         $Produits = $this->getDoctrine()->getManager()->getRepository(Produit::class)->findAll();
@@ -49,10 +49,50 @@ class ProduitController extends AbstractController
             $entityManager->persist($produit);
             $entityManager->flush();
 
-            return $this->redirectToRoute('ajoutproduit');
+            return $this->redirectToRoute('app_produit');
         }
 
         return $this->render('produit/ajout.html.twig', ['form' => $form->createView()]);
     }
+    #[Route('/modifierproduit/{id}', name: 'modifierproduit')]
+    public function modifierProduit(Request $request,$id): Response
+    {
+        $produit = $this->getDoctrine()->getManager()->getRepository(Produit::class)->find($id) ;
+        $form = $this->createForm(ProduitType::class,$produit) ;
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $file = $form['image']->getData();
+            if ($file) {
+                // Generate a unique name for the file before saving it
+                $fileName = $produit->getNomproduit().'.'.$file->guessExtension();
+
+                // Move the file to the directory where images are stored
+                $file->move(
+                    $this->getParameter('produit_image_directory'),
+                    $fileName
+                );
+                // Set the image path on the entity
+                $produit->setImage($fileName);
+            }
+            $entityManager->persist($produit);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_produit');
+        }
+
+        return $this->render('produit/modif.html.twig',['form'=>$form->createView()]);
+    }
+    
+    #[Route('/supprimerproduit/{id}', name: 'supprimerproduit')]
+    public function supprimerProduit(Produit $produit): Response
+    {
+        $en = $this->getDoctrine()->getManager();
+        $en->remove($produit);
+        $en->flush();
+
+        return $this->redirectToRoute('app_produit');
+    }
+    
     
 }
