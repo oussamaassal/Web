@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Profil {% endblock %}
+
+{% block content %}
+<div class="content-body">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card border-primary shadow-lg">
+                    <div class="card-body p-4">
+                        <h2 class="card-title mb-4 text-center">Profil <i class="fas fa-user-plus"></i></h2>
+                        
+                        <div class="row align-items-center">
+                            <div class="col-md-4 text-center">
+                                <div class="profile-image">
+                                    <i class="fas fa-user-circle fa-5x text-secondary"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="profile-info">
+                                    <p class="mb-2"><strong>Email:</strong> {{ user.email }}</p>
+                                    <p class="mb-4"><strong>Numéro de téléphone:</strong> {{ user.getNumtel }}</p>
+                                </div>
+                                <div class="text-center">
+                                    <a href="{{ path('app_user_profil_edit') }}" class="btn btn-primary px-4" style="color:white;">Modifier le profil <i class="fas fa-edit ml-2"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -45,4 +45,14 @@ class UserRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+public function searchByEmail(string $searchTerm): array
+{
+    return $this->createQueryBuilder('u')
+        ->where('u.email LIKE :searchTerm')
+        ->setParameter('searchTerm', '%'.$searchTerm.'%')
+        ->getQuery()
+        ->getResult();
 }
+
+}
+

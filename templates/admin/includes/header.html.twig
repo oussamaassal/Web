@@ -23,7 +23,7 @@
                 </defs>
               </svg>
               <div class="brand-title">
-                <h2 class="">Fillow.</h2>
+                <h2 class="">SwiftMinder</h2>
                 <span class="brand-sub-title">@soengsouy</span>
               </div>
                   </a>
@@ -52,13 +52,13 @@
                               </div>
                               <ul class="navbar-nav header-right">
                     <li class="nav-item d-flex align-items-center">
-                      <div class="input-group search-area">
-                        <input type="text" class="form-control" placeholder="Search here...">
-                        <span class="input-group-text"><a href="javascript:void(0)"><i class="flaticon-381-search-2"></i></a></span>
-                      </div>
+                      <form class="input-group search-area" action="{{ path('app_user_search') }}" method="GET">
+                      
+                        <input type="text" class="form-control" placeholder="Search here..." name="search">
+                        <span class="input-group-text"><button type="submit" class="btn b-0" ><i class="flaticon-381-search-2"></i></button></span>
+                      </form>
                     </li>
 
-                    
           
                     
                     <li class="nav-item dropdown  header-profile">

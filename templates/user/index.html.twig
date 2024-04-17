@@ -1,0 +1,49 @@
+{% extends '/admin/base.html.twig' %}
+
+{% block title %} Liste des utilisateurs {% endblock %}
+
+{% block body %}
+<div class="content-body">
+    <div class="container-fluid">
+        <h1>Liste des utilisateurs</h1>
+
+        <!-- Formulaire de recherche -->
+       
+
+        {% if users is not empty %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Iduser</th>
+                        <th>Email</th>
+                        <th>Motdepasse</th>
+                        <th>Role</th>
+                        <th>Numtel</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.iduser }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.motdepasse }}</td>
+                            <td>{{ user.role }}</td>
+                            <td>{{ user.numtel }}</td>
+                            <td>
+                                <a href="{{ path('app_user_show', {'iduser': user.iduser}) }}">Voir</a>
+                                <a href="{{ path('app_user_edit', {'iduser': user.iduser}) }}">Modifier</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Aucun utilisateur trouvé.</p>
+        {% endif %}
+        
+        <!-- Lien pour créer un nouvel utilisateur -->
+        <a href="{{ path('app_user_new') }}" class="btn btn-success btn-lg">Créer un nouvel utilisateur</a>
+    </div>
+</div>
+{% endblock %}
