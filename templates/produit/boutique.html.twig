@@ -1,0 +1,244 @@
+{% extends '/front/base.html.twig' %}
+
+{% block body %}
+<title> {% block title %} Hello Controller! {% endblock %}</title>
+        <!-- Section Breadcrumbs-->
+      <section class="section parallax-container breadcrumbs-wrap" data-parallax-img="images/bg-breadcrumbs-1-1920x726.jpg">
+        <div class="parallax-content breadcrumbs-custom context-dark">
+          <div class="container">
+            <h3 class="breadcrumbs-custom-title">Grid Shop</h3>
+            <ul class="breadcrumbs-custom-path">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="#">Shop</a></li>
+              <li class="active">Grid Shop</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <!-- Grid Shop-->
+      <section class="section section-md bg-gray-100">
+        <div class="container">
+          <div class="row row-50">
+            <div class="col-xl-9">
+              <!-- Heading Component-->
+              <article class="heading-component">
+                <div class="heading-component-inner">
+                  <h5 class="heading-component-title">Product catalog
+                  </h5>
+                  <div class="heading-component-aside">
+                    <ul class="list-inline list-inline-xs list-inline-middle">
+                      <li>
+                        <select class="select" data-placeholder="Select an option" data-container-class="select-minimal-md">
+                          <option label="placeholder"></option>
+                          <option value="newest first" selected="">newest first</option>
+                          <option value="oldest first">oldest first</option>
+                        </select>
+                      </li>
+                      <li>
+                        <select class="select" data-placeholder="Select an option" data-container-class="select-minimal-md">
+                          <option label="placeholder"></option>
+                          <option value="product price" selected="">product price</option>
+                          <option value="low to high">low to high</option>
+                          <option value="high to low">high to low</option>
+                        </select>
+                      </li>
+                      <li>
+                        <select class="select" data-placeholder="Select an option" data-container-class="select-minimal-lg">
+                          <option label="placeholder"></option>
+                          <option value="show 6 per page" selected="">show 6 per page</option>
+                          <option value="show 12 per page">show 12 per page</option>
+                          <option value="show 24 per page">show 24 per page</option>
+                        </select>
+                      </li>
+                      <li><a class="icon icon-xs-big icon-gray-500 fa-th active" href="grid-shop.html"></a></li>
+                      <li><a class="icon icon-xs-big icon-gray-500 fa-list-ul" href="list-shop.html"></a></li>
+                    </ul>
+                  </div>
+                </div>
+              </article>
+              <div class="row row-30">
+                {% for produit in produits %}
+                <div class="col-md-6 col-lg-4">
+                  <article class="product product-sm">
+                    <header class="product-header">
+                      <!-- Badge-->
+                      <div class="badge badge-red">hot<span class="icon material-icons-whatshot"></span>
+                      </div>
+                      <div class="product-figure"><img src="http://localhost/Images/Produits/{{ produit.getImage() }}" alt=""></div>
+                      <div class="product-buttons">
+                        <div class="product-button product-button-share fl-bigmug-line-share27" style="font-size: 22px">
+                          <ul class="product-share">
+                            <li class="product-share-item"><span>Share</span></li>
+                            <li class="product-share-item"><a class="icon fa fa-facebook" href="#"></a></li>
+                            <li class="product-share-item"><a class="icon fa fa-instagram" href="#"></a></li>
+                            <li class="product-share-item"><a class="icon fa fa-twitter" href="#"></a></li>
+                            <li class="product-share-item"><a class="icon fa fa-google-plus" href="#"></a></li>
+                          </ul>
+                        </div><a class="product-button fl-bigmug-line-shopping202" href="shopping-cart.html" style="font-size: 26px"></a><a class="product-button fl-bigmug-line-zoom60" href="images/shop/product-1-original.jpg" data-lightgallery="item" style="font-size: 25px"></a>
+                      </div>
+                    </header>
+                    <footer class="product-content">
+                      <h6 class="product-title"><a href="product-page.html">{{produit.getCategory.getTitre }}</a></h6>
+                      <div class="product-price"><span class="heading-6 product-price-new">${{produit.prixProduit}}</span>
+                      </div>
+                      <ul class="product-rating">
+                        <li><span class="material-icons-star"></span></li>
+                        <li><span class="material-icons-star"></span></li>
+                        <li><span class="material-icons-star"></span></li>
+                        <li><span class="material-icons-star"></span></li>
+                        <li><span class="material-icons-star_half"></span></li>
+                      </ul>
+                    </footer>
+                  </article>
+                </div>
+                {% endfor %}
+            </div>
+            </div>
+            <div class="col-xl-3">
+              <div class="row row-50">
+                <div class="col-md-6 col-xl-12">
+                  <!-- Categories-->
+                  <!-- Heading Component-->
+                  <article class="heading-component">
+                    <div class="heading-component-inner">
+                      <h5 class="heading-component-title">Categories
+                      </h5>
+                    </div>
+                  </article>
+                  <div class="card-shop">
+                    <ul class="list-md form-wrap">
+                      <li>
+                        <label class="checkbox-inline checkbox-inline-lg">
+                          <input name="input-checkbox-1" value="checkbox-1" type="checkbox">Shoes
+                        </label><span class="checkbox-inline-count">2</span>
+                      </li>
+                      <li>
+                        <label class="checkbox-inline checkbox-inline-lg">
+                          <input name="input-checkbox-2" value="checkbox-1" type="checkbox">t-shirts
+                        </label><span class="checkbox-inline-count">1</span>
+                      </li>
+                      <li>
+                        <label class="checkbox-inline checkbox-inline-lg">
+                          <input name="input-checkbox-3" value="checkbox-1" type="checkbox">BackPacks
+                        </label><span class="checkbox-inline-count">1</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-md-6 col-xl-12">
+                  <!-- Price-->
+                  <!-- Heading Component-->
+                  <article class="heading-component">
+                    <div class="heading-component-inner">
+                      <h5 class="heading-component-title">Price
+                      </h5>
+                    </div>
+                  </article>
+                  <div class="card-shop">
+                    <!-- RD Range-->
+                    <div class="rd-range-wrap">
+                      <div class="rd-range-form-wrap">
+                        <input class="rd-range-input rd-range-input-value-1" id="test" type="text" name="value-1"><span>$</span>
+                      </div>
+                      <div class="rd-range-divider"></div>
+                      <div class="rd-range-form-wrap">
+                        <input class="rd-range-input rd-range-input-value-2" type="text" name="value-2"><span>$</span>
+                      </div>
+                    </div>
+                    <div class="rd-range" data-min="0" data-max="300" data-start="[50, 250]" data-step="1" data-tooltip="false" data-min-diff="50" data-input=".rd-range-input-value-1" data-input-2=".rd-range-input-value-2"></div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-xl-12">
+                  <!-- Colors-->
+                  <!-- Heading Component-->
+                  <article class="heading-component">
+                    <div class="heading-component-inner">
+                      <h5 class="heading-component-title">Color
+                      </h5>
+                    </div>
+                  </article>
+                  <div class="card-shop" style="min-height: 0; font-size: 0">
+                    <ul class="list-inline list-inline-xs">
+                      <li>
+                        <label class="checkbox-inline input-filter">
+                          <input name="input-checkbox-4" value="checkbox-1" type="checkbox" checked="checked">
+                        </label>
+                      </li>
+                      <li>
+                        <label class="checkbox-inline input-filter input-filter-dark">
+                          <input name="input-checkbox-5" value="checkbox-1" type="checkbox">
+                        </label>
+                      </li>
+                      <li>
+                        <label class="checkbox-inline input-filter input-filter-danube">
+                          <input name="input-checkbox-6" value="checkbox-1" type="checkbox">
+                        </label>
+                      </li>
+                      <li>
+                        <label class="checkbox-inline input-filter input-filter-froly">
+                          <input name="input-checkbox-7" value="checkbox-1" type="checkbox">
+                        </label>
+                      </li>
+                      <li>
+                        <label class="checkbox-inline input-filter input-filter-deco">
+                          <input name="input-checkbox-8" value="checkbox-1" type="checkbox">
+                        </label>
+                      </li>
+                      <li>
+                        <label class="checkbox-inline input-filter input-filter-blue">
+                          <input name="input-checkbox-9" value="checkbox-1" type="checkbox">
+                        </label>
+                      </li>
+                      <li>
+                        <label class="checkbox-inline input-filter input-filter-geraldine">
+                          <input name="input-checkbox-9" value="checkbox-1" type="checkbox">
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-md-6 col-xl-12">
+                  <!-- Select size-->
+                  <!-- Heading Component-->
+                  <article class="heading-component">
+                    <div class="heading-component-inner">
+                      <h5 class="heading-component-title">Select size
+                      </h5>
+                    </div>
+                  </article>
+                  <div class="card-shop" style="font-size: 0">
+                    <ul class="list-inline list-inline-xs">
+                      <li>
+                        <label class="checkbox-inline input-refilter">
+                          <input name="input-checkbox-10" value="checkbox-1" type="checkbox" checked="checked"><span>s</span>
+                        </label>
+                      </li>
+                      <li>
+                        <label class="checkbox-inline input-refilter">
+                          <input name="input-checkbox-11" value="checkbox-1" type="checkbox"><span>m</span>
+                        </label>
+                      </li>
+                      <li>
+                        <label class="checkbox-inline input-refilter">
+                          <input name="input-checkbox-12" value="checkbox-1" type="checkbox"><span>l</span>
+                        </label>
+                      </li>
+                      <li>
+                        <label class="checkbox-inline input-refilter">
+                          <input name="input-checkbox-13" value="checkbox-1" type="checkbox"><span>xl</span>
+                        </label>
+                      </li>
+                      <li>
+                        <label class="checkbox-inline input-refilter">
+                          <input name="input-checkbox-14" value="checkbox-1" type="checkbox"><span>xxl</span>
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+{% endblock %}
