@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<title>Candidat index</title>
+
+{% block body %}
+    <h1>Candidat index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Idc</th>
+                <th>Nomc</th>
+                <th>Prenomc</th>
+                <th>Agec</th>
+                <th>Imgcpath</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for candidat in candidats %}
+            <tr>
+                <td>{{ candidat.idc }}</td>
+                <td>{{ candidat.nomc }}</td>
+                <td>{{ candidat.prenomc }}</td>
+                <td>{{ candidat.agec }}</td>
+                <td>{{ candidat.imgcpath }}</td>
+                <td>
+                    <a href="{{ path('app_candidat_show', {'idc': candidat.idc}) }}">show</a>
+                    <a href="{{ path('app_candidat_edit', {'idc': candidat.idc}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_candidat_new') }}">Create new</a>
+{% endblock %}

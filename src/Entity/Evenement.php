@@ -95,5 +95,8 @@ class Evenement
         return $this;
     }
 
+    public function __toString(){
+        return (String)$this->getNome();
+    }
 
 }

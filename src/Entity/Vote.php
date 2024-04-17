@@ -14,11 +14,19 @@ class Vote
     #[ORM\Column]
     private ?int $idv =null;
 
-    #[ORM\Column]
-    private ?int $idcandidatv =null;
+    // #[ORM\Column]
+    // private ?int $idcandidatv =null;
  
-    #[ORM\Column]
-    private ?int $idelectionv =null;
+    // #[ORM\Column]
+    // private ?int $idelectionv =null;
+
+    #[ORM\ManyToOne(targetEntity: Candidat::class)]
+    #[ORM\JoinColumn(name: 'idcandidatv', referencedColumnName: 'idc')]
+    private ?Candidat $candidat;
+
+    #[ORM\ManyToOne(targetEntity: Evenement::class)]
+    #[ORM\JoinColumn(name: 'idelectionv', referencedColumnName: 'ide')]
+    private ?Evenement $evenement;
 
     public function getIdv(): ?int
     {
