@@ -51,7 +51,7 @@
                         </select>
                       </li>
                       <li><a class="icon icon-xs-big icon-gray-500 fa-th active" href="grid-shop.html"></a></li>
-                      <li><a class="icon icon-xs-big icon-gray-500 fa-list-ul" href="list-shop.html"></a></li>
+                      <li><a class="icon icon-xs-big icon-gray-500 fa-list-ul" href="boutiquelist"></a></li>
                     </ul>
                   </div>
                 </div>
@@ -62,7 +62,7 @@
                   <article class="product product-sm">
                     <header class="product-header">
                       <!-- Badge-->
-                      <div class="badge badge-red">hot<span class="icon material-icons-whatshot"></span>
+                      <div ><span ></span>
                       </div>
                       <div class="product-figure"><img src="http://localhost/Images/Produits/{{ produit.getImage() }}" alt=""></div>
                       <div class="product-buttons">
@@ -78,7 +78,7 @@
                       </div>
                     </header>
                     <footer class="product-content">
-                      <h6 class="product-title"><a href="product-page.html">{{produit.getCategory.getTitre }}</a></h6>
+                      <h6 class="product-title"><a href="product-page.html">{{produit.nomProduit }}</a></h6>
                       <div class="product-price"><span class="heading-6 product-price-new">${{produit.prixProduit}}</span>
                       </div>
                       <ul class="product-rating">

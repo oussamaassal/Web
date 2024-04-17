@@ -93,12 +93,21 @@ class ProduitController extends AbstractController
 
         return $this->redirectToRoute('app_produit');
     }
-    #[Route('/ad', name: 'app_produit')]
+    #[Route('/boutique', name: 'app_produit')]
     public function Boutique(): Response
     {
         $Produits = $this->getDoctrine()->getManager()->getRepository(Produit::class)->findAll();
 
         return $this->render('produit/boutique.html.twig', [
+            'produits'=>$Produits
+        ]);
+    }
+    #[Route('/boutiquelist', name: 'boutique_list')]
+    public function BoutiqueList(): Response
+    {
+        $Produits = $this->getDoctrine()->getManager()->getRepository(Produit::class)->findAll();
+
+        return $this->render('produit/boutiqueList.html.twig', [
             'produits'=>$Produits
         ]);
     }
