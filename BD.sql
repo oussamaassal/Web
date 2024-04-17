@@ -2,10 +2,10 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1
--- Généré le : mer. 27 mars 2024 à 00:48
--- Version du serveur : 10.4.24-MariaDB
--- Version de PHP : 8.1.6
+-- Host: 127.0.0.1
+-- Generation Time: Apr 17, 2024 at 11:05 AM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `swiftminder`
+-- Database: `swiftminder`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `annexe`
+-- Table structure for table `annexe`
 --
 
 CREATE TABLE `annexe` (
@@ -36,7 +36,7 @@ CREATE TABLE `annexe` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `article`
+-- Table structure for table `article`
 --
 
 CREATE TABLE `article` (
@@ -50,7 +50,7 @@ CREATE TABLE `article` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `billet`
+-- Table structure for table `billet`
 --
 
 CREATE TABLE `billet` (
@@ -62,7 +62,7 @@ CREATE TABLE `billet` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `candidat`
+-- Table structure for table `candidat`
 --
 
 CREATE TABLE `candidat` (
@@ -75,7 +75,7 @@ CREATE TABLE `candidat` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `candidat`
+-- Dumping data for table `candidat`
 --
 
 INSERT INTO `candidat` (`idC`, `nomC`, `prenomC`, `ageC`, `imgCpath`, `idElection`) VALUES
@@ -86,7 +86,7 @@ INSERT INTO `candidat` (`idC`, `nomC`, `prenomC`, `ageC`, `imgCpath`, `idElectio
 -- --------------------------------------------------------
 
 --
--- Structure de la table `commande`
+-- Table structure for table `commande`
 --
 
 CREATE TABLE `commande` (
@@ -100,7 +100,7 @@ CREATE TABLE `commande` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `contrat`
+-- Table structure for table `contrat`
 --
 
 CREATE TABLE `contrat` (
@@ -111,10 +111,17 @@ CREATE TABLE `contrat` (
   `Salaire` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `contrat`
+--
+
+INSERT INTO `contrat` (`contrat_id`, `employee_id`, `date_debut`, `date_fin`, `Salaire`) VALUES
+(14, 68, '2020-04-01', '2019-01-01', 10000);
+
 -- --------------------------------------------------------
 
 --
--- Structure de la table `evenement`
+-- Table structure for table `evenement`
 --
 
 CREATE TABLE `evenement` (
@@ -127,7 +134,7 @@ CREATE TABLE `evenement` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `evenement`
+-- Dumping data for table `evenement`
 --
 
 INSERT INTO `evenement` (`idE`, `nomE`, `dateE`, `posteE`, `periodeP`, `imgEpath`) VALUES
@@ -146,7 +153,7 @@ INSERT INTO `evenement` (`idE`, `nomE`, `dateE`, `posteE`, `periodeP`, `imgEpath
 -- --------------------------------------------------------
 
 --
--- Structure de la table `joueur`
+-- Table structure for table `joueur`
 --
 
 CREATE TABLE `joueur` (
@@ -163,20 +170,17 @@ CREATE TABLE `joueur` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `joueur`
+-- Dumping data for table `joueur`
 --
 
 INSERT INTO `joueur` (`id`, `Nom`, `Prenom`, `Age`, `Position`, `Hauteur`, `Poids`, `Piedfort`, `imagePath`, `Link`) VALUES
-(47, 'Varane', 'Raphael', 30, 'DC', 192, 85, 'Droite', 'icon.png', 'https://www.instagram.com/raphaelvarane/?hl=en'),
-(49, 'Bellingham', 'jude', 20, 'MO', 189, 89, 'Droite', 'icon.png', 'https://www.instagram.com/judebellingham/?hl=en'),
-(50, 'Carvajal', 'dani', 31, 'AD', 172, 71, 'Droite', 'icon.png', 'https://www.instagram.com/dani.carvajal.2/?hl=en'),
-(54, 'Kaka', 'Ricardo', 45, 'AL', 187, 65, 'Droite', 'icon.png', 'https://www.instagram.com/kaka/?hl=en'),
-(62, 'aaas', 'ss', 15, 'AL', 5135, 26, 'Gauche', 'icon.png', 'http://localhost/phpmyadmin/index.php?route=/sql&pos=0&db=swiftminder&table=commande');
+(68, 'ahmed', 'oussama', 23, 'AL', 5612, 1651, 'Droite', 'ahmed.jpg', 'https://www.instagram.com/stories/vinijr/3346740979060397195/'),
+(69, 'awled', 'salem', 32, 'GK', 212, 32, 'Droite', 'awled.png', 'https://www.instagram.com/kepaarrizabalaga/');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `produit`
+-- Table structure for table `produit`
 --
 
 CREATE TABLE `produit` (
@@ -190,7 +194,7 @@ CREATE TABLE `produit` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `produit`
+-- Dumping data for table `produit`
 --
 
 INSERT INTO `produit` (`IdProduit`, `NomProduit`, `PrixProduit`, `TailleProduit`, `Type`, `QauntiteProduit`, `image`) VALUES
@@ -200,7 +204,7 @@ INSERT INTO `produit` (`IdProduit`, `NomProduit`, `PrixProduit`, `TailleProduit`
 -- --------------------------------------------------------
 
 --
--- Structure de la table `reclamation`
+-- Table structure for table `reclamation`
 --
 
 CREATE TABLE `reclamation` (
@@ -212,7 +216,7 @@ CREATE TABLE `reclamation` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `reclamation`
+-- Dumping data for table `reclamation`
 --
 
 INSERT INTO `reclamation` (`IdReclamation`, `IdUser`, `Titre`, `Description`, `Etat`) VALUES
@@ -221,7 +225,7 @@ INSERT INTO `reclamation` (`IdReclamation`, `IdUser`, `Titre`, `Description`, `E
 -- --------------------------------------------------------
 
 --
--- Structure de la table `rencontre`
+-- Table structure for table `rencontre`
 --
 
 CREATE TABLE `rencontre` (
@@ -234,7 +238,7 @@ CREATE TABLE `rencontre` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `reservation`
+-- Table structure for table `reservation`
 --
 
 CREATE TABLE `reservation` (
@@ -246,7 +250,7 @@ CREATE TABLE `reservation` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `reservation`
+-- Dumping data for table `reservation`
 --
 
 INSERT INTO `reservation` (`ReservationID`, `idTerrain`, `DateReservation`, `Note`, `Emplacement`) VALUES
@@ -256,7 +260,7 @@ INSERT INTO `reservation` (`ReservationID`, `idTerrain`, `DateReservation`, `Not
 -- --------------------------------------------------------
 
 --
--- Structure de la table `terrain`
+-- Table structure for table `terrain`
 --
 
 CREATE TABLE `terrain` (
@@ -272,7 +276,7 @@ CREATE TABLE `terrain` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `terrain`
+-- Dumping data for table `terrain`
 --
 
 INSERT INTO `terrain` (`id`, `nom_terrain`, `adresse`, `description`, `geo_x`, `geo_y`, `ouverture`, `fermeture`, `datedispo`) VALUES
@@ -281,7 +285,7 @@ INSERT INTO `terrain` (`id`, `nom_terrain`, `adresse`, `description`, `geo_x`, `
 -- --------------------------------------------------------
 
 --
--- Structure de la table `user`
+-- Table structure for table `user`
 --
 
 CREATE TABLE `user` (
@@ -293,7 +297,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `user`
+-- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`idUser`, `email`, `motdepasse`, `role`, `numtel`) VALUES
@@ -308,7 +312,7 @@ INSERT INTO `user` (`idUser`, `email`, `motdepasse`, `role`, `numtel`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `vote`
+-- Table structure for table `vote`
 --
 
 CREATE TABLE `vote` (
@@ -318,7 +322,7 @@ CREATE TABLE `vote` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `vote`
+-- Dumping data for table `vote`
 --
 
 INSERT INTO `vote` (`idV`, `idCandidatV`, `idElectionV`) VALUES
@@ -330,101 +334,101 @@ INSERT INTO `vote` (`idV`, `idCandidatV`, `idElectionV`) VALUES
 (12, 0, 22);
 
 --
--- Index pour les tables déchargées
+-- Indexes for dumped tables
 --
 
 --
--- Index pour la table `annexe`
+-- Indexes for table `annexe`
 --
 ALTER TABLE `annexe`
   ADD PRIMARY KEY (`IdAnnexe`);
 
 --
--- Index pour la table `article`
+-- Indexes for table `article`
 --
 ALTER TABLE `article`
   ADD PRIMARY KEY (`IdArticle`),
   ADD KEY `const` (`IdJournaliste`);
 
 --
--- Index pour la table `billet`
+-- Indexes for table `billet`
 --
 ALTER TABLE `billet`
   ADD PRIMARY KEY (`IdBillet`),
   ADD KEY `Billet` (`IdRencontre`);
 
 --
--- Index pour la table `candidat`
+-- Indexes for table `candidat`
 --
 ALTER TABLE `candidat`
   ADD PRIMARY KEY (`idC`),
   ADD KEY `idElection` (`idElection`);
 
 --
--- Index pour la table `commande`
+-- Indexes for table `commande`
 --
 ALTER TABLE `commande`
   ADD PRIMARY KEY (`IdCommande`),
   ADD KEY `commande_ibfk_1` (`idproduit`);
 
 --
--- Index pour la table `contrat`
+-- Indexes for table `contrat`
 --
 ALTER TABLE `contrat`
   ADD PRIMARY KEY (`contrat_id`),
   ADD KEY `employee_id` (`employee_id`);
 
 --
--- Index pour la table `evenement`
+-- Indexes for table `evenement`
 --
 ALTER TABLE `evenement`
   ADD PRIMARY KEY (`idE`);
 
 --
--- Index pour la table `joueur`
+-- Indexes for table `joueur`
 --
 ALTER TABLE `joueur`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `produit`
+-- Indexes for table `produit`
 --
 ALTER TABLE `produit`
   ADD PRIMARY KEY (`IdProduit`);
 
 --
--- Index pour la table `reclamation`
+-- Indexes for table `reclamation`
 --
 ALTER TABLE `reclamation`
   ADD PRIMARY KEY (`IdReclamation`);
 
 --
--- Index pour la table `rencontre`
+-- Indexes for table `rencontre`
 --
 ALTER TABLE `rencontre`
   ADD PRIMARY KEY (`IdRencontre`);
 
 --
--- Index pour la table `reservation`
+-- Indexes for table `reservation`
 --
 ALTER TABLE `reservation`
   ADD PRIMARY KEY (`ReservationID`),
   ADD KEY `Choixterrain` (`idTerrain`);
 
 --
--- Index pour la table `terrain`
+-- Indexes for table `terrain`
 --
 ALTER TABLE `terrain`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `user`
+-- Indexes for table `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`idUser`);
 
 --
--- Index pour la table `vote`
+-- Indexes for table `vote`
 --
 ALTER TABLE `vote`
   ADD PRIMARY KEY (`idV`),
@@ -432,141 +436,141 @@ ALTER TABLE `vote`
   ADD KEY `idElectionV` (`idElectionV`);
 
 --
--- AUTO_INCREMENT pour les tables déchargées
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT pour la table `annexe`
+-- AUTO_INCREMENT for table `annexe`
 --
 ALTER TABLE `annexe`
   MODIFY `IdAnnexe` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `article`
+-- AUTO_INCREMENT for table `article`
 --
 ALTER TABLE `article`
   MODIFY `IdArticle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT pour la table `billet`
+-- AUTO_INCREMENT for table `billet`
 --
 ALTER TABLE `billet`
   MODIFY `IdBillet` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `candidat`
+-- AUTO_INCREMENT for table `candidat`
 --
 ALTER TABLE `candidat`
   MODIFY `idC` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT pour la table `commande`
+-- AUTO_INCREMENT for table `commande`
 --
 ALTER TABLE `commande`
   MODIFY `IdCommande` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT pour la table `contrat`
+-- AUTO_INCREMENT for table `contrat`
 --
 ALTER TABLE `contrat`
-  MODIFY `contrat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `contrat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- AUTO_INCREMENT pour la table `evenement`
+-- AUTO_INCREMENT for table `evenement`
 --
 ALTER TABLE `evenement`
   MODIFY `idE` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- AUTO_INCREMENT pour la table `joueur`
+-- AUTO_INCREMENT for table `joueur`
 --
 ALTER TABLE `joueur`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
--- AUTO_INCREMENT pour la table `produit`
+-- AUTO_INCREMENT for table `produit`
 --
 ALTER TABLE `produit`
   MODIFY `IdProduit` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- AUTO_INCREMENT pour la table `reclamation`
+-- AUTO_INCREMENT for table `reclamation`
 --
 ALTER TABLE `reclamation`
   MODIFY `IdReclamation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT pour la table `rencontre`
+-- AUTO_INCREMENT for table `rencontre`
 --
 ALTER TABLE `rencontre`
   MODIFY `IdRencontre` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `reservation`
+-- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
   MODIFY `ReservationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- AUTO_INCREMENT pour la table `terrain`
+-- AUTO_INCREMENT for table `terrain`
 --
 ALTER TABLE `terrain`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
--- AUTO_INCREMENT pour la table `user`
+-- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
   MODIFY `idUser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT pour la table `vote`
+-- AUTO_INCREMENT for table `vote`
 --
 ALTER TABLE `vote`
   MODIFY `idV` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- Contraintes pour les tables déchargées
+-- Constraints for dumped tables
 --
 
 --
--- Contraintes pour la table `article`
+-- Constraints for table `article`
 --
 ALTER TABLE `article`
   ADD CONSTRAINT `const` FOREIGN KEY (`IdJournaliste`) REFERENCES `user` (`idUser`);
 
 --
--- Contraintes pour la table `billet`
+-- Constraints for table `billet`
 --
 ALTER TABLE `billet`
   ADD CONSTRAINT `billet_ibfk_1` FOREIGN KEY (`IdRencontre`) REFERENCES `rencontre` (`IdRencontre`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `candidat`
+-- Constraints for table `candidat`
 --
 ALTER TABLE `candidat`
   ADD CONSTRAINT `candidat_ibfk_1` FOREIGN KEY (`idElection`) REFERENCES `evenement` (`idE`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `commande`
+-- Constraints for table `commande`
 --
 ALTER TABLE `commande`
   ADD CONSTRAINT `commande_ibfk_1` FOREIGN KEY (`idproduit`) REFERENCES `produit` (`IdProduit`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `contrat`
+-- Constraints for table `contrat`
 --
 ALTER TABLE `contrat`
   ADD CONSTRAINT `contrat_ibfk_1` FOREIGN KEY (`employee_id`) REFERENCES `joueur` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
--- Contraintes pour la table `reclamation`
+-- Constraints for table `reclamation`
 --
 ALTER TABLE `reclamation`
   ADD CONSTRAINT `reclamation_ibfk_1` FOREIGN KEY (`IdUser`) REFERENCES `user` (`IdUser`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `reservation`
+-- Constraints for table `reservation`
 --
 ALTER TABLE `reservation`
   ADD CONSTRAINT `reservation_ibfk_1` FOREIGN KEY (`idTerrain`) REFERENCES `terrain` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;

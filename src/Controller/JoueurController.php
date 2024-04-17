@@ -30,6 +30,15 @@ class JoueurController extends AbstractController
         ]);
     }
 
+    #[Route('/Roster', name: 'Joueur_list')]
+    public function listJoueurs_front(JoueurRepository $repo):Response{
+
+        $list = $repo->findAll();
+        return $this->render('joueur/Roster.html.twig',[
+            'list' => $list
+        ]);
+    }
+
     #[Route('/deleteJoueur/{id}', name: 'Joueur_delete')]
     public function deleteJoueur(ManagerRegistry $manager , JoueurRepository $repo, $id):Response{
         $em = $manager->getManager();
@@ -94,6 +103,16 @@ class JoueurController extends AbstractController
         }
         return $this->renderForm('joueur/updateJoueur.html.twig',[
             'f' => $form
+        ]);
+    }
+
+    #[Route('/pageJoueur/{id}', name: 'Joueur_page')]
+    public function pageJoueur($id, JoueurRepository $repo):Response{
+
+        $Joueur = $repo->find($id);
+
+        return $this->renderForm('joueur/pageJoueur.html.twig',[
+            'Joueur' => $Joueur
         ]);
     }
 }
