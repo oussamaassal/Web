@@ -4,8 +4,6 @@ namespace App\Entity;
 
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-
 
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
@@ -14,37 +12,30 @@ class Produit
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $idproduit = null;
+    private ?int $idproduit =null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Le nom du produit ne peut pas être vide.")]
-    
     private ?string $nomproduit;
 
-    #[ORM\Column(nullable: true)]
-    #[Assert\NotNull(message: "Le prix du produit ne peut pas être vide.")]
-    #[Assert\Type(type: 'numeric', message: "Le prix doit être un nombre.")]
-    private ?int $prixproduit = null;
+    #[ORM\Column]
+    private ?int $prixproduit =null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: "La taille du produit ne peut pas dépasser {{ limit }} caractères.")]
+    #[ORM\Column(length: 255)]
     private ?string $tailleproduit;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: "Le type du produit ne peut pas dépasser {{ limit }} caractères.")]
+    #[ORM\Column(length: 255)]
     private ?string $type;
 
-    #[ORM\Column(nullable: true)]
-    #[Assert\NotNull(message: "La quantité du produit ne peut pas être vide.")]
-    #[Assert\Type(type: 'integer', message: "La quantité doit être un entier.")]
-    private ?int $qauntiteproduit = null;
+    #[ORM\Column]
+    private ?int $qauntiteproduit =null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\Url(message: "L'URL de l'image n'est pas valide.")]
+    #[ORM\Column(length: 255)]
     private ?string $image;
 
     #[ORM\ManyToOne(inversedBy: 'produits')]
-    private ?Category $category = null;    public function getIdproduit(): ?int
+    private ?Category $category = null;
+
+    public function getIdproduit(): ?int
     {
         return $this->idproduit;
     }

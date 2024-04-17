@@ -15,8 +15,17 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class ProduitController extends AbstractController
 {
-    #[Route('/affichageproduit', name: 'app_produit')]
+    #[Route('/aaaa', name: 'app_produit')]
     public function index(): Response
+    {
+        $Produits = $this->getDoctrine()->getManager()->getRepository(Produit::class)->findAll();
+
+        return $this->render('produit/index.html.twig', [
+            'b'=>$Produits
+        ]);
+    }
+    #[Route('/azd', name: 'azd')]
+    public function affichage(): Response
     {
         $Produits = $this->getDoctrine()->getManager()->getRepository(Produit::class)->findAll();
 
@@ -107,7 +116,7 @@ class ProduitController extends AbstractController
     {
         $Produits = $this->getDoctrine()->getManager()->getRepository(Produit::class)->findAll();
 
-        return $this->render('produit/boutiqueList.html.twig', [
+        return $this->render('produit/boutique_list.html.twig', [
             'produits'=>$Produits
         ]);
     }
