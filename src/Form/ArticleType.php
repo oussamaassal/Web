@@ -21,7 +21,10 @@ class ArticleType extends AbstractType
             ->add('image', FileType::class, [
                 'label' => false,
                 'mapped' => false,
-                'required' => false, 
+                'required' => false,
+                'attr' => [
+                    'accept' => 'image/jpeg, image/png, image/gif',
+                ],
             ])
             ->add('idjournaliste',EntityType::class,[
                 'class' => 'App\Entity\User',

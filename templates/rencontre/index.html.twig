@@ -1,18 +1,9 @@
-{% extends '/admin/base.html.twig' %}
+<!DOCTYPE html>
 
+<title>Rencontre index</title>
 
 {% block body %}
-<title> {% block title %} Hello Controller! {% endblock %}</title>
-  <div class="content-body">
-			<div class="container-fluid">
-
-        <div class="row page-titles">
-					<ol class="breadcrumb">
-						<li class="breadcrumb-item active"><a href="javascript:void(0)">Table</a></li>
-						<li class="breadcrumb-item"><a href="javascript:void(0)">Datatable</a></li>
-					</ol>
-                </div>
-                 
+    <h1>Rencontre index</h1>
 
     <table class="table">
         <thead>
@@ -32,8 +23,8 @@
                 <td>{{ rencontre.adversaire }}</td>
                 <td>{{ rencontre.score }}</td>
                 <td>
-                    <a href="{{ path('app_rencontre_edit', {'idrencontre': rencontre.getIdrencontre}) }}" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fas fa-pencil-alt"></i></a>
-                    <a href="{{ path('app_rencontre_delete', {'idrencontre': rencontre.getIdrencontre}) }}" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
+                    <a href="{{ path('app_rencontre_show', {'idrencontre': rencontre.idrencontre}) }}">show</a>
+                    <a href="{{ path('app_rencontre_edit', {'idrencontre': rencontre.idrencontre}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

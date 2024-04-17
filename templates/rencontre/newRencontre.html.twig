@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <div class="row page-titles">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Articles</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">Rencontre</a></li>
                 <li class="breadcrumb-item"><a href="javascript:void(0)">Ajouter</a></li>
             </ol>
         </div>
@@ -16,29 +16,21 @@
             <div class="col-xl-6 col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Ajouter Article</h4>
-                        <a href="{{ path('app_article_index') }}" class="btn btn-outline-success btn-rounded fs-16">+ Voir les Articles </a>
+                        <h4 class="card-title">Ajouter Rencontre</h4>
+                        <a href="{{ path('app_rencontre_index') }}" class="btn btn-outline-success btn-rounded fs-16">+ Voir les Rencontre </a>
                     </div>
                     <div class="card-body">
                         <div class="basic-form">
                             {{ form_start(f) }}
                             <div class="row">
                                 <div class="mb-3 col-md-6">
-                                    {{ form_row(f.titre, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_row(f.adversaire, {'attr': {'class': 'form-control'}}) }}
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    {{ form_row(f.description, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_row(f.score, {'attr': {'class': 'form-control'}}) }}
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    {{ form_row(f.idjournaliste, {'attr': {'class': 'form-control'}}) }}
-                                </div>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text">Upload</span>
-                                    <div class="form-file">
-                                        {{ form_row(f.image, {'attr': {'class': 'form-file-input form-control'}}) }}
-                                        
-                                    </div>
-                                </div>
+                                    {{ form_row(f.daterebcontre, {'attr': {'class': 'form-control'}}) }}
                             </div>
                             <div class="row">
                                 <div class="mb-3 col-md-9">

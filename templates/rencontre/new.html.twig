@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <title>New Rencontre</title>
 
 {% block body %}
@@ -7,11 +8,4 @@
     {{ include('rencontre/_form.html.twig') }}
 
     <a href="{{ path('app_rencontre_index') }}">back to list</a>
-
-    <script>
-        document.querySelector('#save-button').addEventListener('click', function() {
-            // Redirect to the calendar view after saving
-            window.location.href = "{{ path('app_rencontre_index') }}";
-        });
-    </script>
 {% endblock %}

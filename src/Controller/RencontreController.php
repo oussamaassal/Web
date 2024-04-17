@@ -11,18 +11,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/rencontre')]
+#[Route('')]
 class RencontreController extends AbstractController
 {
-    #[Route('/', name: 'app_rencontre_index', methods: ['GET'])]
+    #[Route('/showRencontre', name: 'app_rencontre_index', methods: ['GET'])]
     public function index(RencontreRepository $rencontreRepository): Response
     {
-        return $this->render('rencontre/index.html.twig', [
+        return $this->render('rencontre/showRencontre.html.twig', [
             'rencontres' => $rencontreRepository->findAll(),
         ]);
     }
 
-    #[Route('/new', name: 'app_rencontre_new', methods: ['GET', 'POST'])]
+    #[Route('/newRencontre', name: 'app_rencontre_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $rencontre = new Rencontre();
@@ -36,9 +36,9 @@ class RencontreController extends AbstractController
             return $this->redirectToRoute('app_rencontre_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('rencontre/new.html.twig', [
+        return $this->renderForm('rencontre/newRencontre.html.twig', [
             'rencontre' => $rencontre,
-            'form' => $form,
+            'f' => $form,
         ]);
     }
 
@@ -64,7 +64,7 @@ class RencontreController extends AbstractController
 
         return $this->renderForm('rencontre/edit.html.twig', [
             'rencontre' => $rencontre,
-            'form' => $form,
+            'f' => $form,
         ]);
     }
 
