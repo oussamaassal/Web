@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class ProduitController extends AbstractController
 {
-    #[Route('/aaaa', name: 'azd')]
+    #[Route('/affichageproduit', name: 'app_produit')]
     public function index(): Response
     {
         $Produits = $this->getDoctrine()->getManager()->getRepository(Produit::class)->findAll();
@@ -24,15 +24,7 @@ class ProduitController extends AbstractController
             'b'=>$Produits
         ]);
     }
-    #[Route('/affichageproduit', name: 'app_produit')]
-    public function affichage(): Response
-    {
-        $Produits = $this->getDoctrine()->getManager()->getRepository(Produit::class)->findAll();
-
-        return $this->render('produit/index.html.twig', [
-            'b'=>$Produits
-        ]);
-    }
+    
     #[Route('/ajoutproduit', name: 'ajoutproduit')]
     public function ajoutproduit(Request $request): Response
     {
@@ -102,7 +94,7 @@ class ProduitController extends AbstractController
 
         return $this->redirectToRoute('app_produit');
     }
-    #[Route('/boutique', name: 'app_produit')]
+    #[Route('/boutique', name: 'app_boutique')]
     public function Boutique(): Response
     {
         $Produits = $this->getDoctrine()->getManager()->getRepository(Produit::class)->findAll();
@@ -116,7 +108,7 @@ class ProduitController extends AbstractController
     {
         $Produits = $this->getDoctrine()->getManager()->getRepository(Produit::class)->findAll();
 
-        return $this->render('produit/boutique_list.html.twig', [
+        return $this->render('produit/boutiqueList.html.twig', [
             'produits'=>$Produits
         ]);
     }

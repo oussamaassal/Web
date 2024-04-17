@@ -50,21 +50,22 @@
                           <option value="show 24 per page">show 24 per page</option>
                         </select>
                       </li>
-                      <li><a class="icon icon-xs-big icon-gray-500 fa-th" href="grid-shop.html"></a></li>
+                      <li><a class="icon icon-xs-big icon-gray-500 fa-th" href="boutique"></a></li>
                       <li><a class="icon icon-xs-big icon-gray-500 fa-list-ul active" href="list-shop.html"></a></li>
                     </ul>
                   </div>
                 </div>
               </article>
-              
+                              {% for produit in produits %}
               <article class="product-list">
-                <div class="product-list-aside"><img src="images/shop/product-1.png" alt="">
+                <div class="product-list-aside">
+    <img src="http://localhost/Images/Produits/{{ produit.getImage() }}" alt="" style="width: 150px; height: 200px; object-fit: cover;">
                   <!-- Badge-->
                   <div class="badge badge-red">hot<span class="icon material-icons-whatshot"></span>
                   </div>
                 </div>
                 <section class="product-list-main">
-                  <h4 class="product-list-title"><a href="product-page.html">Nike hoops elite backpack</a></h4>
+                  <h4 class="product-list-title"><a href="product-page.html">{{produit.nomProduit}}</a></h4>
                   <ul class="product-list-info">
                     <li>
                       <ul class="product-list-rating">
@@ -78,11 +79,10 @@
                     <li>4 customer reviews</li>
                   </ul>
                   <ul class="product-list-price">
-                    <li><span class="product-list-price-new heading-4">$290</span></li>
-                    <li><span class="product-list-price-old">$400</span></li>
+                    <li><span class="product-list-price-new heading-4">${{produit.prixProduit}}</span></li>
                   </ul>
                   <div class="product-list-text">
-                    <p>The Nike Hoops Elite Backpack is designed with an innovative zip system so you can access your gear from any angle.</p>
+                    <p>{{produit.getCategory.getTitre}}</p>
                   </div>
                   <ul class="product-list-buttons">
                     <li><a class="button button-primary" href="shopping-cart.html"><span>Add to cart</span></a></li>
@@ -100,6 +100,7 @@
                   </ul>
                 </section>
               </article>
+              {% endfor %}
               <!-- Product - List build-->
               
               
@@ -113,148 +114,8 @@
                 </ul>
               </nav>
             </div>
+                            
             <div class="col-xl-3">
-              <div class="row row-50">
-                <div class="col-md-6 col-xl-12">
-                  <!-- Categories-->
-                  <!-- Heading Component-->
-                  <article class="heading-component">
-                    <div class="heading-component-inner">
-                      <h5 class="heading-component-title">Categories
-                      </h5>
-                    </div>
-                  </article>
-                  <div class="card-shop">
-                    <ul class="list-md form-wrap">
-                      <li>
-                        <label class="checkbox-inline checkbox-inline-lg">
-                          <input name="input-checkbox-1" value="checkbox-1" type="checkbox">Shoes
-                        </label><span class="checkbox-inline-count">2</span>
-                      </li>
-                      <li>
-                        <label class="checkbox-inline checkbox-inline-lg">
-                          <input name="input-checkbox-2" value="checkbox-1" type="checkbox">t-shirts
-                        </label><span class="checkbox-inline-count">1</span>
-                      </li>
-                      <li>
-                        <label class="checkbox-inline checkbox-inline-lg">
-                          <input name="input-checkbox-3" value="checkbox-1" type="checkbox">BackPacks
-                        </label><span class="checkbox-inline-count">1</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="col-md-6 col-xl-12">
-                  <!-- Price-->
-                  <!-- Heading Component-->
-                  <article class="heading-component">
-                    <div class="heading-component-inner">
-                      <h5 class="heading-component-title">Price
-                      </h5>
-                    </div>
-                  </article>
-                  <div class="card-shop">
-                    <!-- RD Range-->
-                    <div class="rd-range-wrap">
-                      <div class="rd-range-form-wrap">
-                        <input class="rd-range-input rd-range-input-value-1" id="test" type="text" name="value-1"><span>$</span>
-                      </div>
-                      <div class="rd-range-divider"></div>
-                      <div class="rd-range-form-wrap">
-                        <input class="rd-range-input rd-range-input-value-2" type="text" name="value-2"><span>$</span>
-                      </div>
-                    </div>
-                    <div class="rd-range" data-min="0" data-max="300" data-start="[50, 250]" data-step="1" data-tooltip="false" data-min-diff="50" data-input=".rd-range-input-value-1" data-input-2=".rd-range-input-value-2"></div>
-                  </div>
-                </div>
-                <div class="col-md-6 col-xl-12">
-                  <!-- Colors-->
-                  <!-- Heading Component-->
-                  <article class="heading-component">
-                    <div class="heading-component-inner">
-                      <h5 class="heading-component-title">Color
-                      </h5>
-                    </div>
-                  </article>
-                  <div class="card-shop" style="min-height: 0; font-size: 0">
-                    <ul class="list-inline list-inline-xs">
-                      <li>
-                        <label class="checkbox-inline input-filter">
-                          <input name="input-checkbox-4" value="checkbox-1" type="checkbox" checked="checked">
-                        </label>
-                      </li>
-                      <li>
-                        <label class="checkbox-inline input-filter input-filter-dark">
-                          <input name="input-checkbox-5" value="checkbox-1" type="checkbox">
-                        </label>
-                      </li>
-                      <li>
-                        <label class="checkbox-inline input-filter input-filter-danube">
-                          <input name="input-checkbox-6" value="checkbox-1" type="checkbox">
-                        </label>
-                      </li>
-                      <li>
-                        <label class="checkbox-inline input-filter input-filter-froly">
-                          <input name="input-checkbox-7" value="checkbox-1" type="checkbox">
-                        </label>
-                      </li>
-                      <li>
-                        <label class="checkbox-inline input-filter input-filter-deco">
-                          <input name="input-checkbox-8" value="checkbox-1" type="checkbox">
-                        </label>
-                      </li>
-                      <li>
-                        <label class="checkbox-inline input-filter input-filter-blue">
-                          <input name="input-checkbox-9" value="checkbox-1" type="checkbox">
-                        </label>
-                      </li>
-                      <li>
-                        <label class="checkbox-inline input-filter input-filter-geraldine">
-                          <input name="input-checkbox-9" value="checkbox-1" type="checkbox">
-                        </label>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="col-md-6 col-xl-12">
-                  <!-- Select size-->
-                  <!-- Heading Component-->
-                  <article class="heading-component">
-                    <div class="heading-component-inner">
-                      <h5 class="heading-component-title">Select size
-                      </h5>
-                    </div>
-                  </article>
-                  <div class="card-shop" style="font-size: 0">
-                    <ul class="list-inline list-inline-xs">
-                      <li>
-                        <label class="checkbox-inline input-refilter">
-                          <input name="input-checkbox-10" value="checkbox-1" type="checkbox" checked="checked"><span>s</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="checkbox-inline input-refilter">
-                          <input name="input-checkbox-11" value="checkbox-1" type="checkbox"><span>m</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="checkbox-inline input-refilter">
-                          <input name="input-checkbox-12" value="checkbox-1" type="checkbox"><span>l</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="checkbox-inline input-refilter">
-                          <input name="input-checkbox-13" value="checkbox-1" type="checkbox"><span>xl</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="checkbox-inline input-refilter">
-                          <input name="input-checkbox-14" value="checkbox-1" type="checkbox"><span>xxl</span>
-                        </label>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
