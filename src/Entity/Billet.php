@@ -19,7 +19,7 @@ class Billet
     private ?int $prixbillet =null;
 
     #[ORM\ManyToOne(targetEntity: Rencontre::class, inversedBy: 'billets')]
-    #[ORM\JoinColumn(name: 'idrencontre_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'idrencontre_id', referencedColumnName: 'idrencontre')]
     private ?Rencontre $idrencontre;
 
     public function getIdbillet(): ?int
