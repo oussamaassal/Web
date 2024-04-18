@@ -54,12 +54,14 @@ class UserController extends AbstractController
         }
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
+            'loggedIn'=>true,
         ]);
     }
 
     #[Route('/admin/new', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager,SessionInterface $sessionInterface): Response
-    {
+
+    {   
         if(!$this->hasPermissionRole($sessionInterface,"admin")){
             return $this->redirectToRoute('app_user_login');
         }
@@ -76,6 +78,7 @@ class UserController extends AbstractController
                 $form->get('email')->addError(new FormError('L\'adresse e-mail n\'est pas valide.'));
             } else {
                 // Si l'e-mail est valide, persister l'utilisateur
+                $user->setMotdepasse(password_hash($user->getMotdepasse(), PASSWORD_BCRYPT, ["cost" => 12]));
                 $entityManager->persist($user);
                 $entityManager->flush();
     
@@ -86,6 +89,8 @@ class UserController extends AbstractController
         return $this->renderForm('user/new.html.twig', [
             'user' => $user,
             'form' => $form,
+            'loggedIn'=>true,
+
         ]);
     }
     #[Route('/admin/search', name: 'app_user_search', methods: ['GET'])]
@@ -105,6 +110,8 @@ class UserController extends AbstractController
         
         return $this->render('user/index.html.twig', [
             'users' => $results,
+            'loggedIn'=>true,
+
         ]);
     }
     #[Route('/admin/{iduser}', name: 'app_user_show', methods: ['GET'])]
@@ -114,6 +121,8 @@ class UserController extends AbstractController
     }
         return $this->render('user/show.html.twig', [
             'user' => $user,
+            'loggedIn'=>true,
+
         ]);
     }
 
@@ -135,6 +144,8 @@ class UserController extends AbstractController
         return $this->renderForm('user/edit.html.twig', [
             'user' => $user,
             'form' => $form,
+            'loggedIn'=>true,
+
         ]);
     }
   
@@ -159,19 +170,21 @@ class UserController extends AbstractController
             $form = $this->createForm(InscriptionType::class, $user);
             $form->handleRequest($request);
             $email = $user->getEmail();
-
+            $error="";
             if ($form->isSubmitted() && $form->isValid()) {
 
            
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     // Gérer les erreurs de validation de l'e-mail
                     // Par exemple, afficher un message d'erreur à l'utilisateur
-                    $form->get('email')->addError(new FormError('L\'adresse e-mail n\'est pas valide.'));
+
+                    $error='L\'adresse  n\'est pas valide.';
+
             } else {
                     // Si l'e-mail est valide, persister l'utilisateur
                 $userExiste= $entityManager->getRepository(User::class)->findOneBy(["email"=>$email]);
                 if($userExiste){
-                    $form->get('email')->addError(new FormError('L\'adresse e-mail existe déja.'));
+                $error='L\'adresse e-mail existe déja.';
  
                 }else{
                     $user->setRole("membre");
@@ -188,9 +201,10 @@ class UserController extends AbstractController
              return $this->renderForm('user/inscription.html.twig', [
                 'user' => $user,
                 'form' => $form,
+                'error'=>$error
             ]);
         }
-        /*#[Route('/login', name: 'app_user_login', methods: ['GET', 'POST'])]
+        #[Route('/login', name: 'app_user_login', methods: ['GET', 'POST'])]
         public function login(Request $request, EntityManagerInterface $entityManager,SessionInterface $sessionInterface): Response
         {
             
@@ -213,7 +227,7 @@ class UserController extends AbstractController
                 $userFromDatabase= $entityManager->getRepository(User::class)->findOneBy(["email"=>$email]);
                 if($userFromDatabase==null){
                     $error= "Cet utilisateur n'existe pas";
-                    return $this->renderForm('Userfront/Login.html.twig', [
+                    return $this->renderForm('user/Login.html.twig', [
                         'user' => $userData,
                         'form' => $form,
                         'error'=>$error
@@ -221,7 +235,7 @@ class UserController extends AbstractController
                 }else{
                     if(!password_verify($userData->getMotdepasse(),$userFromDatabase->getMotdepasse())){
                         $error= "Cet utilisateur n'existe pas";
-                        return $this->renderForm('Userfront/login.html.twig', [
+                        return $this->renderForm('user/login.html.twig', [
                             'user' => $userData,
                             'form' => $form,
                             'error'=>$error
@@ -241,11 +255,14 @@ class UserController extends AbstractController
                 }
             }
          
-             return $this->renderForm('Userfront/login.html.twig', [
+             return $this->renderForm('user/login.html.twig', [
                 'user' => $userData,
-                'login' => $form,
+                'form' => $form,
             ]);
-        }*/
+        }
+
+
+        /*
         #[Route('/login', name: 'app_user_login', methods: ['GET', 'POST'])]
 public function login(Request $request, EntityManagerInterface $entityManager, SessionInterface $sessionInterface): Response
 {
@@ -274,6 +291,7 @@ public function login(Request $request, EntityManagerInterface $entityManager, S
             return $this->renderForm('Userfront/login.html.twig', [
                 'user' => $userData,
                 'login' => $loginForm,
+                'registration' => $registrationForm,
                 'error' => $error
             ]);
         }
@@ -314,7 +332,7 @@ public function login(Request $request, EntityManagerInterface $entityManager, S
         'login' => $loginForm,
         'registration' => $registrationForm,
     ]);
-}
+}*/
 
         #[Route('/profil', name: 'app_user_profil', methods: ['GET', 'POST'])]
         public function profil(SessionInterface $sessionInterface): Response
@@ -325,6 +343,8 @@ public function login(Request $request, EntityManagerInterface $entityManager, S
             $user=$this->getUserData($sessionInterface);
             return $this->renderForm('user/profil.html.twig', [
                 'user' => $user,
+                'loggedIn'=>true,
+
             ]);
         }
         #[Route('/profil/edit', name: 'app_user_profil_edit', methods: ['GET', 'POST'])]

@@ -1,11 +1,15 @@
-{% extends 'base.html.twig' %}
+{% extends '/front/base.html.twig' %}
 
-{% block title %} Profil {% endblock %}
-
-{% block content %}
-<div class="content-body">
-    <div class="container">
-        <div class="row justify-content-center">
+{% block body %}
+	<title>
+		{% block title %}
+			Hello Controller!
+		{% endblock %}
+	</title>
+	<!-- Section Breadcrumbs-->
+	<section class="section parallax-container breadcrumbs-wrap" data-parallax-img="images/bg-breadcrumbs-1-1920x726.jpg">
+		<div class="parallax-content breadcrumbs-custom context-dark">
+			<div class="container">
             <div class="col-lg-6">
                 <div class="card border-primary shadow-lg">
                     <div class="card-body p-4">
@@ -32,6 +36,6 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
+        </div>
+        </section>
 {% endblock %}

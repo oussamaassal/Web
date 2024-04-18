@@ -55,7 +55,7 @@ class InscriptionType extends AbstractType
             ],
         ])
         ->add('numtel', null, [
-            'attr' => ['class' => 'form-control'],
+            'attr' => ['class' => 'form-control',],
             'constraints' => [
                 new Length([
                     'min' => 8,
@@ -64,11 +64,9 @@ class InscriptionType extends AbstractType
                     'max' => 8,
                     'maxMessage' => 'Le numéro de téléphone ne peut pas dépasser {{ limit }} caractères.'
                 ]),
-                new Positive([
-                    'message' => 'Le numéro de téléphone doit être un nombre positif.'
-                ])
+              
                 ],
-            'required'=> false,
+
 
 
             

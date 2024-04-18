@@ -26,7 +26,18 @@
 
 <!-- Template Stylesheet -->
 <link href="{{ asset('assets_client/css/style.css') }}" rel="stylesheet">
+<style>
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+</style>
     </head>
 
     <body>

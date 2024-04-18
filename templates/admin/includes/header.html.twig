@@ -126,12 +126,22 @@
                     <span class="nav-text">Election</span>
                   </a>
                           </li>
+                       
                         <li>
-                          <a class="has-arrow " href="Sign_out.html" aria-expanded="false">
-                            <i class="fas fa-toggle-off"></i>
-                            <span class="nav-text">Sign out</span>
-                          </a>
-                        </li>
+
+                           {% if loggedIn is defined and loggedIn==true %}
+
+                     <a class="has-arrow " href="{{path('app_user_logout')}}" aria-expanded="false">
+                                                 <i class="fas fa-toggle-off"></i>
+
+                 <span class="nav-text">Logout </span>
+                    </a>
+                    </li>
+
+                   
+                    {% endif %}
+                                            </li>
+
 
               </ul>
 
