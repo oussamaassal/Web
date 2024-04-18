@@ -13,7 +13,6 @@
                             <h4 class="card-title">Liste Terrains</h4>
                             <div class="mb-4">
                                 <a href="/addTerrain" class="btn btn-outline-success btn-rounded fs-16">+ Nouveau terrain</a>
-
                             </div>
                         </div>
                         <div class="card-body">
@@ -28,27 +27,29 @@
                                         <th>geo_y</th>
                                         <th>ouverture</th>
                                         <th>fermeture</th>
-
+                                        <th>Categorie</th>
+                                        <th>Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {% for terrain in b %}
-                                    <tr>
-                                        <td>{{ terrain.NomTerrain }}</td>
-                                        <td>{{ terrain.Adresse }}</td>
-                                        <td>{{ terrain.Description }}</td>
-                                        <td>{{ terrain.GeoX }}</td>
-                                        <td>{{ terrain.GeoY }}</td>
-                                        <td>{{ terrain.Ouverture|date('Y-m-d H:i:s') }}</td>
-                                        <td>{{ terrain.Fermeture|date('Y-m-d H:i:s') }}</td>
-                                        <td>
-                                            <div class="d-flex">
-                                                <a href="{{ path('modifTerrain',{'id':terrain.id}) }}" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fas fa-pencil-alt"></i></a>
-                                                <a href="{{ path('deleteTerrain',{'id':terrain.id}) }}" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
-                                            </div>
-                                        </td>
-                                        {% endfor %}
-                                    </tr>
+                                        <tr>
+                                            <td>{{ terrain.NomTerrain }}</td>
+                                            <td>{{ terrain.Adresse }}</td>
+                                            <td>{{ terrain.Description }}</td>
+                                            <td>{{ terrain.GeoX }}</td>
+                                            <td>{{ terrain.GeoY }}</td>
+                                            <td>{{ terrain.Ouverture|date('Y-m-d H:i:s') }}</td>
+                                            <td>{{ terrain.Fermeture|date('Y-m-d H:i:s') }}</td>
+                                            <td>{{ terrain.CategTerrain.titre }}</td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <a href="{{ path('modifTerrain',{'id':terrain.id}) }}" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fas fa-pencil-alt"></i></a>
+                                                    <a href="{{ path('deleteTerrain',{'id':terrain.id}) }}" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -59,6 +60,5 @@
         </div>
         <!--******************************************************
         *******************************end*********************-->
-    </div>
     </div>
 {% endblock %}

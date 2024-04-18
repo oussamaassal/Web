@@ -21,6 +21,17 @@ class TerrainController extends AbstractController
         ]);
     }
 
+
+    #[Route('/terrainfront', name: 'frontterrain')]
+    public function terrainfront(): Response
+    {
+        $terrains = $this->getDoctrine()->getManager()->getRepository(Terrain::class)->findAll();
+
+        return $this->render('terrain/terrain.html.twig', [
+            'b'=>$terrains
+        ]);
+    }
+
     #[Route('/addTerrain', name: 'addTerrain')]
     public function addTerrain(Request $request): Response
     {
@@ -31,7 +42,6 @@ class TerrainController extends AbstractController
             $en = $this->getDoctrine()->getManager();
             $en->persist($terrain);
             $en->flush();
-
             return $this->redirectToRoute('app_terrain'); // thezni lel page /terrain itha mrigel
         }
         return $this->render('terrain/createTerrain.html.twig',['f'=>$form->createView()]);
@@ -43,7 +53,6 @@ class TerrainController extends AbstractController
         $en = $this->getDoctrine()->getManager();
         $en->remove($terrain);
         $en->flush();
-
         return $this->redirectToRoute('app_terrain') ;
     }
 

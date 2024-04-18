@@ -22,8 +22,7 @@ class Reservation
     #[ORM\Column(length: 255)]
     private ?string $emplacement;
 
-    #[ORM\ManyToOne(inversedBy:'Reservation')]
-    private $idterrain;
+
 
     public function getReservationid(): ?int
     {
