@@ -30,6 +30,19 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form['image']->getData();
+            if ($file) {
+                // Generate a unique name for the file before saving it
+                $fileName = $article->getTitre().'.'.$file->guessExtension();
+
+                // Move the file to the directory where images are stored
+                $file->move(
+                    $this->getParameter('joueurs_image_directory'),
+                    $fileName
+                );
+                // Set the image path on the entity
+                $article->setImage($fileName);
+            }
             $entityManager->persist($article);
             $entityManager->flush();
 
