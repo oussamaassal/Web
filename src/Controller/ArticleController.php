@@ -22,6 +22,14 @@ class ArticleController extends AbstractController
         ]);
     }
 
+    #[Route('/news', name: 'app_article_news', methods: ['GET'])]
+    public function news(ArticleRepository $articleRepository): Response
+    {
+        return $this->render('article/news.html.twig', [
+            'Articles' => $articleRepository->findAll(),
+        ]);
+    }
+
     #[Route('/new', name: 'app_article_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
