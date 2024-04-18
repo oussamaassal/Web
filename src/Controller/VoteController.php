@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Vote;
+use App\Entity\Candidat;
+use App\Entity\Evenement;
+
 use App\Form\VoteType;
 use App\Repository\VoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,34 +17,72 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/vote')]
 class VoteController extends AbstractController
 {
-    #[Route('/', name: 'app_vote_index', methods: ['GET'])]
-    public function index(VoteRepository $voteRepository): Response
+    #[Route('/{idc}/{id_event}', name: 'app_vote_index', methods: ['GET'])]
+    public function index(int $idc, VoteRepository $voteRepository , int $id_event): Response
     {
+        // Fetch votes for the given candidate ID
+        $votes = $voteRepository->findBy(['candidat' => $idc]);
+    
         return $this->render('vote/index.html.twig', [
-            'votes' => $voteRepository->findAll(),
+            'votes' => $votes,
+            'id_event' => $id_event,
+
+        ]);
+    }
+    #[Route('/', name: 'all_vote_index', methods: ['GET'])]
+    public function indexAll( VoteRepository $voteRepository): Response
+    {
+        $votes = $voteRepository->findAll();
+    
+        return $this->render('vote/index.html.twig', [
+            'votes' => $votes,
+
         ]);
     }
 
-    #[Route('/new', name: 'app_vote_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new/{id_event}/{idc}', name: 'app_vote_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, int $idc, int $id_event): Response
     {
+        // Create a new Vote object
         $vote = new Vote();
+        
+        // Fetch the Candidat entity based on the provided $idc
+        $candidat = $entityManager->getRepository(Candidat::class)->find($idc);
+        
+        // Fetch the Evenement entity based on the provided $id_event
+        $evenement = $entityManager->getRepository(Evenement::class)->find($id_event);
+        
+        // Set the Candidat object as the candidat property of the Vote object
+        $vote->setCandidat($candidat);
+        
+        // Set the Evenement object as the evenement property of the Vote object
+        $vote->setEvenement($evenement);
+        
+        // Create a form for the Vote object
         $form = $this->createForm(VoteType::class, $vote);
         $form->handleRequest($request);
-
+        
+        // Handle form submission
         if ($form->isSubmitted() && $form->isValid()) {
+            // Persist the Vote object
             $entityManager->persist($vote);
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_vote_index', [], Response::HTTP_SEE_OTHER);
+        
+            // Redirect to the vote index page
+            return $this->redirectToRoute('app_vote_index', ['idc' => $idc , 'id_event' => $id_event]);
         }
-
-        return $this->renderForm('vote/new.html.twig', [
+        
+        // Render the new vote form template
+        return $this->render('vote/new.html.twig', [
             'vote' => $vote,
-            'form' => $form,
+            'form' => $form->createView(),
+            'id_event' => $id_event,
+            'idc' => $idc,
         ]);
     }
-
+    
+    
+    
     #[Route('/{idv}', name: 'app_vote_show', methods: ['GET'])]
     public function show(Vote $vote): Response
     {

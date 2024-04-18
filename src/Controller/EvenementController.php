@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 #[Route('/evenement')]
 class EvenementController extends AbstractController
@@ -23,24 +25,36 @@ class EvenementController extends AbstractController
     }
 
     #[Route('/new', name: 'app_evenement_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $evenement = new Evenement();
-        $form = $this->createForm(EvenementType::class, $evenement);
-        $form->handleRequest($request);
+public function new(Request $request): Response
+{
+    $evenement = new Evenement();
+    $form = $this->createForm(EvenementType::class, $evenement);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($evenement);
-            $entityManager->flush();
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Handle file upload
+        $file = $form->get('imgepath')->getData();
 
-            return $this->redirectToRoute('app_evenement_index', [], Response::HTTP_SEE_OTHER);
+        if ($file) {
+            // Specify the upload directory path directly
+            $uploadDirectory = $this->getParameter('kernel.project_dir') . '/public/uploads';
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+            $file->move($uploadDirectory, $fileName);
+            $evenement->setImgepath($fileName);
         }
 
-        return $this->renderForm('evenement/new.html.twig', [
-            'evenement' => $evenement,
-            'form' => $form,
-        ]);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($evenement);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_evenement_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->renderForm('evenement/new.html.twig', [
+        'evenement' => $evenement,
+        'form' => $form,
+    ]);
+}
 
     #[Route('/{ide}', name: 'app_evenement_show', methods: ['GET'])]
     public function show(Evenement $evenement): Response
@@ -57,6 +71,15 @@ class EvenementController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form->get('imgepath')->getData();
+
+            if ($file) {
+                // Specify the upload directory path directly
+                $uploadDirectory = $this->getParameter('kernel.project_dir') . '/public/uploads';
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                $file->move($uploadDirectory, $fileName);
+                $evenement->setImgepath($fileName);
+            }
             $entityManager->flush();
 
             return $this->redirectToRoute('app_evenement_index', [], Response::HTTP_SEE_OTHER);
