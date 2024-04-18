@@ -36,10 +36,8 @@ class ProduitController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $file = $form['image']->getData();
             if ($file) {
-                // Generate a unique name for the file before saving it
                 $fileName = $produit->getNomproduit().'.'.$file->guessExtension();
 
-                // Move the file to the directory where images are stored
                 $file->move(
                     $this->getParameter('produit_image_directory'),
                     $fileName
@@ -58,31 +56,47 @@ class ProduitController extends AbstractController
     #[Route('/modifierproduit/{id}', name: 'modifierproduit')]
     public function modifierProduit(Request $request,$id): Response
     {
-        $produit = $this->getDoctrine()->getManager()->getRepository(Produit::class)->find($id) ;
-        $form = $this->createForm(ProduitType::class,$produit) ;
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $file = $form['image']->getData();
-            if ($file) {
-                // Generate a unique name for the file before saving it
-                $fileName = $produit->getNomproduit().'.'.$file->guessExtension();
+        $produit = $this->getDoctrine()->getManager()->getRepository(Produit::class)->find($id);
+    $form = $this->createForm(ProduitType::class, $produit);
+    $form->handleRequest($request);
 
-                // Move the file to the directory where images are stored
-                $file->move(
-                    $this->getParameter('produit_image_directory'),
-                    $fileName
-                );
-                // Set the image path on the entity
-                $produit->setImage($fileName);
+    if ($form->isSubmitted() && $form->isValid()) {
+        $entityManager = $this->getDoctrine()->getManager();
+        $file = $form['image']->getData();
+
+        // Si un fichier est téléchargé
+        if ($file) {
+            // Récupérer le nom de fichier existant
+            $oldFileName = $produit->getImage();
+
+            // Supprimer l'ancien fichier s'il existe
+            if ($oldFileName) {
+                $oldFilePath = $this->getParameter('produit_image_directory') . '/' . $oldFileName;
+                if (file_exists($oldFilePath)) {
+                    unlink($oldFilePath);
+                }
             }
-            $entityManager->persist($produit);
-            $entityManager->flush();
 
-            return $this->redirectToRoute('app_produit');
+            // Générer un nom unique pour le fichier
+            $fileName = $produit->getNomproduit() . '.' . $file->guessExtension();
+
+            // Déplacer le fichier vers le répertoire où les images sont stockées
+            $file->move(
+                $this->getParameter('produit_image_directory'),
+                $fileName
+            );
+
+            // Mettre à jour le chemin de l'image sur l'entité
+            $produit->setImage($fileName);
         }
 
-        return $this->render('produit/modif.html.twig',['form'=>$form->createView()]);
+        $entityManager->persist($produit);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_produit');
+    }
+
+    return $this->render('produit/modif.html.twig', ['form' => $form->createView()]);
     }
     
     #[Route('/supprimerproduit/{id}', name: 'supprimerproduit')]
