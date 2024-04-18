@@ -1,7 +1,7 @@
 {% extends '/admin/base.html.twig' %}
 
 {% block body %}
-<title> {% block title %} Hello Controller! {% endblock %}</title>
+<title> {% block title %} Ajouter Un Article {% endblock %}</title>
 <div class="content-body">
     <div class="container-fluid">
         <div class="row page-titles">
@@ -21,7 +21,7 @@
                     </div>
                     <div class="card-body">
                         <div class="basic-form">
-                            {{ form_start(f) }}
+                            {{ form_start(f, {'attr': {'novalidate': 'novalidate'}}) }} 
                             <div class="row">
                                 <div class="mb-3 col-md-6">
                                     {{ form_row(f.titre, {'attr': {'class': 'form-control'}}) }}
@@ -33,7 +33,7 @@
                                     {{ form_row(f.idjournaliste, {'attr': {'class': 'form-control'}}) }}
                                 </div>
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text">Upload</span>
+                                    
                                     <div class="form-file">
                                         {{ form_row(f.image, {'attr': {'class': 'form-file-input form-control'}}) }}
                                         

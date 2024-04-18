@@ -2,8 +2,6 @@
 
 {% block body %}
     <title>Delete Article</title>
-    <h1>Delete Article</h1>
-
     <div class="content-body">
         <div class="container-fluid">
             <div class="row">
@@ -13,16 +11,26 @@
                             <h4 class="card-title">Delete Article</h4>
                         </div>
                         <div class="card-body">
-                            <form method="post" action="{{ path('app_article_delete', {'idarticle': article.idarticle}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.idarticle) }}">
-                                <button class="btn btn-danger">Delete</button>
-                            </form>
+                            <div class="basic-form">
+                                <form method="post" action="{{ path('app_article_delete', {'idarticle': article.idarticle}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.idarticle) }}">
+                                    <div class="mb-3">
+                                        <p>Are you sure you want to delete this article?</p>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <a href="{{ path('app_article_index') }}" class="btn btn-secondary">Cancel</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <a href="{{ path('app_article_index') }}" class="btn btn-secondary">Back to List</a>
 {% endblock %}

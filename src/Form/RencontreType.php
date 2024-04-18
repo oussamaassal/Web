@@ -13,7 +13,7 @@ class RencontreType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('daterebcontre')
+            ->add('daterencontre')
             ->add('adversaire')
             ->add('score')
             ->add('submit', SubmitType::class, [

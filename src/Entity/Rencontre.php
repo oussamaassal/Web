@@ -7,6 +7,7 @@ use DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity(repositoryClass: RencontreRepository::class)]
 class Rencontre
 {
@@ -16,10 +17,14 @@ class Rencontre
     private int $idrencontre;
 
     #[ORM\Column(type: 'datetime')]
-    private ?\DateTimeInterface $daterebcontre;
+    private ?\DateTimeInterface $daterencontre;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "Le champ adversaire ne doit pas être vide.")]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z]+$/',
+        message: 'Le champ adversaire ne doit contenir que des lettres.'
+    )]
     private ?string $adversaire;
 
     #[ORM\Column(length: 255)]
@@ -30,14 +35,14 @@ class Rencontre
         return $this->idrencontre;
     }
 
-    public function getDaterebcontre(): ?\DateTimeInterface
+    public function getDaterencontre(): ?\DateTimeInterface
     {
-        return $this->daterebcontre;
+        return $this->daterencontre;
     }
 
-    public function setDaterebcontre(\DateTimeInterface $daterebcontre): static
+    public function setDaterencontre(\DateTimeInterface $daterencontre): static
     {
-        $this->daterebcontre = $daterebcontre;
+        $this->daterencontre = $daterencontre;
 
         return $this;
     }

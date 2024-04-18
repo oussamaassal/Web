@@ -9,7 +9,7 @@
         <thead>
             <tr>
                 <th>Idrencontre</th>
-                <th>Daterebcontre</th>
+                <th>Daterencontre</th>
                 <th>Adversaire</th>
                 <th>Score</th>
                 <th>actions</th>
@@ -19,7 +19,7 @@
         {% for rencontre in rencontres %}
             <tr>
                 <td>{{ rencontre.idrencontre }}</td>
-                <td>{{ rencontre.daterebcontre ? rencontre.daterebcontre|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ rencontre.daterencontre ? rencontre.daterencontre|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ rencontre.adversaire }}</td>
                 <td>{{ rencontre.score }}</td>
                 <td>
