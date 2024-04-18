@@ -37,7 +37,7 @@ class ArticleController extends AbstractController
 
                 // Move the file to the directory where images are stored
                 $file->move(
-                    $this->getParameter('joueurs_image_directory'),
+                    $this->getParameter('article_image_directory'),
                     $fileName
                 );
                 // Set the image path on the entity
