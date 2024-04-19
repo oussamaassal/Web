@@ -6,7 +6,7 @@ use App\Entity\Produit;
 use Symfony\Component\HttpFoundation\Request;
 
 use App\Form\ProduitType;
-
+use App\Entity\Category;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -112,9 +112,13 @@ class ProduitController extends AbstractController
     public function Boutique(): Response
     {
         $Produits = $this->getDoctrine()->getManager()->getRepository(Produit::class)->findAll();
+        $Category = $this->getDoctrine()->getManager()->getRepository(Category::class)->findAll();
+
 
         return $this->render('produit/boutique.html.twig', [
-            'produits'=>$Produits
+            'produits'=>$Produits,
+            'categories'=>$Category
+
         ]);
     }
     #[Route('/boutiquelist', name: 'boutique_list')]
@@ -123,7 +127,7 @@ class ProduitController extends AbstractController
         $Produits = $this->getDoctrine()->getManager()->getRepository(Produit::class)->findAll();
 
         return $this->render('produit/boutiqueList.html.twig', [
-            'produits'=>$Produits
+            'produits'=>$Produits,
         ]);
     }
     
