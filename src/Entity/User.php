@@ -21,10 +21,17 @@ class User
     private ?string $motdepasse = null;
 
     #[ORM\Column(length: 255)]
+    private ?string $image = null;
+
+    #[ORM\Column(length: 255)]
     private ?string $role = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $qrCode = null;
 
     #[ORM\Column]
     private ?int $numtel =null;
+    
 
     public function getIduser(): ?int
     {
@@ -78,6 +85,27 @@ class User
 
         return $this;
     }
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
 
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+    public function getQrCode(): ?string
+    {
+        return $this->qrCode;
+    }
+
+    public function setQrCode(?string $qrCode): self
+    {
+        $this->qrCode = $qrCode;
+
+        return $this;
+    }
 
 }

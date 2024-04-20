@@ -14,9 +14,9 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Positive;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class UserType extends AbstractType
 {
@@ -72,7 +72,13 @@ class UserType extends AbstractType
                 ]),
             ],
         ])
-
+        ->add('image', FileType::class, [
+            'label' => 'Chargez ici une photo',
+            'required' => false,
+            'mapped' => false,
+            'attr' => ['class' => 'form-control-file'],
+            'label_attr' => ['class' => 'form-label'],
+        ])
         ->add('numtel', null, [
             'attr' => ['class' => 'form-control', 'maxlength' => 8], // Ajout de l'attribut maxlength
             'constraints' => [

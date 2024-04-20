@@ -32,6 +32,18 @@
                                     <th scope="row" class="text-muted">Numéro de téléphone</th>
                                     <td>{{ user.numtel }}</td>
                                 </tr>
+                                <tr>
+                                    <th scope="row" class="text-muted">Image de profil</th>
+                                     <td>
+                                {% if user.image %}
+                                    <img src="{{ asset('uploads/' ~ user.image) }}" alt="Classe image" width="100" />
+                                {% else %}
+                                    No image available
+                                {% endif %}
+                            </td>
+                                  
+                                </tr>
+                                
                             </tbody>
                         </table>
 

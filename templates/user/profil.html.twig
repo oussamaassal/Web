@@ -17,8 +17,12 @@
                         
                         <div class="row align-items-center">
                             <div class="col-md-4 text-center">
-                                <div class="profile-image">
-                                    <i class="fas fa-user-circle fa-5x text-secondary"></i>
+                                <div class="profile-image"> 
+                                {% if user.image %}
+                                    <img src="{{ asset('uploads/' ~ user.image) }}" alt="Classe image" width="100" />
+                                {% else %}
+                                    No image available
+                                {% endif %} 
                                 </div>
                             </div>
                             <div class="col-md-8">

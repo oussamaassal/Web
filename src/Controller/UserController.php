@@ -8,19 +8,28 @@ use App\Form\LoginType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Form\FormError;
-
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Endroid\QrCode\Builder\BuilderInterface; 
+use Endroid\QrCode\Writer\Result\PngResult;
 
 #[Route('/user')]
 class UserController extends AbstractController
 {
+    private $qrCodeBuilder;
+
+    public function __construct(BuilderInterface $qrCodeBuilder)
+    {
+        $this->qrCodeBuilder = $qrCodeBuilder;
+    }
 
    public function getUserData(SessionInterface $sessionInterface){
     $serializedUser = $sessionInterface->get('user');
@@ -52,14 +61,37 @@ class UserController extends AbstractController
         if(!$this->hasPermissionRole($sessionInterface,"admin")){
             return $this->redirectToRoute('app_user_login');
         }
+        $users = $userRepository->findAll();
+
+        foreach ($users as $user) {
+            // Check if $this->qrCodeBuilder is not null
+            if ($this->qrCodeBuilder !== null) {
+                // Customize the QR code data
+                $qrCodeResult = $this->qrCodeBuilder
+                    ->data($user->getEmail(),$user->getRole())
+                    ->build();
+
+                // Convert the QR code result to a string representation
+                $qrCodeString = $this->convertQrCodeResultToString($qrCodeResult);
+
+                // Add the QR code string to the article entity
+                $user->setQrCode($qrCodeString);
+            }
+        }
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
             'loggedIn'=>true,
         ]);
     }
+    private function convertQrCodeResultToString(PngResult $qrCodeResult): string
+    {
+        // Convert the result to a string (e.g., base64 encode the image)
+        // Adjust this logic based on how you want to represent the QR code data
+        return 'data:image/png;base64,' . base64_encode($qrCodeResult->getString());
+    }
 
     #[Route('/admin/new', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager,SessionInterface $sessionInterface): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,SessionInterface $sessionInterface, SluggerInterface $slugger): Response
 
     {   
         if(!$this->hasPermissionRole($sessionInterface,"admin")){
@@ -70,14 +102,27 @@ class UserController extends AbstractController
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
-            // Valider l'e-mail ici avant de persister l'utilisateur
+             $file = $form->get('image')->getData();
+		if ($file) {
+                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
+
+                try {
+                    $file->move(
+                        $this->getParameter('images_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // Handle exception if something happens during file upload
+                }
+
+                $user->setImage($newFilename);
+            }
             $email = $user->getEmail();
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                // Gérer les erreurs de validation de l'e-mail
-                // Par exemple, afficher un message d'erreur à l'utilisateur
                 $form->get('email')->addError(new FormError('L\'adresse e-mail n\'est pas valide.'));
             } else {
-                // Si l'e-mail est valide, persister l'utilisateur
                 $user->setMotdepasse(password_hash($user->getMotdepasse(), PASSWORD_BCRYPT, ["cost" => 12]));
                 $entityManager->persist($user);
                 $entityManager->flush();
@@ -99,9 +144,25 @@ class UserController extends AbstractController
         if(!$this->hasPermissionRole($sessionInterface,"admin")){
             return $this->redirectToRoute('app_user_login');
         }
+        $users = $userRepository->findAll();
+
         $searchTerm = trim($request->query->get('search'));
         $results = [];
-    
+        foreach ($users as $user) {
+            // Check if $this->qrCodeBuilder is not null
+            if ($this->qrCodeBuilder !== null) {
+                // Customize the QR code data
+                $qrCodeResult = $this->qrCodeBuilder
+                    ->data($user->getEmail())
+                    ->build();
+
+                // Convert the QR code result to a string representation
+                $qrCodeString = $this->convertQrCodeResultToString($qrCodeResult);
+
+                // Add the QR code string to the article entity
+                $user->setQrCode($qrCodeString);
+            }
+        }
         if (empty($searchTerm)) {
             $results = $userRepository->findAll();
         } else {
@@ -127,8 +188,9 @@ class UserController extends AbstractController
     }
 
     #[Route('/admin/{iduser}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, EntityManagerInterface $entityManager,SessionInterface $sessionInterface): Response
+    public function edit(Request $request, User $user, EntityManagerInterface $entityManager,SessionInterface $sessionInterface,SluggerInterface $slugger): Response
     {
+        $originalImage = $user->getImage();
         if(!$this->hasPermissionRole($sessionInterface,"admin")){
             return $this->redirectToRoute('app_user_login');
         }
@@ -136,6 +198,41 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form->get('image')->getData();
+            if ($file) {
+                if ($originalImage) {
+                    // Delete the old image file
+                    $oldFilePath = $this->getParameter('images_directory').'/'.$originalImage;
+                    if (file_exists($oldFilePath)) {
+                        unlink($oldFilePath);
+                    }
+                }
+
+                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
+
+                try {
+                    $file->move(
+                        $this->getParameter('images_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // Handle exception if something happens during file upload
+                }
+
+                $user->setImage($newFilename);
+            } elseif (!$file && $request->get('remove_image') === 'true') {
+                // If checkbox to remove image is checked and no new file is uploaded
+                if ($originalImage) {
+                    $oldFilePath = $this->getParameter('images_directory').'/'.$originalImage;
+                    if (file_exists($oldFilePath)) {
+                        unlink($oldFilePath);
+                    }
+                    $user->setImage(null);
+                }
+            }
+            $user->setMotdepasse(password_hash($user->getMotdepasse(), PASSWORD_BCRYPT, ["cost" => 12]));
             $entityManager->flush();
 
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
@@ -164,24 +261,41 @@ class UserController extends AbstractController
         }
     
         #[Route('/inscription', name: 'app_user_inscription', methods: ['GET', 'POST'])]
-        public function inscription(Request $request, EntityManagerInterface $entityManager): Response
+        public function inscription(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
         {
             $user = new User();
             $form = $this->createForm(InscriptionType::class, $user);
             $form->handleRequest($request);
             $email = $user->getEmail();
             $error="";
+
             if ($form->isSubmitted() && $form->isValid()) {
+                $file = $form->get('image')->getData();
+                if ($file) {
+                    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
+    
+                    try {
+                        $file->move(
+                            $this->getParameter('images_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        // Handle exception if something happens during file upload
+                    }
+    
+                    $user->setImage($newFilename);
+                }
+
 
            
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    // Gérer les erreurs de validation de l'e-mail
-                    // Par exemple, afficher un message d'erreur à l'utilisateur
+                   
 
                     $error='L\'adresse  n\'est pas valide.';
 
             } else {
-                    // Si l'e-mail est valide, persister l'utilisateur
                 $userExiste= $entityManager->getRepository(User::class)->findOneBy(["email"=>$email]);
                 if($userExiste){
                 $error='L\'adresse e-mail existe déja.';
@@ -348,11 +462,13 @@ public function login(Request $request, EntityManagerInterface $entityManager, S
             ]);
         }
         #[Route('/profil/edit', name: 'app_user_profil_edit', methods: ['GET', 'POST'])]
-        public function editProfil(SessionInterface $sessionInterface): Response
+        public function editProfil(User $user,SessionInterface $sessionInterface, SluggerInterface $slugger ): Response
         {
+            $originalImage = $user->getImage();
             if(!$this->isAuthenticated($sessionInterface)){
                 return $this->redirectToRoute('app_user_login') ;
             }
+            
             $user=$this->getUserData($sessionInterface);
             return $this->renderForm('user/profil.html.twig', [
                 'user' => $user,

@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints\EqualTo;
 class InscriptionType extends AbstractType
 {
@@ -54,6 +55,13 @@ class InscriptionType extends AbstractType
                 ]),
             ],
         ])
+        ->add('image', FileType::class, [
+            'label' => 'Chargez ici une photo',
+            'required' => false,
+            'mapped' => false,
+            'attr' => ['class' => 'form-control-file'],
+            'label_attr' => ['class' => 'form-label'],
+        ])
         ->add('numtel', null, [
             'attr' => ['class' => 'form-control',],
             'constraints' => [
@@ -66,9 +74,6 @@ class InscriptionType extends AbstractType
                 ]),
               
                 ],
-
-
-
             
         ]);
         ;
