@@ -55,3 +55,40 @@
       </div>
     </div>
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+     <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateDebutInput = document.getElementById('{{ f.date_debut.vars.id }}');
+        const dateFinInput = document.getElementById('{{ f.date_fin.vars.id }}');
+
+        dateDebutInput.addEventListener('change', function() {
+            if (dateDebutInput.value && dateFinInput.value) {
+                const dateDebut = new Date(dateDebutInput.value);
+                const dateFin = new Date(dateFinInput.value);
+
+                if (dateDebut >= dateFin) {
+                    event.preventDefault();
+                    alert('La date de début doit être antérieure à la date de fin.');
+                    dateDebutInput.value = '';
+                }
+            }
+        });
+
+        dateFinInput.addEventListener('change', function() {
+            if (dateDebutInput.value && dateFinInput.value) {
+                const dateDebut = new Date(dateDebutInput.value);
+                const dateFin = new Date(dateFinInput.value);
+
+                if (dateDebut >= dateFin) {
+                    event.preventDefault();
+                    alert('La date de fin doit être postérieure à la date de début.');
+                    dateFinInput.value = '';
+                }
+            }
+        });
+    });
+</script>
+
+{% endblock %}

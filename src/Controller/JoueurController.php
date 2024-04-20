@@ -30,7 +30,7 @@ class JoueurController extends AbstractController
         ]);
     }
 
-    #[Route('/Roster', name: 'Joueur_list')]
+    #[Route('/Roster', name: 'Joueur_Roster')]
     public function listJoueurs_front(JoueurRepository $repo):Response{
 
         $list = $repo->findAll();
