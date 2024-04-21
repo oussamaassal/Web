@@ -1,20 +1,105 @@
-<!DOCTYPE html>
-
-<title>Hello CommandeController!</title>
+{% extends '/front/base.html.twig' %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<title> {% block title %} Hello Controller! {% endblock %}</title>
+       <!DOCTYPE html>
+<html class="wide wow-animation" lang="en">
+  <head>
+    <!-- Site Title-->
+    <title>Shopping Cart</title>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <!-- Stylesheets-->
+    <link rel="stylesheet" type="text/css" href="../../css?family=Kanit:300,400,500,500i,600,900%7CRoboto:400,900">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/fonts.css">
+    <link rel="stylesheet" href="css/style.css" id="main-styles-link">
+  </head>
+  <body>
+    <div class="preloader">
+      <div class="preloader-body">
+        <div class="preloader-item"></div>
+      </div>
+    </div>
+    <!-- Page-->
+    
+      <!-- Section Breadcrumbs-->
+      <section class="section parallax-container breadcrumbs-wrap" data-parallax-img="images/bg-breadcrumbs-1-1920x726.jpg">
+        <div class="parallax-content breadcrumbs-custom context-dark">
+          <div class="container">
+            <h3 class="breadcrumbs-custom-title">Shopping Cart</h3>
+            <ul class="breadcrumbs-custom-path">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="#">Shop</a></li>
+              <li class="active">Shopping Cart</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <!-- Shop Blocks, Elements-->
+      <section class="section section-md bg-gray-100">
+        <div class="container">
+          <!-- Heading Component-->
+          <article class="heading-component">
+            <div class="heading-component-inner">
+              <h5 class="heading-component-title">Your shopping cart
+              </h5>
+            </div>
+          </article>
+          <div class="product-cart">
+            <div class="table-custom-responsive">
+              <table class="table-custom table-product">
+                <thead>
+                  <tr>
+                    <th>Product name</th>
+                    
+                    <th></th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th></th>
+                  </tr>
+                  
+                </thead>
+                          {%for commande in commande%} 
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+                <tbody>
+                  <tr>
+                    <td> 
+                      <div class="product-cart-name"><a class="product-cart-media" href="product-page.html"><img src="http://localhost/Images/Produits/{{ commande.idProduit.getImage() }}" alt=""></a>
+                        <p class="product-cart-title"><a href="product-page.html">{{commande.idProduit.getnomProduit()}}</a></p>
+                      </div>
+                      </td>
+                    
+                    <td>
+                    
+                    </td>
+                    <td>
+                      <div class="stepper-modern">
+                    <input class="form-input" type="number" name="quantite" data-zeros="true" value="1" min="1" max="100">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="product-cart-price"><span>{{commande.idProduit.getPrixProduit}} DT</span></div>
+                    </td>
+                    <td>
+                      <div class="product-cart-delete"><span class="icon fl-bigmug-line-recycling10"></span></div>
+                    </td>
+                  </tr>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/oussa/OneDrive/Bureau/PI/Web/src/Controller/CommandeController.php'|file_link(0) }}">src/Controller/CommandeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/oussa/OneDrive/Bureau/PI/Web/templates/commande/index.html.twig'|file_link(0) }}">templates/commande/index.html.twig</a></code></li>
-    </ul>
-</div>
+                </tbody>
+                  {%endfor%}
+
+              </table>
+            </div>
+            <div class="product-cart-footer">
+              <div class="product-cart-total"><span>Total</span><span class="product-cart-total-price"><span class="sup">$</span><span></span></span></div><a class="button button-lg button-primary" href="checkout.html">Proceed to Checkout</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+     
 {% endblock %}

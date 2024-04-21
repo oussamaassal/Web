@@ -14,14 +14,17 @@ class CommandeController extends AbstractController
     #[Route('/commande', name: 'app_commande')]
     public function index(): Response
     {
+
+       $Commande = $this->getDoctrine()->getManager()->getRepository(Commande::class)->findAll();
+
         return $this->render('commande/index.html.twig', [
-            'controller_name' => 'CommandeController',
+            'commande'=>$Commande
         ]);
     }
     #[Route('/ajoutcommande', name: 'ajoutcommande')]
     public function ajoutCommande(Request $request): Response
     {
-        $produit = $this->getDoctrine()->getManager()->getRepository(Produit::class)->find(24);
+        $produit = $this->getDoctrine()->getManager()->getRepository(Produit::class)->find(28);
         
         $commande = new Commande();
         $commande->setIduser(1);
