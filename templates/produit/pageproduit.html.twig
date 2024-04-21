@@ -22,19 +22,19 @@
       <section class="section section-md bg-gray-100">
         <div class="container">
           <!-- Product - single build-->
+          
           <article class="product-single">
             <div class="product-single-figure">
               <!-- Owl Carousel-->
-              <div class="owl-carousel" data-items="1" data-start-position="1" data-autoplay="true" data-autoplay-hover-pause="true" data-autoplay-speed="800" data-drag-end-speed="800" data-dots="true" data-loop="true" data-dots-speed="800" data-stage-padding="0" data-margin="0" data-mouse-drag="true"><img src="images/shop/product-single-1.png" alt=""><img src="images/shop/product-single-2.png" alt=""><img src="images/shop/product-single-3.png" alt=""></div>
-            </div>
+<div class="product-figure"><img src="http://localhost/Images/Produits/{{ produits.getImage() }}" alt=""></div>            </div>
+          
             <div class="product-single-main">
-              <div class="product-single-title heading-4">Nike Air Zoom Pegasus</div>
+              <div class="product-single-title heading-4">{{produits.nomProduit}}</div>
               <div class="product-single-meta">
                 <ul class="list-inline list-inline-xs">
                   <li>
                     <ul class="list-inline">
-                      <li class="product-single-price-new heading-4"><span>$290</span></li>
-                      <li class="product-single-price-old"><span>$400</span></li>
+                      <li class="product-single-price-new heading-4"><span>{{produits.prixProduit}} DT</span></li>
                     </ul>
                   </li>
                   <li>
@@ -49,7 +49,7 @@
                 </ul>
               </div>
               <div class="product-single-text">
-                <p>Built for beginners and experienced runners, the Nike Air Zoom Pegasus Running Shoe features an updated, lighter Flymesh material that helps reduce heat buildup when you run. The tried and true support runners have come to love remains.</p>
+              <div class="product-single-price-new heading-4">{{produits.getCategory.getTitre}}</div>
               </div>
               <ul class="product-single-info">
                 <li>
@@ -77,28 +77,7 @@
                   </ul>
                 </li>
                 <li>
-                  <ul class="list-inline list-inline-middle">
-                    <li><span class="product-radio-title">Color</span></li>
-                    <li>
-                      <ul class="list-inline list-inline-xxs">
-                        <li>
-                          <label class="radio-inline input-filter">
-                            <input name="input-radio-color" value="color-1" type="radio" checked="">
-                          </label>
-                        </li>
-                        <li>
-                          <label class="radio-inline input-filter input-filter-dark">
-                            <input name="input-radio-color" value="color-2" type="radio">
-                          </label>
-                        </li>
-                        <li>
-                          <label class="radio-inline input-filter input-filter-deco">
-                            <input name="input-radio-color" value="color-3" type="radio">
-                          </label>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
+                    
                 </li>
                 <li>
                   <ul class="list-inline list-inline-middle">

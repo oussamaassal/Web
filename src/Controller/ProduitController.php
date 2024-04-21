@@ -124,7 +124,6 @@ class ProduitController extends AbstractController
     #[Route('/boutique/{id}', name: 'app_boutique_category')]
     public function PageProduit($id): Response
 {
-    // Récupérer les produits en fonction de l'identifiant de la catégorie
     $produit = $this->getDoctrine()->getManager()->getRepository(Produit::class)->find($id);
     
     return $this->render('produit/pageproduit.html.twig', [
