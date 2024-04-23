@@ -80,12 +80,14 @@
                       <div class="stepper-modern">
                     <input class="form-input" type="number" name="quantite" data-zeros="true" value="1" min="1" max="100">
                       </div>
+                     
                     </td>
                     <td>
                       <div class="product-cart-price"><span>{{commande.idProduit.getPrixProduit}} DT</span></div>
                     </td>
                     <td>
-                      <div class="product-cart-delete"><span class="icon fl-bigmug-line-recycling10"></span></div>
+                    
+                      <a href="{{ path('supprimercommande',{'id':commande.idCommande}) }}" class="product-cart-delete"><i class="icon fl-bigmug-line-recycling10"></i></a>
                     </td>
                   </tr>
 
@@ -95,7 +97,7 @@
               </table>
             </div>
             <div class="product-cart-footer">
-              <div class="product-cart-total"><span>Total</span><span class="product-cart-total-price"><span class="sup">$</span><span></span></span></div><a class="button button-lg button-primary" href="checkout.html">Proceed to Checkout</a>
+              <div class="product-cart-total"><span>Total</span><span class="product-cart-total-price"><span class="sup"> $</span><span></span></span></div><a class="button button-lg button-primary" href="checkout.html">Proceed to Checkout</a>
             </div>
           </div>
         </div>

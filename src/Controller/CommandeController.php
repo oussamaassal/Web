@@ -21,15 +21,15 @@ class CommandeController extends AbstractController
             'commande'=>$Commande
         ]);
     }
-    #[Route('/ajoutcommande', name: 'ajoutcommande')]
-    public function ajoutCommande(Request $request): Response
+    #[Route('/ajoutcommande/{id}', name: 'ajoutcommande')]
+    public function ajoutCommande(Request $request,Produit $produit): Response
     {
-        $produit = $this->getDoctrine()->getManager()->getRepository(Produit::class)->find(28);
+        $produit = $this->getDoctrine()->getManager()->getRepository(Produit::class)->find($produit->getIdproduit());
         
-        $commande = new Commande();
+        $commande = new Commande(); 
         $commande->setIduser(1);
         $commande->setQuantite(1);
-        $commande->setSomme(100);
+        $commande->setSomme($produit->getPrixproduit());
         $commande->setIdproduit($produit);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($commande);
@@ -42,6 +42,14 @@ class CommandeController extends AbstractController
 
 
         return $this->redirectToRoute('app_produit');
+    }
+    #[Route('/supprimercommande/{id}', name: 'supprimercommande')]
+    public function supprimerCommande(Request $request,Commande $commande): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($commande);
+        $entityManager->flush();
+        return $this->redirectToRoute('app_commande');
     }
 
 }
