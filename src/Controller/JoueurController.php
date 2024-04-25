@@ -24,6 +24,13 @@ class JoueurController extends AbstractController
         $this->qrCodeBuilder = $qrCodeBuilder;
     }
 
+    private function convertQrCodeResultToString(PngResult $qrCodeResult): string
+    {
+        // Convert the result to a string (e.g., base64 encode the image)
+        // Adjust this logic based on how you want to represent the QR code data
+        return 'data:image/png;base64,' . base64_encode($qrCodeResult->getString());
+    }
+
     #[Route('/joueur', name: 'app_joueur')]
     public function index(): Response
     {
@@ -36,6 +43,21 @@ class JoueurController extends AbstractController
     public function listJoueurs(JoueurRepository $repo):Response{
 
         $list = $repo->findAll();
+        foreach ($list as $joueur) {
+            // Check if $this->qrCodeBuilder is not null
+            if ($this->qrCodeBuilder !== null) {
+                // Customize the QR code data
+                $qrCodeResult = $this->qrCodeBuilder
+                    ->data($joueur->getLink())
+                    ->build();
+
+                // Convert the QR code result to a string representation
+                $qrCodeString = $this->convertQrCodeResultToString($qrCodeResult);
+
+                // Add the QR code string to the article entity
+                $joueur->setQrCode($qrCodeString);
+            }
+        }
         return $this->render('joueur/listJoueur.html.twig',[
             'list' => $list
         ]);
