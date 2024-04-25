@@ -41,7 +41,7 @@ class CommandeController extends AbstractController
         
 
 
-        return $this->redirectToRoute('app_produit');
+        return $this->redirectToRoute('app_commande');
     }
     #[Route('/supprimercommande/{id}', name: 'supprimercommande')]
     public function supprimerCommande(Request $request,Commande $commande): Response
