@@ -12,9 +12,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Builder\BuilderInterface; 
+use Endroid\QrCode\Writer\Result\PngResult;
 
 class JoueurController extends AbstractController
 {
+    private $qrCodeBuilder;
+
+    public function __construct(BuilderInterface $qrCodeBuilder)
+    {
+        $this->qrCodeBuilder = $qrCodeBuilder;
+    }
+
     #[Route('/joueur', name: 'app_joueur')]
     public function index(): Response
     {
