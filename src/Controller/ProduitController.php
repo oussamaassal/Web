@@ -27,32 +27,48 @@ class ProduitController extends AbstractController
     
     #[Route('/ajoutproduit', name: 'ajoutproduit')]
     public function ajoutproduit(Request $request): Response
-    {
-        $produit = new Produit();
-        $form = $this->createForm(ProduitType::class, $produit);
-        $form->handleRequest($request);
+{
+    $produit = new Produit();
+    $form = $this->createForm(ProduitType::class, $produit);
+    $form->handleRequest($request);
+    
+    // Vérifier si le formulaire a été soumis et est valide
+    if ($form->isSubmitted() && $form->isValid()) {
+        $entityManager = $this->getDoctrine()->getManager();
+        $file = $form['image']->getData();
         
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $file = $form['image']->getData();
-            if ($file) {
-                $fileName = $produit->getNomproduit().'.'.$file->guessExtension();
-
-                $file->move(
-                    $this->getParameter('produit_image_directory'),
-                    $fileName
-                );
-                // Set the image path on the entity
-                $produit->setImage($fileName);
-            }
-            $entityManager->persist($produit);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_produit');
+        // Si un fichier est associé au formulaire, le traiter
+        if ($file) {
+            $fileName = $produit->getNomproduit() . '.' . $file->guessExtension();
+            $file->move(
+                $this->getParameter('produit_image_directory'),
+                $fileName
+            );
+            // Définir le chemin de l'image sur l'entité
+            $produit->setImage($fileName);
         }
+        
+        // Chercher le produit existant par son nom, s'il existe
+        $existingProduct = $entityManager->getRepository(Produit::class)->findOneBy([
+            'nomproduit' => $produit->getNomproduit()
+        ]);
+        
+        // Si le produit existe, incrémentez sa quantité
+        if ($existingProduct) {
+            $existingProduct->setQauntiteproduit($existingProduct->getQauntiteproduit() + $produit->getQauntiteproduit());
+        } else {
+            // Si le produit n'existe pas, persistez simplement le nouveau produit
+            $entityManager->persist($produit);
+        }
+        
+        $entityManager->flush();
 
-        return $this->render('produit/ajout.html.twig', ['form' => $form->createView()]);
+        return $this->redirectToRoute('app_produit');
     }
+
+    return $this->render('produit/ajout.html.twig', ['form' => $form->createView()]);
+}
+
     #[Route('/modifierproduit/{id}', name: 'modifierproduit')]
     public function modifierProduit(Request $request,$id): Response
     {

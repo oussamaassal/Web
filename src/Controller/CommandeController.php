@@ -22,27 +22,41 @@ class CommandeController extends AbstractController
         ]);
     }
     #[Route('/ajoutcommande/{id}', name: 'ajoutcommande')]
-    public function ajoutCommande(Request $request,Produit $produit): Response
-    {
-        $produit = $this->getDoctrine()->getManager()->getRepository(Produit::class)->find($produit->getIdproduit());
+    public function ajoutCommande(Request $request, Produit $produit): Response
+{
+    $entityManager = $this->getDoctrine()->getManager();
+
+    // Récupérer le produit depuis la base de données
+    $produit = $entityManager->getRepository(Produit::class)->find($produit->getIdproduit());
+    
+    // Créer une nouvelle instance de Commande
+    $commande = new Commande(); 
+    $commande->setIduser(1);
+    $commande->setQuantite(1);
+    $commande->setSomme($produit->getPrixproduit());
+    $commande->setIdproduit($produit);
+
+    // Vérifier si une commande existante pour ce produit existe déjà
+    $existingCommande = $entityManager->getRepository(Commande::class)->findOneBy([
+        'idproduit' => $produit->getIdproduit()
+    ]);
+
+    if ($existingCommande) {
+        // Si une commande existe déjà, mettre à jour la quantité et la somme
         
-        $commande = new Commande(); 
-        $commande->setIduser(1);
-        $commande->setQuantite(1);
-        $commande->setSomme($produit->getPrixproduit());
-        $commande->setIdproduit($produit);
-        $entityManager = $this->getDoctrine()->getManager();
+        $existingCommande->setQuantite($existingCommande->getQuantite() + 1);
+    } else {
+        // Sinon, persister la nouvelle commande
         $entityManager->persist($commande);
-        $entityManager->persist($produit);
-        $entityManager->flush();
-
-
-        
-        
-
-
-        return $this->redirectToRoute('app_commande');
     }
+
+    // Persister les changements dans la base de données
+    $entityManager->flush();
+
+    // Rediriger vers la page de commande
+    return $this->redirectToRoute('app_commande');
+}
+
     #[Route('/supprimercommande/{id}', name: 'supprimercommande')]
     public function supprimerCommande(Request $request,Commande $commande): Response
     {
@@ -51,5 +65,5 @@ class CommandeController extends AbstractController
         $entityManager->flush();
         return $this->redirectToRoute('app_commande');
     }
-
+   
 }
