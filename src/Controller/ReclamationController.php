@@ -100,9 +100,9 @@ class ReclamationController extends AbstractController
         }
         if ($request->isMethod('POST')) {
            $message=$request->request->get('message');
-           $accountSID="ACdb9b90f6db0d633c0e31508dfac7668a";
-           $authToken="c3eb0172bd5b0b64bb6a6cd003316580";
-           $phoneNumber="+13345390671";
+           $accountSID="";
+           $authToken="";
+           $phoneNumber="";
            $client = new Client($accountSID, $authToken);
            $client->messages->create(
             "+21653099828",
