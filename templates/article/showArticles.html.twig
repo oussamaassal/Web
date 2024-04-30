@@ -40,7 +40,7 @@
     </tr>
 </thead>
 <tbody>
-    {% for Article in Articles %}
+    {% for Article in pagination %}
         <tr>
            <!-- <td><img class="rounded-circle" width="35" src="{{ asset('assets_admin/images/profile/small/pic1.jpg') }}" alt=""></td>-->
             <!-- <td>{{ Article.getIdarticle() }}</td> -->
@@ -69,4 +69,10 @@
               *******************************end*********************-->
       </div>
     </div>
+    <div class="container py-5">
+  <div class="d-flex justify-content-center">
+{{ knp_pagination_render(pagination) }}
+
+</div>
+</div>
 {% endblock %}
