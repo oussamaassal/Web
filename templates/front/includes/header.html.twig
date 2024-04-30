@@ -102,7 +102,9 @@
                     {% if loggedIn is defined and loggedIn==true %}
                     <a class="link link-icon link-icon-left link-classic" href="{{path('app_user_logout')}}"><span class="icon fl-bigmug-line-login12"></span>
                     <span class="link-icon-text">Logout </span>
-                    </a></li>
+                    </a>
+                    </li>
+                       
 
                     {% else %}
   <a class="link link-icon link-icon-left link-classic" href="{{path('app_user_login')}}"><span class="icon fl-bigmug-line-login12"></span>
@@ -363,7 +365,11 @@
                                                             </li>
                                                           </ul>
                                       </li>
-                                      <li class="rd-nav-item"><a class="rd-nav-link" href="#">Shop</a>
+                                      <li>
+                                       <a class="rd-nav-link"href="{{path('app_reclamation_me')}}">
+                  Mes reclmation 
+                    </a></li>
+                                     
                                                           <ul class="rd-menu rd-navbar-dropdown">
                                                             <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="shop-elements.html">Shop Elements</a>
                                                             </li>

@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\ChnagePasswordType;
 use App\Form\InscriptionType;
 use App\Form\LoginType;
+use App\Form\ResetPasswordCodeFormType;
+use App\Form\ResetPasswordType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,13 +16,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Endroid\QrCode\Builder\BuilderInterface; 
 use Endroid\QrCode\Writer\Result\PngResult;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+
+use function PHPUnit\Framework\equalTo;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -31,7 +37,7 @@ class UserController extends AbstractController
         $this->qrCodeBuilder = $qrCodeBuilder;
     }
 
-   public function getUserData(SessionInterface $sessionInterface){
+   public static function  getUserData(SessionInterface $sessionInterface){
     $serializedUser = $sessionInterface->get('user');
     
     $user = unserialize($serializedUser);
@@ -40,17 +46,17 @@ class UserController extends AbstractController
     }
    return $user;
    }
-    public function isAuthenticated(SessionInterface $sessionInterface){
-      $user= $this->getUserData($sessionInterface);
+    public static function isAuthenticated(SessionInterface $sessionInterface){
+      $user= UserController::getUserData($sessionInterface);
         return isset($user);
 
     }
 
-    public function hasPermissionRole(SessionInterface $sessionInterface,$role){
-        if(!$this->isAuthenticated($sessionInterface)) {
+    public static function hasPermissionRole(SessionInterface $sessionInterface,$role){
+        if(!UserController::isAuthenticated($sessionInterface)) {
             return false;
         }
-        $user = $this->getUserData($sessionInterface);
+        $user = UserController::getUserData($sessionInterface);
        
         return strtoupper($user->getRole())==strtoupper($role);
     }   
@@ -229,7 +235,7 @@ class UserController extends AbstractController
                     if (file_exists($oldFilePath)) {
                         unlink($oldFilePath);
                     }
-                    $user->setImage(null);
+                    $user->setImage("");
                 }
             }
             $user->setMotdepasse(password_hash($user->getMotdepasse(), PASSWORD_BCRYPT, ["cost" => 12]));
@@ -320,6 +326,7 @@ class UserController extends AbstractController
         }
         #[Route('/login', name: 'app_user_login', methods: ['GET', 'POST'])]
         public function login(Request $request, EntityManagerInterface $entityManager,SessionInterface $sessionInterface): Response
+
         {
             
             if($this->isAuthenticated($sessionInterface)){
@@ -374,7 +381,129 @@ class UserController extends AbstractController
                 'form' => $form,
             ]);
         }
+        #[Route('/resetpassword/request', name: 'app_user_request_reset', methods: ['GET', 'POST'])]
+        public function request_reset_passwod(Request $request,MailerInterface $mailer,  EntityManagerInterface $entityManager,SessionInterface $sessionInterface): Response
+        {
+            if($this->isAuthenticated($sessionInterface)){
+                return $this->redirectToRoute('app_user_login');
+            }
+            $submitEmailForm = $this->createForm(ResetPasswordType::class);
+            $submitEmailForm->handleRequest($request);
+            $resetPasswordCodeForm=$this->createForm(ResetPasswordCodeFormType::class);
+            $resetPasswordCodeForm->handleRequest($request);
+            //step 2
+            if($sessionInterface->get('user_in_second_step') && $sessionInterface->get("randomCode")){
+                $randomString=$sessionInterface->get("randomCode");
+                if ($resetPasswordCodeForm->isSubmitted() && $resetPasswordCodeForm->isValid()) {
+                     $formDataCode = $resetPasswordCodeForm->getData();
+                      $codeSubmitted= $formDataCode["code"];
+                //Verification du code
+                      if($codeSubmitted==$randomString){
+                        return $this->redirectToRoute("app_user_reset_password_validate");
+                        }else{
+                         return $this->renderForm('user/resetPassword.html.twig', [
+                        'error'=>"Code invalid",
+                          'resetPasswordCodeForm'=>$resetPasswordCodeForm
+                     ]);  
+                 }
+            }
+            $message="Veuillez vérifier votre boîte mail pour réinitialiser votre mot de passe.";
 
+            return $this->renderForm('user/resetPassword.html.twig', [
+                'message'=>$message,
+                'resetPasswordCodeForm'=>$resetPasswordCodeForm
+            ]); 
+        
+        }
+            //STEP 1
+            if( ($submitEmailForm->isSubmitted() && $submitEmailForm->isValid())){
+                $formDataEmail = $submitEmailForm->getData();
+                $email = $formDataEmail['email'];
+                $userFromDatabase= $entityManager->getRepository(User::class)->findOneBy(["email"=>$email]);
+                if($userFromDatabase==null){
+                    $error= "Cet utilisateur n'existe pas";
+                    return $this->renderForm('user/resetPassword.html.twig', [
+                        'submitEmailForm' => $submitEmailForm,
+                        'error'=>$error,
+
+                    ]); 
+                }else{
+                    $randomString = $this->generateRandomNumericString();
+                    $emailMessage = (new Email())
+                    ->from('benhmida.molka01@gmail.com')
+                    ->to($email)
+                    ->text($randomString." est votre code de reset password ! ");
+                    $mailer->send($emailMessage);
+                    $sessionInterface->set("user_in_second_step",true);
+                    $sessionInterface->set("randomCode",$randomString);
+                    $sessionInterface->set("email_to_resetPassword",$email);
+
+                    return $this->redirectToRoute("app_user_request_reset");
+                 
+                }
+
+            }
+             return $this->renderForm('user/resetPassword.html.twig', [
+                'submitEmailForm' => $submitEmailForm,
+                'emailIsSubmitted'=>false
+
+            ]); 
+
+
+        
+        }
+
+        function generateRandomNumericString($length = 6) {
+            $characters = '0123456789';
+            $charactersLength = strlen($characters);
+            $randomString = '';
+        
+            for ($i = 0; $i < $length; $i++) {
+                $randomString .= $characters[random_int(0, $charactersLength - 1)];
+            }
+        
+            return $randomString;
+        }
+        
+        #[Route('/resetpassword/validate', name: 'app_user_reset_password_validate', methods: ['GET', 'POST'])]
+        public function resetPasswordValidate(Request $request,MailerInterface $mailer,  EntityManagerInterface $entityManager,SessionInterface $sessionInterface): Response
+       {
+        if ($sessionInterface->get('email_to_resetPassword') ) {
+            $email=$sessionInterface->get('email_to_resetPassword');
+            $form=$this->createForm(ChnagePasswordType::class);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $formData=$form->getData();
+
+                $password=$formData['motdepasse'];
+                $hashedpassword=password_hash($password, PASSWORD_BCRYPT, ["cost" => 12]);
+                $userFromDatabase= $entityManager->getRepository(User::class)->findOneBy(["email"=>$email]);
+                $userFromDatabase->setMotdepasse($hashedpassword);
+                $entityManager->flush();
+
+
+                $sessionInterface->set("user_in_second_step", null);
+                $sessionInterface->set("randomCode", null);
+                $sessionInterface->set("email_to_resetPassword", null);
+                return $this->redirectToRoute("app_user_login");
+            
+            
+            }
+            return $this->renderForm('user/changePassword.html.twig', [
+                'form' => $form,
+            ]); 
+            
+
+
+
+  
+
+        } else {
+            // The session variables are not set, so set them
+         return $this->redirectToRoute("app_user_request_reset");
+
+        }
+       }
 
         /*
         #[Route('/login', name: 'app_user_login', methods: ['GET', 'POST'])]

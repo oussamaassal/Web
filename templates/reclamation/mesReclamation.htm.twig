@@ -1,0 +1,53 @@
+
+{% extends '/front/base.html.twig' %}
+
+{% block title %}
+    Profil Utilisateur
+{% endblock %}
+
+{% block body %}
+    <section class="section section-profile parallax-container my-5" >
+        <div class="parallax-content">
+            <div class="container">
+                <div class="row justify-content-center my-5">
+                    <div class="col-lg-8">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Idreclamation</th>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Etat</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reclamation in reclamations %}
+            <tr>
+                <td>{{ reclamation.idreclamation }}</td>
+                <td>{{ reclamation.titre }}</td>
+                <td>{{ reclamation.description }}</td>
+                {% if reclamation.etat==false %}
+                    <td>En traitement </td>
+                    {% else %}
+                    <td>Traité </td>
+                {% endif %}
+                <td>
+                    <a href="{{ path('app_reclamation_show_client', {'idreclamation': reclamation.idreclamation}) }}">show</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+                    <a href="{{ path('app_reclamation_new')}}">add </a>
+
+</div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends '/admin/base.html.twig' %}
+
+{% block title %} Liste des utilisateurs {% endblock %}
+
+{% block body %}
+<div class="content-body">
+    <div class="container-fluid">
+ 
+    <h1>Reclamation index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Idreclamation</th>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Etat</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reclamation in reclamations %}
+            <tr>
+                <td>{{ reclamation.idreclamation }}</td>
+                <td>{{ reclamation.titre }}</td>
+                <td>{{ reclamation.description }}</td>
+                {% if reclamation.etat==false %}
+                    <td>Non Traité </td>
+                    {% else %}
+                    <td>Traité </td>
+                {% endif %}
+                <td>
+                    <a href="{{ path('app_reclamation_show_admin', {'idreclamation': reclamation.idreclamation}) }}">show</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

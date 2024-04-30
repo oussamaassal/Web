@@ -11,7 +11,7 @@ class User
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: 'iduser')]
     private ?int $iduser =null;
 
     #[ORM\Column(length: 255)]
