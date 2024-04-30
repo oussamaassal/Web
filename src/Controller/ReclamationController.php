@@ -98,7 +98,22 @@ class ReclamationController extends AbstractController
         if (!UserController::hasPermissionRole($sessionInterface, "admin")) {
             return $this->redirectToRoute('app_user_login');
         }
-       
+        if ($request->isMethod('POST')) {
+           $message=$request->request->get('message');
+           $accountSID="ACdb9b90f6db0d633c0e31508dfac7668a";
+           $authToken="c3eb0172bd5b0b64bb6a6cd003316580";
+           $phoneNumber="+13345390671";
+           $client = new Client($accountSID, $authToken);
+           $client->messages->create(
+            "+21653099828",
+            [
+                'from' => $phoneNumber,
+                'body' => $message
+            ]);
+            $reclamation->setEtat(true);
+            $entityManager->flush();
+
+        }
         return $this->render('reclamation/show.html.twig', [
             'reclamation' => $reclamation,
             'loggedIn' => true,
