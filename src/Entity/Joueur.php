@@ -164,7 +164,7 @@ class Joueur
 
     public function setQRcode(?string $QRcode): static
     {
-        $this->QRcode = $$QRcode;
+        $this->QRcode = $QRcode;
 
         return $this;
     }

@@ -28,7 +28,8 @@ class JoueurController extends AbstractController
     {
         // Convert the result to a string (e.g., base64 encode the image)
         // Adjust this logic based on how you want to represent the QR code data
-        return 'data:image/png;base64,' . base64_encode($qrCodeResult->getString());
+        $data = 'data:image/png;base64,' . base64_encode($qrCodeResult->getString());
+        return $data;
     }
 
     #[Route('/joueur', name: 'app_joueur')]
