@@ -68,6 +68,21 @@ class JoueurController extends AbstractController
     public function listJoueurs_front(JoueurRepository $repo):Response{
 
         $list = $repo->findAll();
+        foreach ($list as $joueur) {
+            // Check if $this->qrCodeBuilder is not null
+            if ($this->qrCodeBuilder !== null) {
+                // Customize the QR code data
+                $qrCodeResult = $this->qrCodeBuilder
+                    ->data($joueur->getLink())
+                    ->build();
+
+                // Convert the QR code result to a string representation
+                $qrCodeString = $this->convertQrCodeResultToString($qrCodeResult);
+
+                // Add the QR code string to the article entity
+                $joueur->setQrCode($qrCodeString);
+            }
+        }
         return $this->render('joueur/Roster.html.twig',[
             'list' => $list
         ]);

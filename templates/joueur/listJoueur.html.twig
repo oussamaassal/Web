@@ -38,6 +38,7 @@
                                                   <th>Poids</th>
                                                   <th>Piedfort</th>
                                                   <th>image_path</th>
+                                                  <th>QRCode</th>
                                                   <th>link</th>
                                                   <th>Action</th>
                                               </tr>
@@ -55,6 +56,7 @@
                                                   <td>{{ Joueur.getPoids() }}</td>
                                                   <td>{{ Joueur.getPiedfort() }}</td>
                                                   <td>{{ Joueur.getImagepath() }}</td>
+                                                  <td> <img src="{{ Joueur.QRcode }}" width="123" height="100" /> </td>
                                                   <td>{{ Joueur.getLink() }}</td>
                                                   <td>
                                                     <div class="d-flex">
