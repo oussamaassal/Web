@@ -114,7 +114,7 @@ class UserController extends AbstractController
                         $newFilename
                     );
                 } catch (FileException $e) {
-                    // Handle exception if something happens during file upload
+                   
                 }
 
                 $user->setImage($newFilename);
@@ -197,7 +197,7 @@ class UserController extends AbstractController
             $file = $form->get('image')->getData();
             if ($file) {
                 if ($originalImage) {
-                    // Delete the old image file
+                  
                     $oldFilePath = $this->getParameter('images_directory').'/'.$originalImage;
                     if (file_exists($oldFilePath)) {
                         unlink($oldFilePath);
@@ -214,12 +214,12 @@ class UserController extends AbstractController
                         $newFilename
                     );
                 } catch (FileException $e) {
-                    // Handle exception if something happens during file upload
+                    
                 }
 
                 $user->setImage($newFilename);
             } elseif (!$file && $request->get('remove_image') === 'true') {
-                // If checkbox to remove image is checked and no new file is uploaded
+               
                 if ($originalImage) {
                     $oldFilePath = $this->getParameter('images_directory').'/'.$originalImage;
                     if (file_exists($oldFilePath)) {
@@ -278,7 +278,6 @@ class UserController extends AbstractController
                             $newFilename
                         );
                     } catch (FileException $e) {
-                        // Handle exception if something happens during file upload
                     }
     
                     $user->setImage($newFilename);

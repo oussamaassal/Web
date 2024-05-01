@@ -52,6 +52,7 @@
    	<div class="form-wrap">
     {{ form_row(form.motdepasse) }}
     </div>
+<a href="{{ path('app_user_request_reset') }}">Mot de passe oublié?</a>
 
     <button class="btn btn-primary mt-5">{{ button_label|default('Se connecter') }}</button>
 {{ form_end(form) }}
