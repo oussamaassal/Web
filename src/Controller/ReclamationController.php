@@ -8,6 +8,7 @@ use App\Repository\ReclamationRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -27,6 +28,38 @@ class ReclamationController extends AbstractController
         }
         return $this->render('reclamation/index.html.twig', [
             'reclamations' => $reclamationRepository->findAll(),
+            'loggedIn' => true,
+
+        ]);
+    }
+    #[Route('/stats_data',name:'static_data',methods:['GET'])]
+    public function getData(ReclamationRepository $reclamationRepository)
+        {
+            $stats=$reclamationRepository->findReclamationByResponse();
+
+            $traiteCount = 0;
+            $nonTraiteCount = 0;
+           foreach ($stats as $stat) {
+            if ($stat['etat']) {
+                $traiteCount = $stat['count'];
+            } else {
+                $nonTraiteCount = $stat['count'];
+            }
+        }
+            $jsonData = [
+                'traite' => $traiteCount,
+                'non_traite' => $nonTraiteCount
+            ];
+            return new JsonResponse($jsonData);
+
+}
+    #[Route('/stats', name: 'app_reclamation_stat', methods: ['GET'])]
+    public function stats( SessionInterface $sessionInterface): Response
+    {
+        if (!UserController::hasPermissionRole($sessionInterface, "admin")) {
+            return $this->redirectToRoute('app_user_login');
+        }
+        return $this->render('reclamation/stats.html.twig', [
             'loggedIn' => true,
 
         ]);

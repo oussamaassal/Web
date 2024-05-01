@@ -70,17 +70,13 @@ class UserController extends AbstractController
         $users = $userRepository->findAll();
 
         foreach ($users as $user) {
-            // Check if $this->qrCodeBuilder is not null
             if ($this->qrCodeBuilder !== null) {
-                // Customize the QR code data
                 $qrCodeResult = $this->qrCodeBuilder
                     ->data($user->getEmail(),$user->getRole())
                     ->build();
 
-                // Convert the QR code result to a string representation
                 $qrCodeString = $this->convertQrCodeResultToString($qrCodeResult);
 
-                // Add the QR code string to the article entity
                 $user->setQrCode($qrCodeString);
             }
         }
@@ -91,8 +87,6 @@ class UserController extends AbstractController
     }
     private function convertQrCodeResultToString(PngResult $qrCodeResult): string
     {
-        // Convert the result to a string (e.g., base64 encode the image)
-        // Adjust this logic based on how you want to represent the QR code data
         return 'data:image/png;base64,' . base64_encode($qrCodeResult->getString());
     }
 
@@ -155,17 +149,13 @@ class UserController extends AbstractController
         $searchTerm = trim($request->query->get('search'));
         $results = [];
         foreach ($users as $user) {
-            // Check if $this->qrCodeBuilder is not null
             if ($this->qrCodeBuilder !== null) {
-                // Customize the QR code data
                 $qrCodeResult = $this->qrCodeBuilder
                     ->data($user->getEmail())
                     ->build();
 
-                // Convert the QR code result to a string representation
                 $qrCodeString = $this->convertQrCodeResultToString($qrCodeResult);
 
-                // Add the QR code string to the article entity
                 $user->setQrCode($qrCodeString);
             }
         }

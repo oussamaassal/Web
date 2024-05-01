@@ -5,40 +5,35 @@
 {% block body %}
 <div class="content-body">
     <div class="container-fluid">
- 
-    <h1>Reclamation index</h1>
+        <h1 class="mt-4">Liste des Réclamations</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Idreclamation</th>
-                <th>Titre</th>
-                <th>Description</th>
-                <th>Etat</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for reclamation in reclamations %}
-            <tr>
-                <td>{{ reclamation.idreclamation }}</td>
-                <td>{{ reclamation.titre }}</td>
-                <td>{{ reclamation.description }}</td>
-                {% if reclamation.etat==false %}
-                    <td>Non Traité </td>
-                    {% else %}
-                    <td>Traité </td>
-                {% endif %}
-                <td>
-                    <a href="{{ path('app_reclamation_show_admin', {'idreclamation': reclamation.idreclamation}) }}">show</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <div class="row mt-4">
+            {% for reclamation in reclamations %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ reclamation.titre }}</h5>
+                        <p class="card-text">{{ reclamation.description }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge {% if reclamation.etat == false %}bg-danger{% else %}bg-success{% endif %}">
+                                {% if reclamation.etat == false %}Non Traité{% else %}Traité{% endif %}
+                            </span>
+                            <a href="{{ path('app_reclamation_show_admin', {'idreclamation': reclamation.idreclamation}) }}" class="btn btn-primary">Détails</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-md-12">
+                <p class="text-muted">Aucune réclamation trouvée.</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <a href="{{ path('app_reclamation_stat') }}" class="btn btn-primary mt-3">
+            <i class="bi bi-bar-chart-line me-2"></i> Voir les Statistiques
+        </a>
 
+    </div>
+</div>
 {% endblock %}
