@@ -7,6 +7,8 @@ use App\Entity\Evenement;
 
 use App\Form\CandidatType;
 use App\Repository\CandidatRepository;
+use App\Repository\EvenementRepository;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,16 +31,20 @@ class CandidatController extends AbstractController
     ]);
 }
 #[Route('/front/{id_event}', name: 'app_candidat_index_front', methods: ['GET'])]
-public function indexFront(CandidatRepository $candidatRepository, int $id_event): Response
+public function indexFront(CandidatRepository $candidatRepository,EvenementRepository $evenementRepository , int $id_event): Response
+
 {
-// Fetch candidates associated with the provided event ID
-$candidats = $id_event ? $candidatRepository->findBy(['idelection' => $id_event]) : $candidatRepository->findAll();
+    $candidats = $id_event ? $candidatRepository->findBy(['idelection' => $id_event]) : $candidatRepository->findAll();
+
+// Fetch the event details based on the provided event ID
+$evenement = $evenementRepository->find($id_event);
 
 return $this->render('candidat/listeCondidatFront.html.twig', [
     'candidats' => $candidats,
     'id_event' => $id_event,
-
+    'evenement' => $evenement, 
 ]);
+
 }
     #[Route('/new/{id_event}', name: 'app_candidat_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, int $id_event): Response

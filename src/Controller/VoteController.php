@@ -82,7 +82,26 @@ class VoteController extends AbstractController
     }
     
     
-  
+    #[Route('/front/new/{idc}/{id_event}', name: 'app_vote_new_from_front', methods: ['GET', 'POST'])]
+    public function newVoteFromFront(Request $request, EntityManagerInterface $entityManager, int $idc, int $id_event): Response
+    {
+        // Récupérer le candidat et l'événement
+        $candidat = $entityManager->getRepository(Candidat::class)->find($idc);
+        $evenement = $entityManager->getRepository(Evenement::class)->find($id_event);
+    
+        // Créer un nouveau vote
+        $vote = new Vote();
+        $vote->setCandidat($candidat);
+        $vote->setEvenement($evenement);
+    
+        // Persistez le vote
+        $entityManager->persist($vote);
+        $entityManager->flush();
+    
+        // Redirection vers une page de succès ou autre
+        // Vous pouvez rediriger où vous le souhaitez
+        return $this->redirectToRoute('app_candidat_index_front', ['id_event' => $id_event]);
+    }
     
     
     #[Route('/{idv}', name: 'app_vote_show', methods: ['GET'])]

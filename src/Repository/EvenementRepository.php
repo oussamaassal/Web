@@ -35,6 +35,16 @@ class EvenementRepository extends ServiceEntityRepository
 //            ->getResult()
 //        ;
 //    }
+public function findEvenementsAujourdhui()
+    {
+        $aujourdhui = new \DateTime();
+
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.datee = :date')
+            ->setParameter('date', $aujourdhui->format('Y-m-d'))
+            ->getQuery()
+            ->getResult();
+    }
 
 //    public function findOneBySomeField($value): ?Evenement
 //    {
