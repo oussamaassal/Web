@@ -1,70 +1,3 @@
-  {# {% extends '/front/base.html.twig' %}
-{% block body %}
-          <section class="section section-md bg-gray-100">
-        <div class="container">
-          <div class="row row-50">
-
-                     <div class="col-sm-12">
-              <!-- Heading Component-->
-              <article class="heading-component">
-                <div class="heading-component-inner">
-                  <h5 class="heading-component-title">Condidats
-                  </h5>
-                </div>
-              </article>
-                 {% for candidat in candidats %}
-
-              <!-- Product - List build-->
-              <article class="product-list">
-                <div class="product-list-aside"><img src="images/shop/product-1.png" alt="">
-                  <!-- Badge-->
-                  <div class="badge badge-red">hot<span class="icon material-icons-whatshot"></span>
-                  </div>
-                </div>
-                <section class="product-list-main">
-                  <h4 class="product-list-title"><a href="product-page.html">Nike hoops elite backpack</a></h4>
-                  <ul class="product-list-info">
-                    <li>
-                      <ul class="product-list-rating">
-                        <li><span class="material-icons-star"></span></li>
-                        <li><span class="material-icons-star"></span></li>
-                        <li><span class="material-icons-star"></span></li>
-                        <li><span class="material-icons-star"></span></li>
-                        <li><span class="material-icons-star_half"></span></li>
-                      </ul>
-                    </li>
-                    <li>4 customer reviews</li>
-                  </ul>
-                  <ul class="product-list-price">
-                    <li><span class="product-list-price-new heading-4">$290</span></li>
-                  </ul>
-                  <div class="product-list-text">
-                    <p>The Nike Hoops Elite Backpack is designed with an innovative zip system so you can access your gear from any angle.</p>
-                  </div>
-                  <ul class="product-list-buttons">
-                    <li><a class="button button-primary" href="shopping-cart.html"><span>Add to cart</span></a></li>
-                    <li>
-                      <div class="product-list-share focus-toggle-parent"><span class="product-list-share-btn focus-toggle fl-bigmug-line-share27"></span>
-                        <ul>
-                          <li><span>Share</span></li>
-                          <li><a class="icon icon-xs fa fa-facebook" href="#"></a></li>
-                          <li><a class="icon icon-xs fa fa-instagram" href="#"></a></li>
-                          <li><a class="icon icon-xs fa fa-twitter" href="#"></a></li>
-                          <li><a class="icon icon-xs fa fa-google-plus" href="#"></a></li>
-                        </ul>
-                      </div>
-                    </li>
-                  </ul>
-                </section>
-              </article>
-                 {% endfor %}
-
-            </div>
-            </div>
-            </div>
-            </div>
-
-              {% endblock %} #}
 {% extends '/front/base.html.twig' %}
 {% block body %}
 <section class="section section-md bg-gray-100">
@@ -74,9 +7,32 @@
         <!-- Heading Component-->
         <article class="heading-component">
           <div class="heading-component-inner">
-            <h5 class="heading-component-title">Candidats</h5>
+            <h5 class="heading-component-title">{{ evenement.nome }} / Candidats</h5>
           </div>
         </article>
+        <li class="nav-item d-flex align-items-center">
+          <div class="input-group search-area">
+            <input type="text" class="form-control" id="searchInput" placeholder="Rechercher ..." onkeyup="filterTable()">
+            <span class="input-group-text"><a href="javascript:void(0)"><i class="flaticon-381-search-2"></i></a></span>
+          </div>
+        </li>
+        <script>
+          function filterTable() {
+            const filter = document.getElementById('searchInput').value.toUpperCase();
+            const candidats = document.querySelectorAll('.product-list');
+            for (let i = 0; i < candidats.length; i++) {
+              const candidat = candidats[i];
+              const candidatName = candidat.querySelector('.product-list-title').innerText.toUpperCase();
+              const candidatAge = candidat.querySelector('p').innerText.toUpperCase();
+              if (candidatName.indexOf(filter) > -1 || candidatAge.indexOf(filter) > -1) {
+                candidat.style.display = '';
+              } else {
+                candidat.style.display = 'none';
+              }
+            }
+          }
+        </script>
+        {% if candidats is not empty %}
         {% for candidat in candidats %}
         <!-- Product - List build-->
         <article class="product-list">
@@ -89,13 +45,23 @@
             <!-- Utilisez candidat.agec pour l'âge -->
             <!-- Utilisez candidat.nomc et candidat.prenomc pour le nom et prénom -->
             <!-- Utilisez candidat.imgcpath pour l'URL de l'image -->
-           
             <ul class="product-list-buttons">
-                    <li><a href="{{ path('app_vote_new', {'id': vote.id}) }}" class="button button-primary" onclick="return confirm('voulez vous voter pour cette personne ?');"> <span>Voter</span></a></li>
-                  </ul>
+              <li>
+                <a href="{{ path('app_vote_new_from_front', {'idc': candidat.idc, 'id_event': evenement.ide}) }}" class="button button-primary" onclick="return confirm('Voulez-vous voter pour cette personne ?');">
+                  <span>Voter</span>
+                </a>
+              </li>
+            </ul>
           </section>
         </article>
         {% endfor %}
+        {% else %}
+        <div class="col-sm-12">
+          <br><br><br>
+          <p>Aucun candidat disponible.</p>
+        </div>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        {% endif %}
       </div>
     </div>
   </div>

@@ -57,9 +57,37 @@
         }
     </style>
 
+        <li class="nav-item d-flex align-items-center">
+            <div class="input-group search-area">
+                <input type="text" class="form-control" id="searchInput" placeholder="Rechercher ...">
+                <span class="input-group-text"><a href="javascript:void(0)"><i class="flaticon-381-search-2"></i></a></span>
+          
+            </div>
+             <br><br><br><br><br>
+        </li>
+        <script>
+            function filterTable() {
+                const filter = document.getElementById('searchInput').value.toUpperCase();
+                const products = document.querySelectorAll('.product-card');
+                for (let i = 0; i < products.length; i++) {
+                    const product = products[i];
+                    const productName = product.querySelector('.product-name').innerText.toUpperCase();
+                    const productDescription = product.querySelector('.product-description').innerText.toUpperCase();
+                    if (productName.indexOf(filter) > -1 || productDescription.indexOf(filter) > -1) {
+                        product.style.display = '';
+                    } else {
+                        product.style.display = 'none';
+                    }
+                }
+            }
+            document.getElementById('searchInput').addEventListener('keyup', filterTable);
+        </script>
+        
     <div class="products-container">
+    
         {% for candidat in candidats %}
             <div class="product-card">
+            
                 <div class="product-image">
                     <img src="{{ asset('uploads/' ~ candidat.imgcpath) }}" alt="Candidate Image">
                 </div>
