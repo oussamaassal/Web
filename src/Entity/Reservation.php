@@ -22,9 +22,8 @@ class Reservation
     #[ORM\Column(length: 255)]
     private ?string $emplacement;
 
-    #[ORM\ManyToOne(targetEntity: Terrain::class, inversedBy: 'reservations')]
-    #[ORM\JoinColumn(name: 'idterrain_id', referencedColumnName: 'id')]
-    private ?Terrain $idterrain;
+    #[ORM\ManyToOne(inversedBy:'Reservation')]
+    private $idterrain;
 
     public function getReservationid(): ?int
     {
