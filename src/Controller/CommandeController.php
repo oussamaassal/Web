@@ -122,23 +122,36 @@ class CommandeController extends AbstractController
         // Marquer toutes les commandes comme payées
         $commandes = $this->getDoctrine()->getRepository(Commande::class)->findAll();
         foreach ($commandes as $commande) {
-          $entityManager->remove($commande);
-          $entityManager->flush();
+        $produit = $commande->getIdproduit();
+        $produit->setQauntiteproduit($produit->getQauntiteproduit() - $commande->getQuantite());
+        $entityManager->remove($commande);
+        $entityManager->flush();
 
         }
 
-        // Sauvegarder les changements dans la base de données
        
 
-        // Rediriger vers une page de confirmation de paiement réussi
-        return $this->render('app_commande');
+        return $this->render('paiement/reussi.html.twig');
     }
 
     #[Route('/paiement/annule', name: 'paiement_annule')]
     public function paiementAnnule(): Response
     {
-        // Rediriger vers une page indiquant que le paiement a été annulé
         return $this->render('paiement/annule.html.twig');
     }
+    /**
+ * @Route("/update_quantity/{id}", name="update_quantity", methods={"POST"})
+ */
+public function updateQuantity(Request $request, Commande $commande): Response
+{
+    $quantite = $request->request->get('quantite');
+
+    $commande->setQuantite($quantite);
+
+    $entityManager = $this->getDoctrine()->getManager();
+    $entityManager->flush();
+
+    return new Response('Quantité mise à jour avec succès', Response::HTTP_OK);
+}
    
 }
