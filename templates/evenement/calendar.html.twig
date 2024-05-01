@@ -1,0 +1,40 @@
+    {% extends 'evenement/indexCalendar.html.twig' %}
+
+
+{% block title %}CALENDRIER{% endblock %}
+{% block stylesheets %}
+
+{% endblock %}
+
+
+
+{% block body %}
+    <div id="calendrier">
+
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+        window.onload = () => {
+            let calendarElt = document.querySelector("#calendrier")
+    
+            let calendar = new FullCalendar.Calendar(calendarElt, {
+                initialView: 'dayGridMonth',
+                locale: 'fr',
+                timeZone: 'Europe/Paris',
+                headerToolbar: {
+                    start: 'prev,next today',
+                    center: 'title',
+                    end: 'dayGridMonth,timeGridWeek'
+                },
+                editable: true,
+                eventResizableFromStart: true,
+                events: {{ rdvsJson | raw }}
+            })
+    
+            calendar.render()
+        }
+    </script>
+    
+    {% endblock %}

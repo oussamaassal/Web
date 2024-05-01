@@ -33,6 +33,27 @@ class EvenementController extends AbstractController
             'evenements' => $evenements,
         ]);
     }
+    #[Route('/eventcalendrier', name: 'app_rdv')]
+    public function calendrierrdv(EvenementRepository $evenementRepository): Response
+    {
+        $events = $evenementRepository->findAll();
+        $rdvs = [];
+        foreach ($events as $event) {
+            $startDateTime = $event->getDateE()->format('Y-m-d') ;
+
+            $rdvs[] = [
+                'id' => $event->getIde(),
+                'title' => $event->getNomE(),
+                'start' =>$startDateTime
+                
+            ];
+        }
+        $rdvsJson = json_encode($rdvs);
+
+    // Pass the JSON data to the Twig template
+    return $this->render('evenement/calendar.html.twig', compact('rdvsJson'));
+
+    }
 
     #[Route('/new', name: 'app_evenement_new', methods: ['GET', 'POST'])]
 public function new(Request $request): Response
@@ -73,6 +94,16 @@ public function new(Request $request): Response
             'evenement' => $evenement,
         ]);
     }
+    #[Route('/{ide}', name: 'app_evenement_delete', methods: ['POST'])]
+    public function delete(Request $request, Evenement $evenement, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$evenement->getIde(), $request->request->get('_token'))) {
+            $entityManager->remove($evenement);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_evenement_index', [], Response::HTTP_SEE_OTHER);
+    }
 
     #[Route('/{ide}/edit', name: 'app_evenement_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Evenement $evenement, EntityManagerInterface $entityManager): Response
@@ -100,15 +131,6 @@ public function new(Request $request): Response
             'form' => $form,
         ]);
     }
-
-    #[Route('/{ide}', name: 'app_evenement_delete', methods: ['POST'])]
-    public function delete(Request $request, Evenement $evenement, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$evenement->getIde(), $request->request->get('_token'))) {
-            $entityManager->remove($evenement);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_evenement_index', [], Response::HTTP_SEE_OTHER);
-    }
+    
+    
 }
