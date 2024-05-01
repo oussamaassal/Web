@@ -1,6 +1,63 @@
 {% extends '/front/base.html.twig' %}
 
 {% block body %}
+ <style>
+        /* Styles for chat bot */
+        .chat-bot {
+            width: 300px;
+            margin: auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .chat-container {
+            height: 300px;
+            overflow-y: scroll;
+            padding: 10px;
+            background-color: #f5f5f5;
+        }
+
+        .chat-input {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #fff;
+        }
+
+        .user-input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .send-btn {
+            margin-left: 10px;
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .send-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .chat-message {
+            margin: 10px 0;
+        }
+
+        .chat-message.user {
+            text-align: right;
+        }
+
+        .chat-message.bot {
+            text-align: left;
+        }
+    </style>
 <title> {% block title %} Hello Controller! {% endblock %}</title>
 <section class="section parallax-container breadcrumbs-wrap" data-parallax-img="images/bg-breadcrumbs-1-1920x726.jpg">
     <div class="parallax-content breadcrumbs-custom context-dark">
@@ -25,6 +82,18 @@
             </div>
             <button type="submit" class="btn btn-primary">Search</button>
         </form>
+    </div>
+</section>
+
+<section class="chat-bot">
+    <div class="container">
+        <div id="chat-container" class="chat-container">
+            <div id="chat-messages" class="chat-messages"></div>
+            <div class="chat-input">
+                <input type="text" id="user-input" class="user-input" placeholder="Tapez votre message ici...">
+                <button id="send-btn" class="send-btn">Envoyer</button>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -205,4 +274,45 @@
         </div>
     </div>
 </section>
+<script>
+    const chatContainer = document.getElementById('chat-container');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+
+    sendBtn.addEventListener('click', function() {
+        const userMessage = userInput.value;
+        if (userMessage.trim() !== '') {
+            appendMessage('user', userMessage);
+            // Call a function to handle the user's message
+            handleUserMessage(userMessage);
+            userInput.value = '';
+        }
+    });
+
+    function appendMessage(sender, message) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('chat-message', sender);
+        messageElement.textContent = message;
+        chatContainer.appendChild(messageElement);
+        chatContainer.scrollTop = chatContainer.scrollHeight; // Auto-scroll to bottom
+    }
+
+    function handleUserMessage(message) {
+        // Here you can implement logic to send the user's message to a server (e.g., using AJAX) and handle the response
+        // For demonstration purposes, let's just simulate a bot response after a short delay
+        setTimeout(function() {
+            let botMessage = '';
+            if (message.toLowerCase().includes('bonjour')) {
+                botMessage = 'Bonjour ! Comment puis-je vous aider ?';
+            } else if (message.toLowerCase().includes('aurevoir')) {
+                botMessage = 'Au revoir ! À bientôt.';
+            } else {
+                botMessage = 'Désolé, je ne comprends pas. Pouvez-vous reformuler votre question ?';
+            }
+            appendMessage('bot', botMessage);
+        }, 1000); // Simulate a delay of 1 second
+    }
+</script>
+
+
 {% endblock %}
