@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use App\Service\SmsGenerator;
+
 #[Route('/article')]
 class ArticleController extends AbstractController
 {
@@ -43,8 +45,12 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/new', name: 'app_article_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, SmsGenerator $smsGenerator, EntityManagerInterface $entityManager): Response
     {
+
+       
+
+
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
@@ -65,6 +71,18 @@ class ArticleController extends AbstractController
             }
             $entityManager->persist($article);
             $entityManager->flush();
+             // SMS sending logic remains the same
+        $name = 'SWIFTMINDER';
+        $text = 'Un nouveau Article a été ajouté : ' . $article->getTitre();
+        //$smsGenerator->SendSms('+21625506906',$name, $text);
+        $smsGenerator->SendSms('+21625506906',$name, $text);
+
+
+
+
+
+
+
 
             return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
         }
