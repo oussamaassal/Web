@@ -1,17 +1,74 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <style>
+        .products-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .product-card {
+            width: 250px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-details {
+            padding: 10px;
+        }
+
+        .product-name {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .product-description {
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .no-records {
+            font-size: 18px;
+            color: #777;
+            margin-top: 20px;
+        }
+    </style>
+
     <div class="products-container">
         {% for candidat in candidats %}
             <div class="product-card">
                 <div class="product-image">
                     <img src="{{ asset('uploads/' ~ candidat.imgcpath) }}" alt="Candidate Image">
                 </div>
+
                 <div class="product-details">
                     <h2 class="product-name">{{ candidat.nomc }} {{ candidat.prenomc }}</h2>
-                    <p class="product-description">Age: {{ candidat.agec }}</p>
+                    <h4 class="product-description">Age: {{ candidat.agec }}</h4>
                     <div class="product-actions">
-                    <a href="{{ path('app_vote_new', {'idc': candidat.idc , 'id_event' :candidat.idelection.ide}) }}" class="btn btn-secondary">Vote</a>
+                        <a href="{{ path('app_vote_new', {'idc': candidat.idc , 'id_event' :candidat.idelection.ide}) }}" class="btn btn-secondary">Vote</a>
                         <a href="{{ path('app_candidat_edit', {'idc': candidat.idc , 'id_event' :candidat.idelection.ide}) }}" class="btn btn-secondary">Edit</a>
                         <form method="post" action="{{ path('app_candidat_delete', {'idc': candidat.idc , 'id_event' :candidat.idelection.ide}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ candidat.idc) }}">

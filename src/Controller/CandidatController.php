@@ -28,6 +28,18 @@ class CandidatController extends AbstractController
 
     ]);
 }
+#[Route('/front/{id_event}', name: 'app_candidat_index_front', methods: ['GET'])]
+public function indexFront(CandidatRepository $candidatRepository, int $id_event): Response
+{
+// Fetch candidates associated with the provided event ID
+$candidats = $id_event ? $candidatRepository->findBy(['idelection' => $id_event]) : $candidatRepository->findAll();
+
+return $this->render('candidat/listeCondidatFront.html.twig', [
+    'candidats' => $candidats,
+    'id_event' => $id_event,
+
+]);
+}
     #[Route('/new/{id_event}', name: 'app_candidat_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, int $id_event): Response
     {

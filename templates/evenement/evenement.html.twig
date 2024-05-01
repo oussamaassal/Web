@@ -1,0 +1,60 @@
+{% extends '/front/base.html.twig' %}
+{% block body %}
+
+    <section class="section section-md bg-gray-100">
+        <div class="container">
+          <div class="row row-50">
+          
+            <div class="col-sm-12">
+              <!-- Heading Component-->
+              <article class="heading-component">
+                <div class="heading-component-inner">
+                  <h5 class="heading-component-title">Shop grid
+                  </h5>
+                </div>
+              </article>
+              <div class="row row-30">
+              {% for evenement in evenements %}
+                <div class="col-md-6 col-lg-4">
+                  <!-- Product - Grid build-->
+                  <article class="product">
+                    <header class="product-header">
+                      
+                      <div class="product-figure">                    <img src="{{ asset('uploads/' ~ evenement.imgepath) }}" alt="Product Image">
+</div>
+                      <!-- Utilisez evenement.imgepath pour l'URL de l'image -->
+                      <div class="product-buttons">
+                        <a class="product-button fl-bigmug-line-shopping202" href="#" style="font-size: 26px"></a>
+                        {# <a class="product-button fl-bigmug-line-zoom60" href="#" data-lightgallery="item" style="font-size: 25px"> 
+</a> #}
+<a class="product-button fl-bigmug-line-zoom60" href="{{ asset('uploads/' ~ evenement.imgepath) }}" data-lightgallery="item" style="font-size: 25px"></a>
+
+                      </div>
+                    </header>
+                    <footer class="product-content">
+                      <h6 class="product-title"><a href="#">{{ evenement.nome }}</a></h6>
+                      <!-- Utilisez evenement.nome pour le nom -->
+                      <p>{{ evenement.datee|date('Y-m-d') }}</p>
+                      <!-- Utilisez evenement.datee pour la date -->
+                      <p>{{ evenement.postee }}</p>
+                      <!-- Utilisez evenement.postee pour le poste -->
+                      <p>{{ evenement.periodep }}</p>
+                      <!-- Utilisez evenement.periodep pour la période -->
+                    </footer>
+                  </article>
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+            <div class="col-sm-12">
+              <!-- Heading Component-->
+           
+           
+            </div>
+     
+       
+          </div>
+        </div>
+      </section>
+
+{% endblock %}

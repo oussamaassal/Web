@@ -82,6 +82,8 @@ class VoteController extends AbstractController
     }
     
     
+  
+    
     
     #[Route('/{idv}', name: 'app_vote_show', methods: ['GET'])]
     public function show(Vote $vote): Response
