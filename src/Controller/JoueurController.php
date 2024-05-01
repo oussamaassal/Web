@@ -159,6 +159,18 @@ class JoueurController extends AbstractController
     public function pageJoueur($id, JoueurRepository $repo):Response{
 
         $Joueur = $repo->find($id);
+        if ($this->qrCodeBuilder !== null) {
+                // Customize the QR code data
+                $qrCodeResult = $this->qrCodeBuilder
+                    ->data($Joueur->getLink())
+                    ->build();
+
+                // Convert the QR code result to a string representation
+                $qrCodeString = $this->convertQrCodeResultToString($qrCodeResult);
+
+                // Add the QR code string to the article entity
+                $Joueur->setQrCode($qrCodeString);
+            }
 
         return $this->renderForm('joueur/pageJoueur.html.twig',[
             'Joueur' => $Joueur
