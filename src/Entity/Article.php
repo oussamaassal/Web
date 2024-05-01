@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\ArticleRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+
 
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
@@ -15,16 +17,22 @@ class Article
     private ?int $idarticle =null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Il faut choisir Un titre.")]
+    #[Assert\Regex(
+        pattern: '/^.{2,}$/',
+        message: "Le titre doit contenir plus d'un caractère."
+    )]
     private ?string $titre;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"Il faut choisir une description.")]
     private ?string $description;
 
     #[ORM\Column(length: 255)]
     private ?string $image;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'articles')]
-    #[ORM\JoinColumn(name: 'idjournaliste_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'idjournaliste', referencedColumnName: 'iduser')]
     private ?User $idjournaliste;
 
     public function getIdarticle(): ?int
@@ -62,11 +70,12 @@ class Article
     }
 
     public function setImage(string $image): static
-    {
-        $this->image = $image;
+{
+    $this->image = $image;
 
-        return $this;
-    }
+    return $this;
+}
+
 
     public function getIdjournaliste(): ?User
     {
@@ -79,6 +88,7 @@ class Article
 
         return $this;
     }
+    
 
 
 }
