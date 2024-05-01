@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\LessThan;
+use Symfony\Component\Validator\Constraints\Type;
 
 class TerrainType extends AbstractType
 {
@@ -42,18 +43,22 @@ class TerrainType extends AbstractType
                 ],
             ])
             ->add('geo_x', NumberType::class, [
-                'constraints' => [
-                    new NotBlank(['message' => 'La coordonnée X ne peut pas être vide']),
-                ],
+
             ])
             ->add('geo_y', NumberType::class, [
-                'constraints' => [
-                    new NotBlank(['message' => 'La coordonnée Y ne peut pas être vide']),
-                ],
+
+
             ])
 
-            ->add('ouverture')
-            ->add('fermeture')
+            ->add('ouverture', DateTimeType::class, [
+                'required' => false,
+                'widget' => 'single_text',
+
+            ])
+            ->add('fermeture', DateTimeType::class, [
+                'required' => false,
+                'widget' => 'single_text',
+            ])
             ->add('CategTerrain', EntityType::class, [
                 'class' => CategTerrain::class,
                 'choice_label' => 'titre',
@@ -62,6 +67,7 @@ class TerrainType extends AbstractType
                     new NotBlank(['message' => 'La catégorie ne peut pas être vide']),
                 ],
             ])
+
             ->add('ajouter', SubmitType::class, ['label' => 'Ajouter'])
         ;
     }

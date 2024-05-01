@@ -61,7 +61,6 @@ class CategController extends AbstractController
         if ($form -> isSubmitted() && $form->isValid()){
             $en = $this->getDoctrine()->getManager();
             $en->flush();
-
             return $this->redirectToRoute('addCategorie'); // thezni lel page /Categ itha mrigel
         }
         return $this->render('categ/updateCateg.html.twig',['c'=>$form->createView()]);
