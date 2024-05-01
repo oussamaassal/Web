@@ -12,6 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Service\SmsGenerator;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+
 
 #[Route('/article')]
 class ArticleController extends AbstractController
@@ -76,7 +80,7 @@ class ArticleController extends AbstractController
         $text = 'Un nouveau Article a été ajouté : ' . $article->getTitre();
         //$smsGenerator->SendSms('+21625506906',$name, $text);
         $smsGenerator->SendSms('+21625506906',$name, $text);
-
+        
 
 
 
@@ -149,6 +153,48 @@ public function search(Request $request, ArticleRepository $articleRepository): 
         'Articles' => $articles,
     ]);
 }
+
+#[Route('/generate-pdf/{idarticle}', name: 'generate_pdf')]
+public function generatePdf($idarticle): Response
+{
+    // Récupérer l'article depuis la base de données ou tout autre source de données
+    $article = $this->getDoctrine()->getRepository(Article::class)->find($idarticle);
+
+    // Créer une instance de Dompdf avec des options facultatives
+    $options = new Options();
+    $options->set('defaultFont', 'Helvetica');
+    $dompdf = new Dompdf($options);
+
+    // Générer le contenu HTML du PDF
+    $html = $this->renderView('article/article.html.twig', [
+        'article' => $article,
+    ]);
+
+    // Charger le contenu HTML dans Dompdf
+    $dompdf->loadHtml($html);
+
+    // Rendre le PDF
+    $dompdf->render();
+
+    // Obtenez le contenu du PDF généré
+    $pdfContent = $dompdf->output();
+
+    // Créer une réponse avec le contenu du PDF
+    $response = new Response($pdfContent);
+
+    // Ajouter des en-têtes pour forcer le téléchargement du fichier
+    $disposition = $response->headers->makeDisposition(
+        ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+        'article.pdf'
+    );
+
+    $response->headers->set('Content-Type', 'application/pdf');
+    $response->headers->set('Content-Disposition', $disposition);
+
+    return $response;
+}
+
+
 
     
 }

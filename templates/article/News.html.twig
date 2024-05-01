@@ -57,6 +57,21 @@
         .chat-message.bot {
             text-align: left;
         }
+         /* Autres styles CSS */
+    .btn-pdf {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+    .btn-pdf:hover {
+        background-color: #0056b3;
+    }
     </style>
 <title> {% block title %} Hello Controller! {% endblock %}</title>
 <section class="section parallax-container breadcrumbs-wrap" data-parallax-img="images/bg-breadcrumbs-1-1920x726.jpg">
@@ -118,9 +133,11 @@
                                 <time class="post-corporate-time" datetime="2024-04-15">April 15, 2024</time>
                                 <div class="post-corporate-view"><span class="icon fl-justicons-visible6"></span>234</div>
                             </div>
+                            
                             <h4 class="post-corporate-title"><a href="blog-post.html">{{ article.getTitre }}</a></h4>
                             <div class="post-corporate-text">
                                 <p>{{ article.getDescription }}</p>
+                                 <a href="{{ path('generate_pdf', { 'idarticle': article.idarticle }) }}" class="btn-pdf">Télécharger PDF</a>
                             </div>
                         </div>
                         <a class="post-corporate-figure" href="blog-post.html"><img src="http://localhost/Images/Articles/{{ article.getImage }}" alt="" width="768" height="414"></a>
