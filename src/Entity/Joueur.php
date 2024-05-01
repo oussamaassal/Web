@@ -41,6 +41,9 @@ class Joueur
     #[ORM\Column(length: 255)]
     private ?string $link;
 
+    #[ORM\Column(length: 255)]
+    private ?string $QRcode;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -154,5 +157,16 @@ class Joueur
         return $this;
     }
 
+    public function getQRcode(): ?string
+    {
+        return $this->QRcode;
+    }
+
+    public function setQRcode(?string $QRcode): static
+    {
+        $this->QRcode = $$QRcode;
+
+        return $this;
+    }
 
 }
