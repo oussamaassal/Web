@@ -57,6 +57,7 @@
                     </article>
                     <div class="row row-30" id="product-list">
                         {% for produit in produits %}
+                        {% if produit.getQauntiteProduit() > 0 %}
                             <div class="col-md-6 col-lg-4 product-item" data-category="{{ produit.getCategory.id }}">
                                 <article class="product product-sm">
                                     <header class="product-header">
@@ -81,6 +82,7 @@
                                     </footer>
                                 </article>
                             </div>
+                        {% endif %}
                         {% endfor %}
                     </div>
                 </div>

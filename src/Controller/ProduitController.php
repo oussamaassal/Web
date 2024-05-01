@@ -32,32 +32,32 @@ class ProduitController extends AbstractController
     $form = $this->createForm(ProduitType::class, $produit);
     $form->handleRequest($request);
     
-    // Vérifier si le formulaire a été soumis et est valide
+    
     if ($form->isSubmitted() && $form->isValid()) {
         $entityManager = $this->getDoctrine()->getManager();
         $file = $form['image']->getData();
         
-        // Si un fichier est associé au formulaire, le traiter
+        
         if ($file) {
             $fileName = $produit->getNomproduit() . '.' . $file->guessExtension();
             $file->move(
                 $this->getParameter('produit_image_directory'),
                 $fileName
             );
-            // Définir le chemin de l'image sur l'entité
+            
             $produit->setImage($fileName);
         }
         
-        // Chercher le produit existant par son nom, s'il existe
+
         $existingProduct = $entityManager->getRepository(Produit::class)->findOneBy([
             'nomproduit' => $produit->getNomproduit()
         ]);
         
-        // Si le produit existe, incrémentez sa quantité
+        
         if ($existingProduct) {
             $existingProduct->setQauntiteproduit($existingProduct->getQauntiteproduit() + $produit->getQauntiteproduit());
         } else {
-            // Si le produit n'existe pas, persistez simplement le nouveau produit
+            
             $entityManager->persist($produit);
         }
         
@@ -80,12 +80,12 @@ class ProduitController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $file = $form['image']->getData();
 
-        // Si un fichier est téléchargé
+        
         if ($file) {
-            // Récupérer le nom de fichier existant
+            
             $oldFileName = $produit->getImage();
 
-            // Supprimer l'ancien fichier s'il existe
+            
             if ($oldFileName) {
                 $oldFilePath = $this->getParameter('produit_image_directory') . '/' . $oldFileName;
                 if (file_exists($oldFilePath)) {
@@ -93,16 +93,15 @@ class ProduitController extends AbstractController
                 }
             }
 
-            // Générer un nom unique pour le fichier
+            
             $fileName = $produit->getNomproduit() . '.' . $file->guessExtension();
 
-            // Déplacer le fichier vers le répertoire où les images sont stockées
+
             $file->move(
                 $this->getParameter('produit_image_directory'),
                 $fileName
             );
 
-            // Mettre à jour le chemin de l'image sur l'entité
             $produit->setImage($fileName);
         }
 
