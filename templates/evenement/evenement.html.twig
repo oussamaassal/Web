@@ -1,60 +1,78 @@
 {% extends '/front/base.html.twig' %}
 {% block body %}
 
-    <section class="section section-md bg-gray-100">
-        <div class="container">
-          <div class="row row-50">
-          
-            <div class="col-sm-12">
-              <!-- Heading Component-->
-              <article class="heading-component">
-                <div class="heading-component-inner">
-                  <h5 class="heading-component-title">Shop grid
-                  </h5>
-                </div>
-              </article>
-              <div class="row row-30">
-              {% for evenement in evenements %}
-                <div class="col-md-6 col-lg-4">
-                  <!-- Product - Grid build-->
-                  <article class="product">
-                    <header class="product-header">
-                      
-                      <div class="product-figure">                    <img src="{{ asset('uploads/' ~ evenement.imgepath) }}" alt="Product Image">
-</div>
-                      <!-- Utilisez evenement.imgepath pour l'URL de l'image -->
-                      <div class="product-buttons">
-                        <a class="product-button fl-bigmug-line-shopping202" href="#" style="font-size: 26px"></a>
-                        {# <a class="product-button fl-bigmug-line-zoom60" href="#" data-lightgallery="item" style="font-size: 25px"> 
-</a> #}
-<a class="product-button fl-bigmug-line-zoom60" href="{{ asset('uploads/' ~ evenement.imgepath) }}" data-lightgallery="item" style="font-size: 25px"></a>
+<section class="section section-md bg-gray-100">
+  <div class="container">
+    <div class="row row-50">
 
-                      </div>
-                    </header>
-                    <footer class="product-content">
-                      <h6 class="product-title"><a href="#">{{ evenement.nome }}</a></h6>
-                      <!-- Utilisez evenement.nome pour le nom -->
-                      <p>{{ evenement.datee|date('Y-m-d') }}</p>
-                      <!-- Utilisez evenement.datee pour la date -->
-                      <p>{{ evenement.postee }}</p>
-                      <!-- Utilisez evenement.postee pour le poste -->
-                      <p>{{ evenement.periodep }}</p>
-                      <!-- Utilisez evenement.periodep pour la période -->
-                    </footer>
-                  </article>
-                </div>
-              {% endfor %}
-              </div>
-            </div>
-            <div class="col-sm-12">
-              <!-- Heading Component-->
-           
-           
-            </div>
-     
-       
+      <div class="col-sm-12">
+        <!-- Heading Component-->
+        <article class="heading-component">
+          <div class="heading-component-inner">
+            <h5 class="heading-component-title">Liste des évenement d'aujourd'hui</h5>
           </div>
+        </article>
+        <div class="row row-30">
+          <li class="nav-item d-flex align-items-center">
+            <div class="input-group search-area">
+              <input type="text" class="form-control" id="searchInput" placeholder="Rechercher ...">
+              <span class="input-group-text"><a href="javascript:void(0)"><i class="flaticon-381-search-2"></i></a></span>
+            </div>
+          </li>
+          <script>
+            function filterTable() {
+              const filter = document.getElementById('searchInput').value.toUpperCase();
+              const events = document.querySelectorAll('.product');
+              for (let i = 0; i < events.length; i++) {
+                const event = events[i];
+                const eventName = event.querySelector('.product-title').innerText.toUpperCase();
+                const eventDate = event.querySelector('p:nth-child(2)').innerText.toUpperCase();
+                if (eventName.indexOf(filter) > -1 || eventDate.indexOf(filter) > -1) {
+                  event.style.display = '';
+                } else {
+                  event.style.display = 'none';
+                }
+              }
+            }
+            document.getElementById('searchInput').addEventListener('keyup', filterTable);
+          </script>
+          {% if evenements is not empty %}
+          {% for evenement in evenements %}
+          <div class="col-md-6 col-lg-4">
+            <!-- Product - Grid build-->
+            <article class="product">
+              <header class="product-header">
+                <div class="product-figure">
+                  <img src="{{ asset('uploads/' ~ evenement.imgepath) }}" alt="Product Image">
+                </div>
+                <div class="product-buttons">
+                  <a class="product-button fl-bigmug-line-shopping202" href="{{ path('app_candidat_index_front', {'id_event': evenement.ide}) }}" style="font-size: 26px"></a>
+                  <a class="product-button fl-bigmug-line-zoom60" href="{{ asset('uploads/' ~ evenement.imgepath) }}" data-lightgallery="item" style="font-size: 25px"></a>
+                </div>
+              </header>
+              <footer class="product-content">
+                <h6 class="product-title"><a href="#">{{ evenement.nome }}</a></h6>
+                <p>{{ evenement.datee|date('Y-m-d') }}</p>
+                <p>{{ evenement.postee }}</p>
+                <p>{{ evenement.periodep }}</p>
+              </footer>
+            </article>
+          </div>
+          {% endfor %}
+          {% else %}
+          <div class="col-sm-12">
+            <br><br>
+            <p>Aucun événement prévu pour aujourd'hui.</p>
+          </div>
+          <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+          {% endif %}
         </div>
-      </section>
+      </div>
+      <div class="col-sm-12">
+        <!-- Heading Component-->
+      </div>
+    </div>
+  </div>
+</section>
 
 {% endblock %}
