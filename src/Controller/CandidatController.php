@@ -8,7 +8,7 @@ use App\Entity\Evenement;
 use App\Form\CandidatType;
 use App\Repository\CandidatRepository;
 use App\Repository\EvenementRepository;
-
+use Knp\Component\Pager\PaginatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,13 +31,22 @@ class CandidatController extends AbstractController
     ]);
 }
 #[Route('/front/{id_event}', name: 'app_candidat_index_front', methods: ['GET'])]
-public function indexFront(CandidatRepository $candidatRepository,EvenementRepository $evenementRepository , int $id_event): Response
+public function indexFront(CandidatRepository $candidatRepository,EvenementRepository $evenementRepository ,PaginatorInterface $paginator ,
+Request $request, int $id_event): Response
 
 {
     $candidats = $id_event ? $candidatRepository->findBy(['idelection' => $id_event]) : $candidatRepository->findAll();
 
+    $candidats=$paginator->paginate(
+        $candidats,
+        $request->query->getInt('page',1),
+        3
+    );
+
 // Fetch the event details based on the provided event ID
 $evenement = $evenementRepository->find($id_event);
+
+
 
 return $this->render('candidat/listeCondidatFront.html.twig', [
     'candidats' => $candidats,

@@ -13,6 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
+
+
 #[Route('/evenement')]
 class EvenementController extends AbstractController
 {
@@ -55,45 +57,44 @@ class EvenementController extends AbstractController
 
     }
 
+   
     #[Route('/new', name: 'app_evenement_new', methods: ['GET', 'POST'])]
-public function new(Request $request): Response
-{
-    $evenement = new Evenement();
-    $form = $this->createForm(EvenementType::class, $evenement);
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-        // Handle file upload
-        $file = $form->get('imgepath')->getData();
-
-        if ($file) {
-            // Specify the upload directory path directly
-            $uploadDirectory = $this->getParameter('kernel.project_dir') . '/public/uploads';
-            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
-            $file->move($uploadDirectory, $fileName);
-            $evenement->setImgepath($fileName);
-        }
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($evenement);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('app_evenement_index', [], Response::HTTP_SEE_OTHER);
-    }
-
-    return $this->renderForm('evenement/new.html.twig', [
-        'evenement' => $evenement,
-        'form' => $form,
-    ]);
-}
-
-    #[Route('/{ide}', name: 'app_evenement_show', methods: ['GET'])]
-    public function show(Evenement $evenement): Response
+    public function new(Request $request): Response
     {
-        return $this->render('evenement/show.html.twig', [
+    
+        $evenement = new Evenement();
+        $form = $this->createForm(EvenementType::class, $evenement);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Handle file upload
+            $file = $form->get('imgepath')->getData();
+    
+            if ($file) {
+                // Specify the upload directory path directly
+                $uploadDirectory = $this->getParameter('kernel.project_dir') . '/public/uploads';
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                $file->move($uploadDirectory, $fileName);
+                $evenement->setImgepath($fileName);
+            }
+    
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($evenement);
+            $entityManager->flush();
+    
+    
+          
+    
+            return $this->redirectToRoute('send_sms');
+                }
+    
+        return $this->renderForm('evenement/new.html.twig', [
             'evenement' => $evenement,
+            'form' => $form,
         ]);
     }
+
+
     #[Route('/{ide}', name: 'app_evenement_delete', methods: ['POST'])]
     public function delete(Request $request, Evenement $evenement, EntityManagerInterface $entityManager): Response
     {

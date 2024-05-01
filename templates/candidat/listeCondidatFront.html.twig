@@ -60,10 +60,22 @@
           <br><br><br>
           <p>Aucun candidat disponible.</p>
         </div>
+        <div class="pagination" style="margin-left:450px;">
+            {% do candidats.setPageRange(3) %}
+            {{knp_pagination_render(candidats, 'pagination.html.twig')}}
+            <br><br><br><br><br>
+        </div>
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
         {% endif %}
+        <br></br>
+        <div class="pagination" style="margin-left:1px;">
+            {% do candidats.setPageRange(3) %}
+            {{knp_pagination_render(candidats, 'pagination.html.twig')}}
+            <br><br><br><br><br>
+        </div>
       </div>
     </div>
   </div>
 </section>
+
 {% endblock %}
