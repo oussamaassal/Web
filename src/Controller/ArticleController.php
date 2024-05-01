@@ -111,4 +111,26 @@ class ArticleController extends AbstractController
 
         return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
     }
+    #[Route('/article/search', name: 'app_article_search', methods: ['GET'])]
+public function search(Request $request, ArticleRepository $articleRepository): Response
+{
+    $query = $request->query->get('query');
+    if ($query) {
+        $articles = $articleRepository->createQueryBuilder('f')
+            ->where('f.titre LIKE :query')
+            ->setParameter('query', '%' . $query . '%')
+            ->getQuery()
+            ->getResult();
+    } else {
+        // Si aucune requête de recherche n'est fournie, récupérer tous les articles
+        $articles = $articleRepository->findAll();
+    }
+
+    // Passer les articles au template
+    return $this->render('article/news.html.twig', [
+        'Articles' => $articles,
+    ]);
+}
+
+    
 }
