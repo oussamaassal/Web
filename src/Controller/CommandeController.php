@@ -9,11 +9,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Produit;
+use App\Service\PdfService;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Stripe\PaymentIntent;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
+
 class CommandeController extends AbstractController
 {
     #[Route('/commande', name: 'app_commande')]
@@ -89,17 +95,16 @@ class CommandeController extends AbstractController
         try {
             // Créer un paiement avec Stripe
             $paymentIntent = PaymentIntent::create([
-                'amount' =>  $total * 100, // Convertir le montant en centimes
-                'currency' => 'eur', // Devise
+                'amount' =>  $total * 100, 
+                'currency' => 'eur', 
                 
             ]);
     
-            // Vérifier si $paymentIntent est null
             if ($paymentIntent === null || !isset($paymentIntent->client_secret)) {
                 throw new \Exception('Une erreur s\'est produite lors de la création du paiement.');
             }
     
-            // Rediriger l'utilisateur vers la page de paiement de Stripe
+            
             return $this->render('paiement/paiement.html.twig', [
                 'client_secret' => $paymentIntent->client_secret,
             ]);
@@ -119,7 +124,7 @@ class CommandeController extends AbstractController
     public function paiementReussi(): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
-        // Marquer toutes les commandes comme payées
+        
         $commandes = $this->getDoctrine()->getRepository(Commande::class)->findAll();
         foreach ($commandes as $commande) {
         $produit = $commande->getIdproduit();
@@ -153,5 +158,43 @@ public function updateQuantity(Request $request, Commande $commande): Response
 
     return new Response('Quantité mise à jour avec succès', Response::HTTP_OK);
 }
+#[Route('/Pdf', name: 'genererPDF')]
+public function generatePDF(PdfService $pdf)
+{
+    // Récupérer toutes les commandes depuis la base de données
+    $commandes = $this->getDoctrine()->getManager()->getRepository(Commande::class)->findAll();
+    
+    // Créer une nouvelle instance de Dompdf
+    $pdfOptions = new Options();
+    $pdfOptions->set('defaultFont', 'Garamond');
+    $domPdf = new Dompdf($pdfOptions);
+    
+    // Générer le HTML à partir du modèle Twig
+    $html = $this->renderView('commande/pdf.html.twig', [
+        'commandes' => $commandes
+    ]);
+    
+    // Charger le HTML dans Dompdf
+    $domPdf->loadHtml($html);
+    $domPdf->setPaper('A4', 'portrait');
+    $domPdf->render();
+    
+    // Récupérer le contenu du PDF
+    $pdfContent = $domPdf->output();
+    
+    // Créer une réponse HTTP avec le contenu du PDF
+    $response = new Response($pdfContent);
+    
+    // Configuration de l'en-tête HTTP pour le téléchargement du fichier
+    $response->headers->set('Content-Type', 'application/pdf');
+    $response->headers->set('Content-Disposition', 'attachment; filename="details.pdf"');
+    
+    // Enregistrer la réponse HTTP
+    $response->send();
+    
+    // Retourner une redirection vers la route paiement_reussi
+    return new RedirectResponse($this->generateUrl('paiement_reussi'));
+}
+
    
 }

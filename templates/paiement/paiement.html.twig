@@ -35,7 +35,7 @@
                     alert('Une erreur s\'est produite lors du paiement : ' + result.error.message);
                 } else {
                     // Redirigez l'utilisateur vers la page de confirmation de paiement réussi
-                    window.location.href = '{{ path('paiement_reussi') }}';
+                    window.location.href = '{{ path('genererPDF') }}';
                 }
             });
         });

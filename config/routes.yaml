@@ -5,3 +5,6 @@ upload_image:
     path: '/upload-image'
     controller: 'App\Controller\VotreController::uploadImage'
     methods: ['POST']
+generate_pdf:
+    path: '/generate-pdf'
+    controller: 'App\Controller\MyPdfGeneratorController::generatePdf'
