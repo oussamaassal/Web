@@ -12,7 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 
 #[Route('/evenement')]
@@ -94,6 +95,29 @@ class EvenementController extends AbstractController
         ]);
     }
 
+    #[Route('/pdfGenerator', name: 'app_evenement_pdf',methods: ['GET', 'POST'])]
+    public function exportPdf(EvenementRepository $evenementRepository): Response
+    {
+        $evenements=$evenementRepository->findAll();
+        $html = $this->renderView('evenement/pdf.html.twig', ['evenements' => $evenements]);
+    
+        // Set up Dompdf options and render the PDF
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+        
+        $dompdf = new Dompdf();
+        $dompdf->setOptions($options);
+        $dompdf->loadHtml($html);
+        $dompdf->render();
+        
+        // Return the PDF as a response
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            ['Content-Type' => 'application/pdf']
+        );
+    }
 
     #[Route('/{ide}', name: 'app_evenement_delete', methods: ['POST'])]
     public function delete(Request $request, Evenement $evenement, EntityManagerInterface $entityManager): Response

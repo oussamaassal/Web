@@ -30,6 +30,9 @@ class CandidatController extends AbstractController
 
     ]);
 }
+
+
+
 #[Route('/front/{id_event}', name: 'app_candidat_index_front', methods: ['GET'])]
 public function indexFront(CandidatRepository $candidatRepository,EvenementRepository $evenementRepository ,PaginatorInterface $paginator ,
 Request $request, int $id_event): Response
@@ -79,7 +82,7 @@ return $this->render('candidat/listeCondidatFront.html.twig', [
             $entityManager->persist($candidat);
             $entityManager->flush();
     
-            return $this->redirectToRoute('app_candidat_index', ['id_event' => $id_event], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_mailer', ['id_event' => $id_event], Response::HTTP_SEE_OTHER);
         }
     
         return $this->renderForm('candidat/new.html.twig', [
