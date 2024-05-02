@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ article.Titre }}</title>
+    <style>
+        /* Add your custom CSS styles for the PDF content here */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .article-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .article-content {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="article">
+        <h1 class="article-title">{{ article.Titre }}</h1>
+        <p class="article-content">{{ article.Description }}</p>
+       <a class="post-corporate-figure" href="blog-post.html"><img src="http://localhost/Images/Articles/{{ article.getImage }}" alt="" width="768" height="414"></a>
+
+    </div>
+</body>
+</html>

@@ -230,7 +230,7 @@ INSERT INTO `reclamation` (`IdReclamation`, `IdUser`, `Titre`, `Description`, `E
 
 CREATE TABLE `rencontre` (
   `IdRencontre` int(11) NOT NULL,
-  `DateRebcontre` date NOT NULL,
+  `DateRencontre` date NOT NULL,
   `Adversaire` varchar(255) NOT NULL,
   `Score` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

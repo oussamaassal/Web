@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<title>Article index</title>
+
+{% block body %}
+    <h1>Article index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Idarticle</th>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for article in articles %}
+            <tr>
+                <td>{{ article.idarticle }}</td>
+                <td>{{ article.titre }}</td>
+                <td>{{ article.description }}</td>
+                <td>{{ article.image }}</td>
+                <td>
+                    <a href="{{ path('app_article_show', {'idarticle': article.idarticle}) }}">show</a>
+                    <a href="{{ path('app_article_edit', {'idarticle': article.idarticle}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_article_new') }}">Create new</a>
+{% endblock %}
