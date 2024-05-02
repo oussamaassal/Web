@@ -21,11 +21,23 @@
     </style>
 </head>
 <body>
-    <div class="article">
-        <h1 class="article-title">{{ article.Titre }}</h1>
-        <p class="article-content">{{ article.Description }}</p>
-       <a class="post-corporate-figure" href="blog-post.html"><img src="http://localhost/Images/Articles/{{ article.getImage }}" alt="" width="768" height="414"></a>
+    <article class="post-corporate">
+                        <div class="post-corporate-content">
+                            <div class="post-corporate-header">
+                                <div class="badge badge-primary">SWIFTMINDER</div>
+                                  <time class="post-corporate-time" datetime="{{ "now"|date('Y-m-d') }}">{{ "now"|date('F j, Y') }}</time>
+                               
+                            </div>
+                            
+                            <div style="text-align: center;">
+    <h4 class="post-corporate-title"><a href="blog-post.html">{{ article.getTitre }}</a></h4>
+</div>
 
+                            <div class="post-corporate-text">
+                                <p>{{ article.getDescription }}</p>
+                               
+                            </div>
+                        </div>
     </div>
 </body>
 </html>
