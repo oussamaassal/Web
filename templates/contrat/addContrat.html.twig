@@ -63,7 +63,25 @@
         const dateDebutInput = document.getElementById('{{ f.date_debut.vars.id }}');
         const dateFinInput = document.getElementById('{{ f.date_fin.vars.id }}');
 
+        const today = new Date();
+
         dateDebutInput.addEventListener('change', function() {
+            if (dateDebutInput.value) {
+            const selectedDate = new Date(dateDebutInput.value);
+
+            if (selectedDate < today) {
+                event.preventDefault();
+                alert('La date de début doit être postérieure à la date d\'aujourd\'hui.');
+                dateDebutInput.value = '';
+            } else if (dateFinInput.value && selectedDate >= new Date(dateFinInput.value)) {
+                event.preventDefault();
+                alert('La date de début doit être antérieure à la date de fin.');
+                dateDebutInput.value = '';
+            }
+            }
+        });
+
+        /*dateDebutInput.addEventListener('change', function() {
             if (dateDebutInput.value && dateFinInput.value) {
                 const dateDebut = new Date(dateDebutInput.value);
                 const dateFin = new Date(dateFinInput.value);
@@ -74,7 +92,7 @@
                     dateDebutInput.value = '';
                 }
             }
-        });
+        });*/
 
         dateFinInput.addEventListener('change', function() {
             if (dateDebutInput.value && dateFinInput.value) {

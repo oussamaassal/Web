@@ -26,8 +26,6 @@ class JoueurController extends AbstractController
 
     private function convertQrCodeResultToString(PngResult $qrCodeResult): string
     {
-        // Convert the result to a string (e.g., base64 encode the image)
-        // Adjust this logic based on how you want to represent the QR code data
         $data = 'data:image/png;base64,' . base64_encode($qrCodeResult->getString());
         return $data;
     }
@@ -45,17 +43,13 @@ class JoueurController extends AbstractController
 
         $list = $repo->findAll();
         foreach ($list as $joueur) {
-            // Check if $this->qrCodeBuilder is not null
             if ($this->qrCodeBuilder !== null) {
-                // Customize the QR code data
                 $qrCodeResult = $this->qrCodeBuilder
                     ->data($joueur->getLink())
                     ->build();
 
-                // Convert the QR code result to a string representation
                 $qrCodeString = $this->convertQrCodeResultToString($qrCodeResult);
 
-                // Add the QR code string to the article entity
                 $joueur->setQrCode($qrCodeString);
             }
         }
@@ -69,17 +63,13 @@ class JoueurController extends AbstractController
 
         $list = $repo->findAll();
         foreach ($list as $joueur) {
-            // Check if $this->qrCodeBuilder is not null
             if ($this->qrCodeBuilder !== null) {
-                // Customize the QR code data
                 $qrCodeResult = $this->qrCodeBuilder
                     ->data($joueur->getLink())
                     ->build();
 
-                // Convert the QR code result to a string representation
                 $qrCodeString = $this->convertQrCodeResultToString($qrCodeResult);
 
-                // Add the QR code string to the article entity
                 $joueur->setQrCode($qrCodeString);
             }
         }
@@ -114,15 +104,12 @@ class JoueurController extends AbstractController
 
                 $file = $form['imagepath']->getData();
             if ($file) {
-                // Generate a unique name for the file before saving it
                 $fileName = $Joueur->getId().$Joueur->getNom().'.'.$file->guessExtension();
 
-                // Move the file to the directory where images are stored
                 $file->move(
                     $this->getParameter('joueurs_image_directory'),
                     $fileName
                 );
-                // Set the image path on the entity
                 $Joueur->setImagepath($fileName);
             }
                 $em->persist($Joueur);
@@ -160,15 +147,12 @@ class JoueurController extends AbstractController
 
         $Joueur = $repo->find($id);
         if ($this->qrCodeBuilder !== null) {
-                // Customize the QR code data
                 $qrCodeResult = $this->qrCodeBuilder
                     ->data($Joueur->getLink())
                     ->build();
 
-                // Convert the QR code result to a string representation
                 $qrCodeString = $this->convertQrCodeResultToString($qrCodeResult);
 
-                // Add the QR code string to the article entity
                 $Joueur->setQrCode($qrCodeString);
             }
 
