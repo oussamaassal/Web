@@ -89,10 +89,18 @@
               <div class="dlabnav">
                   <div class="dlabnav-scroll">
               <ul class="metismenu" id="menu">
-                          <li><a class="has-arrow " href="/News.html.twig" aria-expanded="false">
-                    <i class="fas fa-home"></i>
-                    <span class="nav-text">Actualité</span>
+                         <li>
+    <a class="has-arrow" href="{{ path('app_article_news') }}" aria-expanded="false">
+        <i class="fas fa-home"></i>
+        <span class="nav-text">Actualité</span>
+    </a>
+</li>
+                 <li> <a class="has-arrow " href="{{ path('app_rencontre_new')}}" aria-expanded="false">
+                  <i class="fas fa-table"></i>
+                    <span class="nav-text">Rencontre</span>
                   </a>
+                          </li>
+
                           </li>
                           <li><a class="has-arrow " href="Calendrier.html" aria-expanded="false">
                   <i class="fas fa-table"></i>
