@@ -90,6 +90,8 @@
 
 <a href="{{ path('app_evenement_new') }}" class="btn btn-primary">Create New</a>
 <a href="{{ path('all_vote_index') }}" class="btn btn-primary">Votes</a>
+<a href="{{ path('app_rdv') }}" class="btn btn-primary">Calendar</a>
+
 
     <br>
     <div class="products-container">
@@ -119,75 +121,83 @@
 
 
 
-    
-
-    <canvas id="myChart" width="400" height="400"></canvas>
+     <canvas id="myChart" width="400" height="400"></canvas>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <script>
-        // Récupération des données pour le graphique
-        let eventNames = [];
-        let eventCount = [];
+    // Récupération des données pour le graphique
+    let eventNames = [];
+    let eventCount = [];
 
-        {% for evenement in evenements %}
-            eventNames.push("{{ evenement.nome }}");
-            eventCount.push(1); // Chaque événement compte pour un
-        {% endfor %}
+    {% for evenement in evenements %}
+        eventNames.push("{{ evenement.nome }}");
 
-        // Création des données pour le graphique
-        let chartData = {
-            labels: eventNames,
-            datasets: [{
-                label: 'Nombre d\'événements',
-                data: eventCount,
-                backgroundColor: eventNames.map(() => getRandomColor())
+        {# let candidateCount = 0;
+
+       {% for candidat in candidats %}
+    {% if candidat.idElection.ide == evenement.ide %}
+        candidateCount++;
+    {% endif %}
+{% endfor %} #}
+
+
+        eventCount.push(1);
+    {% endfor %}
+
+    let chartData = {
+        labels: eventNames,
+        datasets: [{
+            label: 'Nombre de candidats',
+            data: eventCount,
+            backgroundColor: eventNames.map(() => getRandomColor())
+        }]
+    };
+
+    // Configuration des options du graphique
+    let chartOptions = {
+        legend: { display: false },
+        title: {
+            display: true,
+            text: "Statistiques des événements par nombre de candidats"
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    stepSize: 1 // Pour afficher uniquement des nombres entiers
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Nombre de candidats'
+                }
+            }],
+            xAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Nom de l\'événement'
+                }
             }]
-        };
-
-        // Configuration des options du graphique
-        let chartOptions = {
-            legend: { display: false },
-            title: {
-                display: true,
-                text: "Statistiques des événements par nombre"
-            },
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        stepSize: 1 // Pour afficher uniquement des nombres entiers
-                    },
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Nombre d\'événements'
-                    }
-                }],
-                xAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Nom de l\'événement'
-                    }
-                }]
-            }
-        };
-
-        // Création du graphique
-        let ctx = document.getElementById('myChart').getContext('2d');
-        let myChart = new Chart(ctx, {
-            type: 'bar',
-            data: chartData,
-            options: chartOptions
-        });
-
-        // Fonction pour générer des couleurs aléatoires
-        function getRandomColor() {
-            var letters = '0123456789ABCDEF';
-            var color = '#';
-            for (var i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
         }
-    </script>
+    };
+
+    // Création du graphique
+    let ctx = document.getElementById('myChart').getContext('2d');
+    let myChart = new Chart(ctx, {
+        type: 'bar',
+        data: chartData,
+        options: chartOptions
+    });
+
+    // Fonction pour générer des couleurs aléatoires
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+</script>
+
 
 {% endblock %}

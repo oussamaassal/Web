@@ -47,7 +47,9 @@
                   <img src="{{ asset('uploads/' ~ evenement.imgepath) }}" alt="Product Image">
                 </div>
                 <div class="product-buttons">
-                  <a class="product-button fl-bigmug-line-shopping202" href="{{ path('app_candidat_index_front', {'id_event': evenement.ide}) }}" style="font-size: 26px"></a>
+<a class="product-button" href="{{ path('app_candidat_index_front', {'id_event': evenement.ide}) }}">
+    <i class="fas fa-user" style="font-size: 26px;"></i>
+</a>
                   <a class="product-button fl-bigmug-line-zoom60" href="{{ asset('uploads/' ~ evenement.imgepath) }}" data-lightgallery="item" style="font-size: 25px"></a>
                 </div>
               </header>

@@ -3,8 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Evenement;
+use App\Entity\Candidat;
+
 use App\Form\EvenementType;
 use App\Repository\EvenementRepository;
+use App\Repository\CandidatRepository;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,10 +24,12 @@ use Dompdf\Options;
 class EvenementController extends AbstractController
 {
     #[Route('/', name: 'app_evenement_index', methods: ['GET'])]
-    public function index(EvenementRepository $evenementRepository): Response
+    public function index(EvenementRepository $evenementRepository , CandidatRepository $candidatRepository): Response
     {
         return $this->render('evenement/index.html.twig', [
             'evenements' => $evenementRepository->findAll(),
+            'candidats' => $candidatRepository->findAll(),
+
         ]);
     }
 
@@ -155,6 +161,24 @@ class EvenementController extends AbstractController
             'evenement' => $evenement,
             'form' => $form,
         ]);
+    }
+
+    #[Route('/get_candidate_count', name: 'get_candidate_count', methods: ['GET'])]
+    public function getCandidateCount(EvenementRepository $evenementRepository): JsonResponse
+    {
+        $events = $evenementRepository->findAll();
+
+        $data = [];
+        foreach ($events as $event) {
+            $candidateCount = $event->getCandidats()->count(); // Assuming 'getCandidats()' returns a collection of candidates associated with the event
+            $data[] = [
+                'id' => $event->getId(), // Assuming your event entity has an 'id' property
+                'name' => $event->getName(), // Assuming your event entity has a 'name' property
+                'candidateCount' => $candidateCount,
+            ];
+        }
+
+        return $this->json($data);
     }
     
     
