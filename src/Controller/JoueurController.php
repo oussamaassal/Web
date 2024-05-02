@@ -33,7 +33,7 @@ class JoueurController extends AbstractController
     #[Route('/joueur', name: 'app_joueur')]
     public function index(): Response
     {
-        return $this->render('list.html.twig', [
+        return $this->render('/list.html.twig', [
             'controller_name' => 'JoueurController',
         ]);
     }
