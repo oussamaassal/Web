@@ -6,10 +6,13 @@ use App\Entity\Contrat;
 use App\Form\ContratType;
 use App\Repository\ContratRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 
 class ContratController extends AbstractController
 {
@@ -82,4 +85,53 @@ class ContratController extends AbstractController
             'f' => $form
         ]);
     }
+
+
+#[Route('/generatePDF/{id}', name: 'Contrat_PDF')]
+public function ContratPDF($id, ContratRepository $repo, Request $req)
+{
+    $pdfOptions = new Options();
+    $pdfOptions->set('defaultFont', 'Arial');
+
+    $Contrat = $repo->find($id);
+
+    if (!$Contrat) {
+        // Handle case where Contrat is not found (e.g., throw an exception or return a 404 response)
+        throw $this->createNotFoundException('Contrat not found');
+    }
+
+    // Get the absolute URL of the image
+    $imagePath = $this->getParameter('kernel.project_dir').'/public/assets_pdf/swiftminder.png';
+    $imageData = $this->imageToBase64($imagePath);
+
+    $dompdf = new Dompdf($pdfOptions);
+
+    $html = $this->renderView('Contrat/ContratJoueur.html.twig', [
+        'contrat' => $Contrat,
+        'imageData' => $imageData, // Pass the image data to the template
+    ]);
+
+    $dompdf->loadHtml($html);
+    $dompdf->setPaper('A4', 'portrait');
+    $dompdf->render();
+
+    // Set appropriate headers for inline display
+    $response = new Response($dompdf->output(), Response::HTTP_OK);
+    $response->headers->set('Content-Type', 'application/pdf');
+    $response->headers->set('Content-Disposition', 'inline; filename="contrat.pdf"');
+
+    return $response;
+}
+
+// Your other controller methods...
+
+// Function to convert image to base64
+private function imageToBase64($path) {
+    $type = pathinfo($path, PATHINFO_EXTENSION);
+    $data = file_get_contents($path);
+    $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+    return $base64;
+}
+
+
 }

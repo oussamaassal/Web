@@ -34,6 +34,7 @@
                                                   <th>Date debut</th>
                                                   <th>Date fin</th>
                                                   <th>Salaire</th>
+                                                  <th></th>
                                                   <th>Action</th>
                                                   
                                               </tr>
@@ -47,7 +48,15 @@
                                                   <td>{{ Contrat.getDateDebut()| date }}</td>
                                                   <td>{{ Contrat.getDateFin() | date }}</td>
                                                   <td>{{ Contrat.getSalaire() }}</td>
-                                              
+                                                  <td>
+                                                  <form method="POST" action="{{ path('Contrat_PDF', {id: Contrat.getContratId}) }}">
+                                                    <button type="Submit" class="btn btn-rounded btn-success">
+                                                      <span class="btn-icon-start text-success">
+                                                        <i class="fa fa-upload color-success"></i>
+                                                      </span>génrer PDF
+                                                    </button>
+                                                  </form>
+                                                  
                                                   <td>
                                                     <div class="d-flex">
                                                       <a href="{{ path('Contrat_edit', {id: Contrat.getContratId}) }}" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fas fa-pencil-alt"></i></a>
