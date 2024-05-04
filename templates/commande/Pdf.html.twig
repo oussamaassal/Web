@@ -61,7 +61,7 @@
                     <td>{{ commande.idProduit.getCategory.getTitre }}</td>
                     <td>{{ commande.getQuantite }}</td>
                     <td>{{ commande.getQuantite * commande.getSomme }}</td>
-                    <td><img src="http://localhost/Images/Produits/{{ commande.getIdProduit.getImage() }}" alt=""></td>
+                    <td><img src="http://localhost/Images/Produits/{{ commande.IdProduit.getImage() }}" alt=""></td>
                 </tr>
                 {% set total = total + commande.getQuantite * commande.getSomme %}
                 {% endfor %}
