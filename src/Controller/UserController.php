@@ -380,7 +380,7 @@ class UserController extends AbstractController
             $submitEmailForm->handleRequest($request);
             $resetPasswordCodeForm=$this->createForm(ResetPasswordCodeFormType::class);
             $resetPasswordCodeForm->handleRequest($request);
-            //step 2
+            ///
             if($sessionInterface->get('user_in_second_step') && $sessionInterface->get("randomCode")){
                 $randomString=$sessionInterface->get("randomCode");
                 if ($resetPasswordCodeForm->isSubmitted() && $resetPasswordCodeForm->isValid()) {
@@ -404,7 +404,7 @@ class UserController extends AbstractController
             ]); 
         
         }
-            //STEP 1
+            //
             if( ($submitEmailForm->isSubmitted() && $submitEmailForm->isValid())){
                 $formDataEmail = $submitEmailForm->getData();
                 $email = $formDataEmail['email'];
@@ -488,7 +488,7 @@ class UserController extends AbstractController
   
 
         } else {
-            // The session variables are not set, so set them
+            
          return $this->redirectToRoute("app_user_request_reset");
 
         }

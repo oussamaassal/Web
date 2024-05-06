@@ -23,7 +23,7 @@
 
 <script>
     $(document).ready(function(){
-        // Function to retrieve the statistic from the server
+       
         function createStat(x1,x2){
             const data = {
                 labels: ['Réclamations traitées', 'Réclamations non traitées'],
@@ -41,7 +41,7 @@
                 options: {
                     plugins: {
                         legend: {
-                            position: 'bottom', // Position de la légende
+                            position: 'bottom', // 
                         },
                     },
                 },
@@ -51,11 +51,11 @@
 
         function fetchStatistic() {
             $.ajax({
-                url: '{{ path('static_data') }}', // Replace with the URL of your server-side script
+                url: '{{ path('static_data') }}', 
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    // Display the statistic on the webpage
+                  
                     createStat(data.traite, data.non_traite);
                 },
                 error: function(xhr, status, error) {
@@ -64,7 +64,7 @@
             });
         }
 
-        // Call the fetchStatistic function when the page loads
+        
         fetchStatistic();
     });
 </script>
