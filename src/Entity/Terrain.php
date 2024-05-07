@@ -9,8 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TerrainRepository::class)]
 class Terrain
+
 {
-    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -21,6 +21,7 @@ class Terrain
 
     #[ORM\Column(length: 255)]
     private ?string $adresse = null;
+
 
     #[ORM\Column(length: 255)]
     private ?string $description = null;
