@@ -90,7 +90,7 @@ class UserController extends AbstractController
         return 'data:image/png;base64,' . base64_encode($qrCodeResult->getString());
     }
 
-    #[Route('/admin/new', name: 'app_user_new', methods: ['GET', 'POST'])]
+    #[Route('/admin/new ', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager,SessionInterface $sessionInterface, SluggerInterface $slugger): Response
 
     {   
