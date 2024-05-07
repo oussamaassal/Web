@@ -132,7 +132,17 @@ class JoueurController extends AbstractController
         $form = $this->createForm(JoueurType::class,$Joueur);
         
         $form->handleRequest($req);
-        if($form->isSubmitted()) {
+        if($form->isSubmitted() && $form->isValid()) {
+            $file = $form['imagepath']->getData();
+            if ($file) {
+                $fileName = $Joueur->getId().$Joueur->getNom().'.'.$file->guessExtension();
+
+                $file->move(
+                    $this->getParameter('joueurs_image_directory'),
+                    $fileName
+                );
+                $Joueur->setImagepath($fileName);
+            }
             $em->persist($Joueur);
             $em->flush();
             return $this->redirectToRoute('Joueur_list');

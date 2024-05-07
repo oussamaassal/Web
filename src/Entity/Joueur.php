@@ -44,6 +44,9 @@ class Joueur
     #[ORM\Column(length: 255)]
     private ?string $QRcode;
 
+    #[ORM\Column]
+    private ?int $shirtnum =null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -165,6 +168,18 @@ class Joueur
     public function setQRcode(?string $QRcode): static
     {
         $this->QRcode = $QRcode;
+
+        return $this;
+    }
+
+    public function getShirtnum(): ?int
+    {
+        return $this->shirtnum;
+    }
+
+    public function setShirtnum(int $shirtnum): static
+    {
+        $this->shirtnum = $shirtnum;
 
         return $this;
     }
