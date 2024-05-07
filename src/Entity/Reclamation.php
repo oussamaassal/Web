@@ -20,11 +20,12 @@ class Reclamation
     private ?string $description;
 
     #[ORM\Column]
-    private ?int $etat =null;
+    private ?bool $etat =null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'reclamations')]
-    #[ORM\JoinColumn(name: 'iduser_id', referencedColumnName: 'iduser')]
-    private ?User $iduser;
+
+    #[ORM\JoinColumn(name: 'iduser', referencedColumnName: 'iduser')]
+    private ?User $user;
 
     public function getIdreclamation(): ?int
     {
@@ -55,26 +56,26 @@ class Reclamation
         return $this;
     }
 
-    public function getEtat(): ?int
+    public function getEtat(): ?bool
     {
         return $this->etat;
     }
 
-    public function setEtat(int $etat): static
+    public function setEtat(bool $etat): static
     {
         $this->etat = $etat;
 
         return $this;
     }
 
-    public function getIduser(): ?User
+    public function getUser(): ?User
     {
-        return $this->iduser;
+        return $this->user;
     }
 
-    public function setIduser(?User $iduser): static
+    public function setUser(?User $user): static
     {
-        $this->iduser = $iduser;
+        $this->user = $user;
 
         return $this;
     }

@@ -45,4 +45,12 @@ class ReclamationRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+public function findReclamationByResponse(){
+    $stats = $this->createQueryBuilder('r')
+    ->select('r.etat, COUNT(r) as count')
+    ->groupBy('r.etat')
+    ->getQuery()
+    ->getResult();
+    return $stats;
+}
 }

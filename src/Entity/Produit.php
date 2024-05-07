@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use App\Entity\Category;
 
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
