@@ -132,7 +132,7 @@ class Produit
     }
     public function getTitle(): ?Category
     {
-        return $this->getCategory().titre;
+        return $this->getCategory()->getTitre();
     }
 
     public function setCategory(?Category $category): static
