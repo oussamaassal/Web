@@ -9,6 +9,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             overflow: hidden;
+            float: right; /* Nouvelle propriété pour positionner à droite */
         }
 
         .chat-container {
@@ -77,9 +78,9 @@
 <section class="section parallax-container breadcrumbs-wrap" data-parallax-img="images/bg-breadcrumbs-1-1920x726.jpg">
     <div class="parallax-content breadcrumbs-custom context-dark">
         <div class="container">
-            <h3 class="breadcrumbs-custom-title">News 1</h3>
+            <h3 class="breadcrumbs-custom-title">News</h3>
             <ul class="breadcrumbs-custom-path">
-                <li><a href="index.html">Home</a></li>
+                <li><a href="article/news">Home</a></li>
                 <li><a href="#">News</a></li>
                 <li class="active">News 1</li>
             </ul>
@@ -129,9 +130,13 @@
                     <article class="post-corporate">
                         <div class="post-corporate-content">
                             <div class="post-corporate-header">
-                                <div class="badge badge-primary">The League</div>
-                                <time class="post-corporate-time" datetime="2024-04-15">April 15, 2024</time>
-                                <div class="post-corporate-view"><span class="icon fl-justicons-visible6"></span>234</div>
+                                <div class="badge badge-primary">SWIFTMINDER</div>
+                                <time class="post-corporate-time" datetime="{{ "now"|date('Y-m-d') }}">{{ "now"|date('F j, Y') }}</time>
+
+                                <div class="post-corporate-view" id="visibility-container">
+    
+   </div>
+
                             </div>
                             
                             <h4 class="post-corporate-title"><a href="blog-post.html">{{ article.getTitre }}</a></h4>
@@ -142,14 +147,14 @@
                         </div>
                         <a class="post-corporate-figure" href="blog-post.html"><img src="http://localhost/Images/Articles/{{ article.getImage }}" alt="" width="768" height="414"></a>
                         <div class="post-corporate-footer">
-                            <div class="post-corporate-comment"><span class="icon mdi mdi-comment-outline"></span><a href="#">345 Comments</a></div>
+                            
                             <div class="post-corporate-share">
                                 <ul class="group">
                                     <li>Share</li>
-                                    <li><a class="icon fa-facebook" href="#"></a></li>
-                                    <li><a class="icon fa-twitter" href="#"></a></li>
-                                    <li><a class="icon fa-google-plus" href="#"></a></li>
-                                    <li><a class="icon fa-instagram" href="#"></a></li>
+                                    <li><a class="icon fa-facebook" href="https://www.facebook.com"></a></li>
+                                    <li><a class="icon fa-twitter" href="https://www.twitter.com"></a></li>
+                                    <li><a class="icon fa-google-plus" href"https://www.google.com"></a></li>
+                                    <li><a class="icon fa-instagram" href="https://www.instagram.com"></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -182,7 +187,7 @@
                         <article class="heading-component">
                             <div class="heading-component-inner">
                                 <h5 class="heading-component-title">In The Spotlight</h5>
-                                <a class="button button-xs button-gray-outline" href="news-5.html">All News</a>
+                                <a href="{{ path('app_article_news') }}" class="btn btn-outline-success btn-rounded fs-16">All news </a>
                             </div>
                         </article>
                         <div class="list-post-classic">
@@ -192,7 +197,8 @@
                                     <div class="post-classic-aside"><a class="post-classic-figure" href="blog-post.html"><img src="http://localhost/Images/Articles/{{ article.getImage }}" alt="" width="94" height="94"></a></div>
                                     <div class="post-classic-main">
                                         <p class="post-classic-title"><a href="blog-post.html">{{ article.getTitre }}</a></p>
-                                        <div class="post-classic-time"><span class="icon mdi mdi-clock"></span><time datetime="2024-04-15">April 15, 2024</time></div>
+                                        <time class="post-corporate-time" datetime="{{ "now"|date('Y-m-d') }}">{{ "now"|date('F j, Y') }}</time>
+
                                     </div>
                                 </article>
                             {% endfor %}
@@ -209,7 +215,7 @@
                         </article>
                         <!-- Social Media Buttons -->
                         <div class="group-sm group-flex">
-                            <a class="button-media button-media-facebook" href="#">
+                            <a class="button-media button-media-facebook" href="https://www.facebook.com">
                                 <h4 class="button-media-title">50k</h4>
                                 <p class="button-media-action">Like<span class="icon material-icons-add_circle_outline icon-sm"></span></p>
                                 <span class="button-media-icon fa-facebook"></span>
@@ -316,20 +322,50 @@
     }
 
     function handleUserMessage(message) {
-        // Here you can implement logic to send the user's message to a server (e.g., using AJAX) and handle the response
-        // For demonstration purposes, let's just simulate a bot response after a short delay
-        setTimeout(function() {
-            let botMessage = '';
-            if (message.toLowerCase().includes('bonjour')) {
+    setTimeout(function() {
+        let botMessage = '';
+        switch (message.toLowerCase()) {
+            case 'bonjour':
                 botMessage = 'Bonjour ! Comment puis-je vous aider ?';
-            } else if (message.toLowerCase().includes('aurevoir')) {
+                break;
+            case 'aurevoir':
                 botMessage = 'Au revoir ! À bientôt.';
-            } else {
+                break;
+            case 'merci':
+                botMessage = 'De rien !';
+                break;
+            
+            case 'c qui messi':
+                botMessage = 'Lionel Messi est un joueur de football argentin largement considéré comme lun des plus grands joueurs de tous les temps. Né le 24 juin 1987 à Rosario, en Argentine, Messi a passé la majeure partie de sa carrière professionnelle au FC Barcelone,où il a remporté de nombreux titres nationaux et internationaux, notamment la Ligue des champions de lUEFA et de nombreux championnats espagnols..';
+                break;
+                case 'tes sur ':
+                botMessage = 'Je suis une IA développée par léquipe DEV-TEAM. Bien que je puisse parfois commettre des erreurs en raison de ma nature de robot, je mefforce constamment de ma méliorer pour vous offrir une meilleure assistance..';
+                break;
+                case 'c tres gentil':
+                botMessage = 'merci pareillement :)';
+                break;
+                case 'esprit':
+                botMessage = 'ESB se distingue des universités privées en Tunisie en proposant des licences et des masters en Management, Marketing Digital et Business Computing ...';
+                break;
+                case 'symfony':
+                botMessage = 'Symfony est un framework web open source écrit en PHP pour le développement dapplications web. Il fournit un ensemble de composants modulaires et réutilisables, ainsi quune architecture robuste pour construire des applications web évolutives et performantes.';
+                break;
+                case 'hi':
+                botMessage = 'hi haw can I help you?';
+                break;
+                case ' bye':
+                botMessage = 'thank you and good bye';
+                break;
+                case 'daccord':
+                botMessage = 'ya til d"autre question??';
+                break;
+            default:
                 botMessage = 'Désolé, je ne comprends pas. Pouvez-vous reformuler votre question ?';
-            }
-            appendMessage('bot', botMessage);
-        }, 1000); // Simulate a delay of 1 second
-    }
+        }
+        appendMessage('bot', botMessage);
+    }, 1000); // Simulate a delay of 1 second
+}
+
 </script>
 
 

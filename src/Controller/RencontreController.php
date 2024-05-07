@@ -21,6 +21,13 @@ class RencontreController extends AbstractController
             'rencontres' => $rencontreRepository->findAll(),
         ]);
     }
+    #[Route('/rencontre', name: 'app_rencontre_rencontre', methods: ['GET'])]
+    public function news(RencontreRepository $rencontreRepository): Response
+    {
+        return $this->render('rencontre/rencontre.html.twig', [
+            'rencontres' => $rencontreRepository->findAll(),
+        ]);
+    }
 
     #[Route('/newRencontre', name: 'app_rencontre_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response

@@ -30,7 +30,7 @@ class ArticleController extends AbstractController
         $pagination = $paginator->paginate(
             $articles,
             $request->query->getInt('page', 1),
-            4 // Nombre d'articles par page
+            3// Nombre d'articles par page
         );
 
         // Passer les articles paginés au template
