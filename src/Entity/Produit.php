@@ -6,7 +6,7 @@ use App\Repository\ProduitRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\Category;
-
+use ContainerIyR6A4u\getTicketRepositoryService;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 class Produit
@@ -132,7 +132,7 @@ class Produit
     }
     public function getTitle(): ?Category
     {
-        return $this->category.title;
+        return $this->getCategory().titre;
     }
 
     public function setCategory(?Category $category): static
