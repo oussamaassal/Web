@@ -31,7 +31,7 @@
                 <div class="player-info-modern"><a class="player-info-modern-figure" href="/pageJoueur/{{Joueur.getId()}}"><img src="http://localhost/Images/Joueurs/{{ Joueur.getImagepath() }}" alt="" width="368" height="286"></a>
                   <div class="player-info-modern-footer">
                     <div class="player-info-modern-number">
-                      <p>10</p>
+                      <p>{{Joueur.getShirtnum()}}</p>
                     </div>
                     <div class="player-info-modern-content">
                       <div class="player-info-modern-title">
@@ -42,20 +42,20 @@
                         <!-- Linear progress bar-->
                         <article class="progress-linear progress-bar-modern">
                           <div class="progress-header">
-                            <p>Age</p>
+                            <p>PASS ACC</p>
                           </div>
                           <div class="progress-bar-linear-wrap">
                             <div class="progress-bar-linear"></div>
-                          </div><span class="progress-value">{{Joueur.getAge()}}</span>
+                          </div><span class="progress-value">{{ random(40, 90) }}</span>
                         </article>
                         <!-- Linear progress bar-->
                         <article class="progress-linear progress-bar-modern">
                           <div class="progress-header">
-                            <p>Poids</p>
+                            <p>SHOTS ACC</p>
                           </div>
                           <div class="progress-bar-linear-wrap">
                             <div class="progress-bar-linear"></div>
-                          </div><span class="progress-value">{{Joueur.getPoids()}}</span>
+                          </div><span class="progress-value">{{ random(60, 100) }}</span>
                         </article>
                       </div>
                     </div>

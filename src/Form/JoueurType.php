@@ -120,6 +120,13 @@ class JoueurType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('shirtnum', IntegerType::class, [
+                'label' => 'Shirt number',
+                'required' => false,
+                'constraints' => [
+                    new NotBlank(),
+                ],
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Submit',
                 'attr' => ['class' => 'btn btn-primary'],
