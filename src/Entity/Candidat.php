@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CandidatRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Entity(repositoryClass: CandidatRepository::class)]
@@ -26,8 +27,11 @@ class Candidat
     #[ORM\Column(length: 255)]
     private ?string $imgcpath;
 
+    // #[ORM\ManyToOne(targetEntity: Evenement::class, inversedBy: 'candidats')]
+    // #[ORM\JoinColumn(name: 'idelection', referencedColumnName: 'ide')]
+    // private ?Evenement $idelection;
     #[ORM\ManyToOne(targetEntity: Evenement::class, inversedBy: 'candidats')]
-    #[ORM\JoinColumn(name: 'idelection_id', referencedColumnName: 'ide')]
+    #[ORM\JoinColumn(name: 'idelection', referencedColumnName: 'ide')]
     private ?Evenement $idelection;
 
     public function getIdc(): ?int

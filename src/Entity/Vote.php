@@ -2,7 +2,8 @@
 
 namespace App\Entity;
 
-
+use App\Entity\Candidat;
+use App\Entity\Evenement;
 use App\Repository\VoteRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,43 +12,66 @@ class Vote
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $idv =null;
+    #[ORM\Column(name: 'idV')]
+    private ?int $idv = null;
 
-    #[ORM\Column]
-    private ?int $idcandidatv =null;
- 
-    #[ORM\Column]
-    private ?int $idelectionv =null;
+    #[ORM\ManyToOne(targetEntity: Candidat::class)]
+    #[ORM\JoinColumn(name: 'idCandidatV', referencedColumnName: 'idc')]
+    private ?Candidat $candidat = null;
+
+    #[ORM\ManyToOne(targetEntity: Evenement::class)]
+    #[ORM\JoinColumn(name: 'idElectionV', referencedColumnName: 'ide')]
+    private ?Evenement $evenement = null;
+
+    #[ORM\Column(name: 'idUser')]
+    private ?int $idUser = null;    
 
     public function getIdv(): ?int
     {
         return $this->idv;
     }
 
-    public function getIdcandidatv(): ?int
+    public function setIdv(int $idv): self
     {
-        return $this->idcandidatv;
-    }
-
-    public function setIdcandidatv(int $idcandidatv): static
-    {
-        $this->idcandidatv = $idcandidatv;
+        $this->idv = $idv;
 
         return $this;
     }
 
-    public function getIdelectionv(): ?int
+    public function getidUser(): ?int
     {
-        return $this->idelectionv;
+        return $this->idUser;
     }
 
-    public function setIdelectionv(int $idelectionv): static
+    public function setidUser(int $idUser): self
     {
-        $this->idelectionv = $idelectionv;
+        $this->idUser = $idUser;
+    
+        return $this;
+    }
+    
+
+    public function getCandidat(): ?Candidat
+    {
+        return $this->candidat;
+    }
+
+    public function setCandidat(?Candidat $candidat): self
+    {
+        $this->candidat = $candidat;
 
         return $this;
     }
 
+    public function getEvenement(): ?Evenement
+    {
+        return $this->evenement;
+    }
 
+    public function setEvenement(?Evenement $evenement): self
+    {
+        $this->evenement = $evenement;
+
+        return $this;
+    }
 }

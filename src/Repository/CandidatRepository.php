@@ -45,4 +45,20 @@ class CandidatRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+ /**
+     * Count the number of candidates for a given event ID.
+     *
+     * @param int $eventId The ID of the event
+     * @return int The number of candidates
+     */
+    public function countCandidatesByEventId(int $eventId): int
+    {
+        return $this->createQueryBuilder('c')
+            ->select('COUNT(c.id)')
+            ->leftJoin('c.election', 'e')
+            ->andWhere('e.id = :eventId')
+            ->setParameter('eventId', $eventId)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

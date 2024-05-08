@@ -36,6 +36,15 @@ class VoteRepository extends ServiceEntityRepository
 //        ;
 //    }
 
+public function countByCandidat(Candidat $candidat): int
+{
+    return $this->createQueryBuilder('v')
+        ->select('COUNT(v)')
+        ->andWhere('v.candidat = :candidat')
+        ->setParameter('candidat', $candidat)
+        ->getQuery()
+        ->getSingleScalarResult();
+}
 //    public function findOneBySomeField($value): ?Vote
 //    {
 //        return $this->createQueryBuilder('v')
