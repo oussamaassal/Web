@@ -26,10 +26,6 @@ class ArticleType extends AbstractType
                     'accept' => 'image/jpeg, image/png, image/gif',
                 ],
             ])
-            ->add('idjournaliste',EntityType::class,[
-                'class' => 'App\Entity\User',
-                'choice_label' => 'idUser'
-            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Submit',
                 'attr' => ['class' => 'btn btn-primary'],
