@@ -19,6 +19,8 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
 
 
 class CommandeController extends AbstractController
@@ -34,10 +36,11 @@ class CommandeController extends AbstractController
         ]);
     }
     #[Route('/ajoutcommande/{id}', name: 'ajoutcommande')]
-    public function ajoutCommande(Request $request, Produit $produit, Security $security): Response
+    public function ajoutCommande(Request $request, Produit $produit, SessionInterface $session): Response
     {
-        $user = $security->getUser();
-        if (!$user) {
+        $userData = $session->get('user');
+        $user = unserialize($userData);
+        if (!$userData) {
             return $this->redirectToRoute('app_user_login');
         }
         
