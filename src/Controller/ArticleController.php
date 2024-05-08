@@ -15,7 +15,7 @@ use App\Service\SmsGenerator;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 #[Route('/article')]
 class ArticleController extends AbstractController
@@ -49,15 +49,18 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/new', name: 'app_article_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, SmsGenerator $smsGenerator, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, SmsGenerator $smsGenerator, EntityManagerInterface $entityManager, SessionInterface $session): Response
     {
-
-       
-
-
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
+        $userData = $session->get('user');
+        $user = unserialize($userData);
+        if (!$userData) {
+            return $this->redirectToRoute('app_user_login');
+        }
+
+        $article->setIdjournaliste($user);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $form['image']->getData();
@@ -73,6 +76,7 @@ class ArticleController extends AbstractController
                 // Set the image path on the entity
                 $article->setImage($fileName);
             }
+            $entityManager->persist($user);
             $entityManager->persist($article);
             $entityManager->flush();
              // SMS sending logic remains the same
@@ -81,13 +85,6 @@ class ArticleController extends AbstractController
         //$smsGenerator->SendSms('+21625506906',$name, $text);
         $smsGenerator->SendSms('+21625506906',$name, $text);
         
-
-
-
-
-
-
-
             return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -97,13 +94,7 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/{idarticle}', name: 'app_article_show', methods: ['GET'])]
-    public function show(Article $article): Response
-    {
-        return $this->render('article/show.html.twig', [
-            'article' => $article,
-        ]);
-    }
+    
 
     #[Route('/{idarticle}/edit', name: 'app_article_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Article $article, EntityManagerInterface $entityManager): Response

@@ -73,7 +73,7 @@ class RencontreController extends AbstractController
             'rencontre' => $rencontre,
             'f' => $form,
         ]);
-    }
+    } 
 
     #[Route('/{idrencontre}', name: 'app_rencontre_delete', methods: ['POST'])]
     public function delete(Request $request, Rencontre $rencontre, EntityManagerInterface $entityManager): Response
