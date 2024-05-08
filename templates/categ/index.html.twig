@@ -10,9 +10,9 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Liste Terrains</h4>
+                            <h4 class="card-title">Liste categories</h4>
                             <div class="mb-4">
-                                <a href="/addTerrain" class="btn btn-outline-success btn-rounded fs-16">+ Nouveau terrain</a>
+                                <a href="/category/newCat" class="btn btn-outline-success btn-rounded fs-16">Ajouter categorie</a>
                             </div>
                         </div>
                         <div class="card-body">
@@ -20,30 +20,20 @@
                                 <table id="example3" class="display" style="min-width: 845px">
                                     <thead>
                                     <tr>
-                                        <th>nom terrain</th>
-                                        <th>adresse</th>
-                                        <th>description</th>
-                                        <th>geo_x</th>
-                                        <th>geo_y</th>
-                                        <th>ouverture</th>
-                                        <th>fermeture</th>
+                                        <th>Titre</th>
+                                        <th>Description</th>
                                         <th>Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for terrain in b %}
+                                    {% for categorie in c %}
                                         <tr>
-                                            <td>{{ terrain.NomTerrain }}</td>
-                                            <td>{{ terrain.Adresse }}</td>
-                                            <td>{{ terrain.Description }}</td>
-                                            <td>{{ terrain.GeoX }}</td>
-                                            <td>{{ terrain.GeoY }}</td>
-                                            <td>{{ terrain.Ouverture|date('Y-m-d H:i:s') }}</td>
-                                            <td>{{ terrain.Fermeture|date('Y-m-d H:i:s') }}</td>
+                                            <td>{{ categorie.titre }}</td>
+                                            <td>{{ categorie.description }}</td>
                                             <td>
                                                 <div class="d-flex">
-                                                    <a href="{{ path('modifTerrain',{'id':terrain.id}) }}" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fas fa-pencil-alt"></i></a>
-                                                    <a href="{{ path('deleteTerrain',{'id':terrain.id}) }}" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
+                                                    <a href="{{ path('modifCateg',{'id':categorie.id}) }}" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fas fa-pencil-alt"></i></a>
+                                                    <a href="{{ path('deleteCateg',{'id':categorie.id}) }}" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
                                                 </div>
                                             </td>
                                         </tr>
