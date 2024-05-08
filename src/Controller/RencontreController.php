@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/rencontre')]
+#[Route('')]
 class RencontreController extends AbstractController
 {
     #[Route('/showRencontre', name: 'app_rencontre_index', methods: ['GET'])]

@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Service\SmsGenerator;
+use Doctrine\Persistence\ManagerRegistry;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -114,16 +115,21 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/{idarticle}', name: 'app_article_delete', methods: ['POST'])]
-    public function delete(Request $request, Article $article, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$article->getIdarticle(), $request->request->get('_token'))) {
-            $entityManager->remove($article);
-            $entityManager->flush();
-        }
+    
 
-        return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
+    #[Route('/{idarticle}', name: 'app_article_delete')]
+    public function delete(ManagerRegistry $manager , ArticleRepository $repo, $idarticle):Response{
+        $em = $manager->getManager();
+
+        $Article = $repo->find($idarticle);
+
+        $em->remove($Article);
+        $em->flush();
+        
+        return $this->redirectToRoute('app_article_index');
     }
+
+
     #[Route('/article/search', name: 'app_article_search', methods: ['GET'])]
 public function search(Request $request, ArticleRepository $articleRepository): Response
 {
