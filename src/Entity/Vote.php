@@ -23,6 +23,9 @@ class Vote
     #[ORM\JoinColumn(name: 'idElectionV', referencedColumnName: 'ide')]
     private ?Evenement $evenement = null;
 
+    #[ORM\Column(name: 'idUser')]
+    private ?int $idUser = null;    
+
     public function getIdv(): ?int
     {
         return $this->idv;
@@ -34,6 +37,19 @@ class Vote
 
         return $this;
     }
+
+    public function getidUser(): ?int
+    {
+        return $this->idUser;
+    }
+
+    public function setidUser(int $idUser): self
+    {
+        $this->idUser = $idUser;
+    
+        return $this;
+    }
+    
 
     public function getCandidat(): ?Candidat
     {

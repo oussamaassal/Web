@@ -14,22 +14,22 @@
     <form method="post" enctype="multipart/form-data">
         {{ form_start(form) }}
         <div>
-            {{ form_row(form.nomc, {'attr': {'class': 'form-control form-control-lg', 'placeholder': 'Nomc'}}) }}
+            {{ form_row(form.nomc, {'attr': {'class': 'form-control form-control-lg', 'placeholder': 'Nom'}}) }}
         </div>
         <div>
-            {{ form_row(form.prenomc, {'attr': {'class': 'form-control form-control-lg', 'placeholder': 'Prenomc'}}) }}
+            {{ form_row(form.prenomc, {'attr': {'class': 'form-control form-control-lg', 'placeholder': 'Prenom'}}) }}
         </div>
         <div>
-            {{ form_row(form.agec, {'attr': {'class': 'form-control form-control-lg', 'placeholder': 'Agec'}}) }}
+            {{ form_row(form.agec, {'attr': {'class': 'form-control form-control-lg', 'placeholder': 'Age'}}) }}
         </div>
         <div>
             {{ form_row(form.imgcpath, {'attr': {'class': 'form-control-file'}}) }}
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
+        <a class="btn btn-secondary" href="{{ path('app_candidat_index', {'id_event': id_event}) }}">Back</a>
         {{ form_end(form) }}
     </form>
 
-<a href="{{ path('app_candidat_index', {'id_event': id_event}) }}">back to list</a>
 </body>
 </html>
 {% endblock %}

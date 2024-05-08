@@ -70,32 +70,34 @@
 <body>
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">Event List</h5>
+        <h5 class="card-title">Liste des evenements electorales</h5>
         <hr>
         <table class="table table-striped">
             <tbody>
             {% for event in evenements %}
                 <tr>
-                    <th>NOm</th>
+                    <th>Nom d'election</th>
                     <td>{{ event.nome }}</td>
                 </tr>
+                {# <tr>
+                    <th>Image</th>
+                     <td><img src="4fc82c0f0394767de08999836d138efe.png" /></td> 
+                </tr> #}
                 <tr>
                     <th>Poste</th>
                     <td>{{ event.postee }}</td>
                 </tr>
                 <tr>
-                    <th>Periode</th>
+                    <th>Mandat</th>
                     <td>{{ event.periodep }}</td>
                 </tr>
-                               <tr>
-                    <th>Date</th>
-                        <td>{{ event.datee|date('d/m/Y') }}</td>
+                <tr>
+                    <th>Date d'election</th>
+                    <td>{{ event.datee|date('d/m/Y') }}</td>
                 </tr>
                 <tr>
                     <td colspan="2">&nbsp;</td>
                 </tr>
-
-
             {% endfor %}
             </tbody>
         </table>

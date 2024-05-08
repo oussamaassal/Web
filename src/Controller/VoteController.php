@@ -89,10 +89,13 @@ class VoteController extends AbstractController
         $candidat = $entityManager->getRepository(Candidat::class)->find($idc);
         $evenement = $entityManager->getRepository(Evenement::class)->find($id_event);
     
+        $idUser = 3;
+
         // Créer un nouveau vote
         $vote = new Vote();
         $vote->setCandidat($candidat);
         $vote->setEvenement($evenement);
+        $vote->setIdUser($idUser); // Set the idUser
     
         // Persistez le vote
         $entityManager->persist($vote);
@@ -100,7 +103,8 @@ class VoteController extends AbstractController
     
         // Redirection vers une page de succès ou autre
         // Vous pouvez rediriger où vous le souhaitez
-        return $this->redirectToRoute('app_candidat_index_front', ['id_event' => $id_event]);
+        // return $this->redirectToRoute('app_vote_show', ['id_event' => $id_event]);    
+        return $this->redirectToRoute('app_evenement_index');
     }
     
     

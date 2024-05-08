@@ -45,6 +45,14 @@ public function findEvenementsAujourdhui()
             ->getQuery()
             ->getResult();
     }
+    
+public function findAllSortedByDate(): array
+    {
+        return $this->createQueryBuilder('e')
+            ->orderBy('e.datee', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 
 //    public function findOneBySomeField($value): ?Evenement
 //    {

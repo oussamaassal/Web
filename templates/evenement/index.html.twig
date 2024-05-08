@@ -40,20 +40,31 @@
             margin-bottom: 10px;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+        .action-buttons {
+            display: flex;
+            justify-content: center;
         }
 
-        .btn:hover {
-            background-color: #0056b3;
+        .action-buttons a {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        /* Custom colors */
+        .icon-yellow {
+            color: yellow;
+        }
+
+        .icon-orange {
+            color: orange;
+        }
+
+        .icon-green {
+            color: green;
+        }
+
+        .icon-red {
+            color: red;
         }
 
         .no-records {
@@ -63,6 +74,7 @@
         }
     </style>
     <li class="nav-item d-flex align-items-center">
+    
         <div class="input-group search-area">
             <input type="text" class="form-control" id="searchInput" placeholder="Rechercher ...">
             <span class="input-group-text"><a href="javascript:void(0)"><i class="flaticon-381-search-2"></i></a></span>
@@ -86,14 +98,48 @@
         }
         document.getElementById('searchInput').addEventListener('keyup', filterTable);
     </script>
-    <a href="{{ path('app_evenement_pdf') }}" class="btn btn-primary">PDF</a>
 
-<a href="{{ path('app_evenement_new') }}" class="btn btn-primary">Create New</a>
-<a href="{{ path('all_vote_index') }}" class="btn btn-primary">Votes</a>
-<a href="{{ path('app_rdv') }}" class="btn btn-primary">Calendar</a>
+    {# Display error messages #}
+    {% for errorMessage in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ errorMessage }}
+        </div>
+    {% endfor %}
 
-
+   {# <a href="{{ path('app_evenement_new') }}" class="btn btn-primary">Create New Election Event</a>
     <br>
+    <br>
+    <a href="{{ path('app_evenement_pdf') }}">
+        <i class="fas fa-file-pdf icon-yellow"></i>
+        Generate List Events PDF
+    </a>
+    <a href="{{ path('all_vote_index') }}">
+        <i class="fas fa-vote-yea icon-orange"></i>
+        Votes
+    </a>
+    <a href="{{ path('app_rdv') }}">
+        <i class="far fa-calendar-alt icon-green"></i>
+        Calendar
+    </a>
+    <br>
+    <br>#}
+     <a href="{{ path('app_evenement_new') }}" class="btn btn-primary">Create New Election Event</a>
+    <br>  <br>   
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <a href="{{ path('app_evenement_pdf') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-file-pdf"></i> Generate List Events PDF
+        </a>
+        <a href="{{ path('all_vote_index') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-vote-yea"></i> Votes
+        </a>
+        <a href="{{ path('app_rdv') }}" class="btn btn-outline-secondary">
+            <i class="far fa-calendar-alt"></i> Calendar
+        </a>
+    </div>
+</div>
+<br>  
+
     <div class="products-container">
         {% for evenement in evenements %}
             <div class="product-card">
@@ -103,15 +149,32 @@
                 <div class="product-details">
                     <h2 class="product-name">{{ evenement.nome }}</h2>
                     <p class="product-description">{{ evenement.postee }}</p>
-                    <p class="product-price">Periode : {{ evenement.periodep }}</p>
+                    <p class="product-price">Mandate: {{ evenement.periodep }}</p>
                     <p class="product-date">Date: {{ evenement.datee|date('Y-m-d') }}</p>
-                    <a href="{{ path('app_evenement_edit', {'ide': evenement.ide}) }}" class="btn btn-secondary">Edit</a>
-                    <a href="{{ path('app_candidat_index', {'id_event': evenement.ide}) }}" class="btn btn-secondary">Condidats</a>
-                    <a href="{{ path('app_candidat_new', {'id_event': evenement.ide}) }}" class="btn btn-secondary">add Condidat</a>
-                    <form method="post" action="{{ path('app_evenement_delete', {'ide': evenement.ide}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ evenement.ide) }}">
-                        <button class="btn btn-danger">Delete</button>
-                    </form>
+                    <div class="action-buttons">
+                        <a href="{{ path('app_candidat_new', {'id_event': evenement.ide}) }}" class="icon-green">
+                            <i class="fas fa-user-plus"></i>
+                        </a>
+                        <a href="{{ path('app_candidat_index', {'id_event': evenement.ide}) }}" class="icon-orange">
+                            <i class="fas fa-list"></i>
+                        </a>
+        <a href="{{ path('app_evenement_edit', {'ide': evenement.ide}) }}" class="icon-yellow">
+    <i class="bi bi-pencil"></i>
+</a>
+
+<form method="post" action="{{ path('app_evenement_delete', {'ide': evenement.ide}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ evenement.ide) }}">
+    <button type="submit" class="icon-red" style="border: none; background-color: transparent;">
+        <i class="fas fa-trash-alt" style="color: red; font-size: 20px;"></i>
+    </button>
+</form>
+
+
+</form>
+
+
+
+                    </div>
                 </div>
             </div>
         {% else %}
@@ -119,85 +182,15 @@
         {% endfor %}
     </div>
 
-
-
-     <canvas id="myChart" width="400" height="400"></canvas>
+    <canvas id="myChart" width="400" height="200"></canvas>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <script>
-    // Récupération des données pour le graphique
-    let eventNames = [];
-    let eventCount = [];
 
-    {% for evenement in evenements %}
-        eventNames.push("{{ evenement.nome }}");
+        // JavaScript code for chart generation...
 
-        {# let candidateCount = 0;
+    </script>
 
-       {% for candidat in candidats %}
-    {% if candidat.idElection.ide == evenement.ide %}
-        candidateCount++;
-    {% endif %}
-{% endfor %} #}
-
-
-        eventCount.push(1);
-    {% endfor %}
-
-    let chartData = {
-        labels: eventNames,
-        datasets: [{
-            label: 'Nombre de candidats',
-            data: eventCount,
-            backgroundColor: eventNames.map(() => getRandomColor())
-        }]
-    };
-
-    // Configuration des options du graphique
-    let chartOptions = {
-        legend: { display: false },
-        title: {
-            display: true,
-            text: "Statistiques des événements par nombre de candidats"
-        },
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    stepSize: 1 // Pour afficher uniquement des nombres entiers
-                },
-                scaleLabel: {
-                    display: true,
-                    labelString: 'Nombre de candidats'
-                }
-            }],
-            xAxes: [{
-                scaleLabel: {
-                    display: true,
-                    labelString: 'Nom de l\'événement'
-                }
-            }]
-        }
-    };
-
-    // Création du graphique
-    let ctx = document.getElementById('myChart').getContext('2d');
-    let myChart = new Chart(ctx, {
-        type: 'bar',
-        data: chartData,
-        options: chartOptions
-    });
-
-    // Fonction pour générer des couleurs aléatoires
-    function getRandomColor() {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
-</script>
-
-
+    <br>
+    <br>
 {% endblock %}

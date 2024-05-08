@@ -27,7 +27,7 @@ class EvenementController extends AbstractController
     public function index(EvenementRepository $evenementRepository , CandidatRepository $candidatRepository): Response
     {
         return $this->render('evenement/index.html.twig', [
-            'evenements' => $evenementRepository->findAll(),
+            'evenements' => $evenementRepository->findAllSortedByDate(),
             'candidats' => $candidatRepository->findAll(),
 
         ]);
@@ -111,6 +111,10 @@ class EvenementController extends AbstractController
         $options = new Options();
         $options->set('isHtml5ParserEnabled', true);
         $options->set('isPhpEnabled', true);
+
+        // // Get the absolute URL of the image
+        // $imagePath = $this->getParameter('kernel.project_dir').'/public/uploads/4fc82c0f0394767de08999836d138efe.png';
+        // $imageData = $this->imageToBase64($imagePath);
         
         $dompdf = new Dompdf();
         $dompdf->setOptions($options);
@@ -124,6 +128,16 @@ class EvenementController extends AbstractController
             ['Content-Type' => 'application/pdf']
         );
     }
+    // private function imageToBase64($path) {
+    //     $type = pathinfo($path, PATHINFO_EXTENSION);
+    //     $data = file_get_contents($path);
+    //     $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+    //     return $base64;
+    // }
+
+
+
+
 
     #[Route('/{ide}', name: 'app_evenement_delete', methods: ['POST'])]
     public function delete(Request $request, Evenement $evenement, EntityManagerInterface $entityManager): Response
@@ -136,15 +150,50 @@ class EvenementController extends AbstractController
         return $this->redirectToRoute('app_evenement_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    // #[Route('/{ide}/edit', name: 'app_evenement_edit', methods: ['GET', 'POST'])]
+    // public function edit(Request $request, Evenement $evenement, EntityManagerInterface $entityManager): Response
+    // {
+    //     $form = $this->createForm(EvenementType::class, $evenement);
+    //     $form->handleRequest($request);
+
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $file = $form->get('imgepath')->getData();
+
+    //         if ($file) {
+    //             // Specify the upload directory path directly
+    //             $uploadDirectory = $this->getParameter('kernel.project_dir') . '/public/uploads';
+    //             $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+    //             $file->move($uploadDirectory, $fileName);
+    //             $evenement->setImgepath($fileName);
+    //         }
+    //         $entityManager->flush();
+
+    //         return $this->redirectToRoute('app_evenement_index', [], Response::HTTP_SEE_OTHER);
+    //     }
+
+    //     return $this->renderForm('evenement/edit.html.twig', [
+    //         'evenement' => $evenement,
+    //         'form' => $form,
+    //     ]);
+    // }
+
     #[Route('/{ide}/edit', name: 'app_evenement_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Evenement $evenement, EntityManagerInterface $entityManager): Response
     {
+        // Check if event date is in the past
+        if ($evenement->getDateE() < new \DateTime()) {
+            // Redirect or display an error message, indicating that the event cannot be edited
+            $this->addFlash('error', 'You cannot edited an event his date in the past.');
+            // For example, you can redirect back to the event index page
+            return $this->redirectToRoute('app_evenement_index');
+        }
+    
         $form = $this->createForm(EvenementType::class, $evenement);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $form->get('imgepath')->getData();
-
+    
             if ($file) {
                 // Specify the upload directory path directly
                 $uploadDirectory = $this->getParameter('kernel.project_dir') . '/public/uploads';
@@ -153,15 +202,17 @@ class EvenementController extends AbstractController
                 $evenement->setImgepath($fileName);
             }
             $entityManager->flush();
-
+    
             return $this->redirectToRoute('app_evenement_index', [], Response::HTTP_SEE_OTHER);
         }
-
+    
         return $this->renderForm('evenement/edit.html.twig', [
             'evenement' => $evenement,
             'form' => $form,
         ]);
     }
+    
+
 
     #[Route('/get_candidate_count', name: 'get_candidate_count', methods: ['GET'])]
     public function getCandidateCount(EvenementRepository $evenementRepository): JsonResponse

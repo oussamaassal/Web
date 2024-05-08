@@ -26,10 +26,11 @@
             {{ form_row(form.imgcpath, {'attr': {'class': 'form-control-file'}}) }}
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
+        <a class="btn btn-danger" href="{{ path('app_candidat_index', {'id_event': id_event}) }}">Back</a>
+
         {{ form_end(form) }}
     </form>
 
-<a href="{{ path('app_candidat_index', {'id_event': id_event}) }}">back to list</a>
 </body>
 </html>
 {% endblock %}
