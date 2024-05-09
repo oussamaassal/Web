@@ -104,7 +104,7 @@ class CommandeController extends AbstractController
         // Calculer le montant total à payer
         $total = 0;
         foreach ($commandes as $commande) {
-            if($commande->getIdUser() == $user->getIdUser())
+           
             $total += $commande->getSomme() * $commande->getQuantite();
         }
 
