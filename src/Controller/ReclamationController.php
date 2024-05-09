@@ -23,9 +23,7 @@ class ReclamationController extends AbstractController
     #[Route('/', name: 'app_reclamation_index', methods: ['GET'])]
     public function index(ReclamationRepository $reclamationRepository, SessionInterface $sessionInterface): Response
     {
-        if (!UserController::hasPermissionRole($sessionInterface, "admin")) {
-            return $this->redirectToRoute('app_user_login');
-        }
+       
         return $this->render('reclamation/index.html.twig', [
             'reclamations' => $reclamationRepository->findAll(),
             'loggedIn' => true,
@@ -56,9 +54,7 @@ class ReclamationController extends AbstractController
     #[Route('/stats', name: 'app_reclamation_stat', methods: ['GET'])]
     public function stats( SessionInterface $sessionInterface): Response
     {
-        if (!UserController::hasPermissionRole($sessionInterface, "admin")) {
-            return $this->redirectToRoute('app_user_login');
-        }
+       
         return $this->render('reclamation/stats.html.twig', [
             'loggedIn' => true,
 
@@ -110,11 +106,9 @@ class ReclamationController extends AbstractController
             $entityManager->persist($reclamation);
             $entityManager->flush();
 
-            if (UserController::hasPermissionRole($sessionInterface, "admin")) {
-                return $this->redirectToRoute('app_reclamation_index', [], Response::HTTP_SEE_OTHER);
-            } else {
+           
                 return  $this->redirectToRoute("app_reclamation_me");
-            }
+            
         }
 
         return $this->renderForm('reclamation/new.html.twig', [
@@ -128,9 +122,7 @@ class ReclamationController extends AbstractController
     #[Route('/{idreclamation}', name: 'app_reclamation_show_admin', methods: ['GET','POST'])]
     public function show(Reclamation $reclamation, SessionInterface $sessionInterface,Request $request, EntityManagerInterface $entityManager,): Response
     {
-        if (!UserController::hasPermissionRole($sessionInterface, "admin")) {
-            return $this->redirectToRoute('app_user_login');
-        }
+       
         if ($request->isMethod('POST')) {
            $message=$request->request->get('message');
            $accountSID="ACdb9b90f6db0d633c0e31508dfac7668a";
@@ -163,11 +155,10 @@ class ReclamationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-            if(UserController::hasPermissionRole($sessionInterface,"admin")){
-                return $this->redirectToRoute('app_reclamation_index', [], Response::HTTP_SEE_OTHER);
-            }else{
+           
+       
                 return  $this->redirectToRoute("app_reclamation_me");
-            }
+            
         }
 
         return $this->renderForm('reclamation/edit.html.twig', [
@@ -186,10 +177,8 @@ class ReclamationController extends AbstractController
             $entityManager->flush();
         }
 
-        if (UserController::hasPermissionRole($sessionInterface, "admin")) {
-            return $this->redirectToRoute('app_reclamation_index', [], Response::HTTP_SEE_OTHER);
-        } else {
+     
             return  $this->redirectToRoute("app_reclamation_me");
-        }
+        
     }
 }
