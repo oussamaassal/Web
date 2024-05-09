@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 #[Route('/vote')]
 class VoteController extends AbstractController
@@ -83,13 +84,18 @@ class VoteController extends AbstractController
     
     
     #[Route('/front/new/{idc}/{id_event}', name: 'app_vote_new_from_front', methods: ['GET', 'POST'])]
-    public function newVoteFromFront(Request $request, EntityManagerInterface $entityManager, int $idc, int $id_event): Response
+    public function newVoteFromFront(Request $request, EntityManagerInterface $entityManager, int $idc, int $id_event,SessionInterface $session): Response
     {
-        // Récupérer le candidat et l'événement
+
+        $userData = $session->get('user');
+        $user = unserialize($userData);
+        if (!$userData) {
+            return $this->redirectToRoute('app_user_login');
+        }
         $candidat = $entityManager->getRepository(Candidat::class)->find($idc);
         $evenement = $entityManager->getRepository(Evenement::class)->find($id_event);
     
-        $idUser = 3;
+        $idUser = $user->getIdUser();
 
         // Créer un nouveau vote
         $vote = new Vote();
