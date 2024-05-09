@@ -4,24 +4,21 @@ namespace App\Entity;
 
 use App\Repository\TerrainRepository;
 use DateTime;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TerrainRepository::class)]
 class Terrain
-
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id =null;
+    private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $nomTerrain = null;
 
     #[ORM\Column(length: 255)]
     private ?string $adresse = null;
-
 
     #[ORM\Column(length: 255)]
     private ?string $description = null;
@@ -39,7 +36,11 @@ class Terrain
     private ?DateTime $fermeture;
 
     #[ORM\Column(length: 255)]
-    private ?string $datedispo =null;
+    private ?string $datedispo = null;
+
+    #[ORM\ManyToOne(inversedBy: 'terrains')]
+    private ?CategTerrain $categTerrain = null;
+
 
     public function getId(): ?int
     {
@@ -51,7 +52,7 @@ class Terrain
         return $this->nomTerrain;
     }
 
-    public function setNomTerrain(string $nomTerrain): static
+    public function setNomTerrain(string $nomTerrain): self
     {
         $this->nomTerrain = $nomTerrain;
 
@@ -63,7 +64,7 @@ class Terrain
         return $this->adresse;
     }
 
-    public function setAdresse(?string $adresse): static
+    public function setAdresse(?string $adresse): self
     {
         $this->adresse = $adresse;
 
@@ -75,7 +76,7 @@ class Terrain
         return $this->description;
     }
 
-    public function setDescription(?string $description): static
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
@@ -87,7 +88,7 @@ class Terrain
         return $this->geoX;
     }
 
-    public function setGeoX(?float $geoX): static
+    public function setGeoX(?float $geoX): self
     {
         $this->geoX = $geoX;
 
@@ -99,7 +100,7 @@ class Terrain
         return $this->geoY;
     }
 
-    public function setGeoY(?float $geoY): static
+    public function setGeoY(?float $geoY): self
     {
         $this->geoY = $geoY;
 
@@ -111,7 +112,7 @@ class Terrain
         return $this->ouverture;
     }
 
-    public function setOuverture(?\DateTimeInterface $ouverture): static
+    public function setOuverture(?\DateTimeInterface $ouverture): self
     {
         $this->ouverture = $ouverture;
 
@@ -123,7 +124,7 @@ class Terrain
         return $this->fermeture;
     }
 
-    public function setFermeture(?\DateTimeInterface $fermeture): static
+    public function setFermeture(?\DateTimeInterface $fermeture): self
     {
         $this->fermeture = $fermeture;
 
@@ -135,12 +136,23 @@ class Terrain
         return $this->datedispo;
     }
 
-    public function setDatedispo(?string $datedispo): static
+    public function setDatedispo(?string $datedispo): self
     {
         $this->datedispo = $datedispo;
 
         return $this;
     }
 
+    public function getCategTerrain(): ?CategTerrain
+    {
+        return $this->categTerrain;
+    }
+
+    public function setCategTerrain(?CategTerrain $categTerrain): static
+    {
+        $this->categTerrain = $categTerrain;
+
+        return $this;
+    }
 
 }

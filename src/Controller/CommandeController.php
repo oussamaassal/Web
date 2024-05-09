@@ -87,11 +87,16 @@ class CommandeController extends AbstractController
         return $this->redirectToRoute('app_commande');
     }
     #[Route('/paiement', name: 'paiement')]
-
-    public function paiement(Request $request): Response
+    public function paiement(Request $request,SessionInterface $session): Response
     {
         // Configurez Stripe avec votre clé secrète
         Stripe::setApiKey('sk_test_51P9xooKS9crHgin9f4XHcMNvw2rdfrsvDCtgEsZ7IPdsSdr89vXxMKTb3hKJNivarJjg9rQe1gd9tHdOr2X40mNi000NQZSzOf');
+         $userData = $session->get('user');
+        $user = unserialize($userData);
+        if (!$userData) {
+            return $this->redirectToRoute('app_user_login');
+        }
+        
 
         // Récupérer toutes les commandes
         $commandes = $this->getDoctrine()->getRepository(Commande::class)->findAll();
@@ -99,6 +104,7 @@ class CommandeController extends AbstractController
         // Calculer le montant total à payer
         $total = 0;
         foreach ($commandes as $commande) {
+            if($commande->getIdUser() == $user->getIdUser())
             $total += $commande->getSomme() * $commande->getQuantite();
         }
 
@@ -130,26 +136,31 @@ class CommandeController extends AbstractController
 
 
     #[Route('/paiement/reussi', name: 'paiement_reussi')]
-    public function paiementReussi(): Response
+    public function paiementReussi( SessionInterface $session): Response
     {
+         $userData = $session->get('user');
+        $user = unserialize($userData);
+        if (!$userData) {
+            return $this->redirectToRoute('app_user_login');
+        }
         $entityManager = $this->getDoctrine()->getManager();
 
-        // Récupérer 
         $commandes = $this->getDoctrine()->getRepository(Commande::class)->findAll();
 
         if (!empty($commandes)) {
             foreach ($commandes as $commande) {
                 $produit = $commande->getIdproduit();
                 $produit->setQauntiteproduit($produit->getQauntiteproduit() - $commande->getQuantite());
+                $entityManager->remove($commande);
+
+                
             }
             $entityManager->flush();
 
-            // Créer une nouvelle instance de Dompdf
             $pdfOptions = new Options();
             $pdfOptions->set('defaultFont', 'Garamond');
             $domPdf = new Dompdf($pdfOptions);
 
-            // Générer le HTML à partir du modèle Twig
             $html = $this->renderView('commande/pdf.html.twig', [
                 'commandes' => $commandes
             ]);
@@ -168,7 +179,6 @@ class CommandeController extends AbstractController
             // Configuration de l'en-tête HTTP pour le téléchargement du fichier
             $response->headers->set('Content-Type', 'application/pdf');
             $response->headers->set('Content-Disposition', 'attachment; filename="details.pdf"');
-
             // Enregistrer la réponse HTTP
             return $response;
         }
@@ -198,10 +208,8 @@ class CommandeController extends AbstractController
     #[Route('/Pdf', name: 'genererPDF')]
     public function generatePDF(PdfService $pdf)
     {
-        // Récupérer toutes les commandes depuis la base de données
         $commandes = $this->getDoctrine()->getManager()->getRepository(Commande::class)->findAll();
 
-        // Créer une nouvelle instance de Dompdf
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Garamond');
         $domPdf = new Dompdf($pdfOptions);
@@ -225,11 +233,11 @@ class CommandeController extends AbstractController
         // Configuration de l'en-tête HTTP pour le téléchargement du fichier
         $response->headers->set('Content-Type', 'application/pdf');
         $response->headers->set('Content-Disposition', 'attachment; filename="details.pdf"');
-
+        
         // Enregistrer la réponse HTTP
         $response->send();
 
 
-        return $this->redirectToRoute('paiement_reussi');
+        return $this->redirectToRoute('app_commande');
     }
 }

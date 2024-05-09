@@ -1,0 +1,65 @@
+{% extends '/admin/base.html.twig' %}
+
+{% block body %}
+
+
+    <div class="content-body">
+        <div class="container-fluid">
+
+            <!--***************************start**********************
+      *******************************************************-->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Terrains a reserver</h4>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="example3" class="display" style="min-width: 845px">
+                                    <thead>
+                                    <tr>
+                                        <th>nom terrain</th>
+                                        <th>adresse</th>
+                                        <th>description</th>
+                                        <th>geo_x</th>
+                                        <th>geo_y</th>
+                                        <th>ouverture</th>
+                                        <th>fermeture</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for terrain in b %}
+                                        <tr>
+                                            <td>{{ terrain.NomTerrain }}</td>
+                                            <td>{{ terrain.Adresse }}</td>
+                                            <td>{{ terrain.Description }}</td>
+                                            <td>{{ terrain.GeoX }}</td>
+                                            <td>{{ terrain.GeoY }}</td>
+                                            <td>{{ terrain.Ouverture|date('Y-m-d H:i:s') }}</td>
+                                            <td>{{ terrain.Fermeture|date('Y-m-d H:i:s') }}</td>
+                                            <td>
+                                                <div class="d-flex card-body">
+
+                                                    <a href="{{ path('reserverterrain', {'terrain_name': terrain.NomTerrain}) }}" class="btn btn-primary">Reserver</a>
+
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--******************************************************
+        *******************************end*********************-->
+    </div>
+
+{% endblock %}

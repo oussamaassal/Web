@@ -1,0 +1,81 @@
+{% extends '/admin/base.html.twig' %}
+
+{% block body %}
+
+    <div class="content-body">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Form Column -->
+                <div class="col-xl-6 col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Reserver Terrain</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="basic-form">
+                                {{ form_start(f) }}
+
+                                    <div class="mb-3">
+                                        <h4>Vous avez sélectionné le terrain :</h4>
+                                        <!-- Input field to display selected terrain name -->
+                                        {{ form_widget(f.terrain, {'attr': {'class': 'form-control', 'id': 'terrainNameInput'}}) }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <h4>Nombre de personnes :</h4>
+                                        {{ form_widget(f.nbp, {'attr': {'class': 'form-control'}}) }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <h4>Date</h4>
+                                        {{ form_widget(f.date, {'attr': {'class': 'form-control'}}) }}
+
+                                    </div>
+                                    <h4>Sélectionner une date :</h4>
+                                    <select class="default-select form-control wide">
+                                        <option value="9h-11h">9h-11h</option>
+                                        <option value="11h-13h">11h-13h</option>
+                                        <option value="13h-15h">13h-15h</option>
+                                        <option value="15h-17h">15h-17h</option>
+                                        <option value="17h-19h">17h-19h</option>
+                                        <option value="19h-21h">19h-21h</option>
+                                    </select>
+                                <h4>Note :</h4>
+
+                                {{ form_widget(f.horaire, {'attr': {'class': 'form-control'}}) }}
+
+                                {{ form_widget(f.ajouter, {'attr': {'class': 'btn btn-primary'}}) }}
+
+
+                                {{ form_end(f) }}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map Column -->
+                <div class="col-xl-6 col-lg-6">
+                    <div id="map" style="height: 600px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        // Function to populate the input field with the selected terrain name
+        function populateTerrainName() {
+            // Retrieve the value of 'terrain_name' from the URL parameter
+            var urlParams = new URLSearchParams(window.location.search);
+            var terrainName = urlParams.get('terrain_name');
+
+            // Populate the input field with the selected terrain name
+            document.getElementById('reserver_terrain_terrain').value = terrainName;
+        }
+
+        // Call the function when the page is loaded
+        populateTerrainName();
+    </script>
+
+
+{% endblock %}

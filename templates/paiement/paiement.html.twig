@@ -8,11 +8,17 @@
     </div>
     <!-- Utilisez le formulaire ci-dessous pour soumettre le paiement -->
     <form id="payment-form">
-        <button type="submit">Payer</button>
-    </form>
+    <button type="submit">Payer</button>
+</form>
 
     <!-- JavaScript pour utiliser Stripe Elements -->
     <script>
+       document.getElementById("payment-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent default form submission
+         setTimeout(function() {
+            window.location.href = "{{ path('app_commande') }}";
+        }, 2000); 
+    });
         var stripe = Stripe('pk_test_51P9xooKS9crHgin9cuQMR9BkV3iHyzC4mPwQnE7Ugd09sOaOBtbyWtLqt512Iww4dmMgnFzuNaDK6VAYkJeMnisO00rrsjh8mr');
         var elements = stripe.elements();
 
