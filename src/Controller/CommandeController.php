@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Stripe\PaymentIntent;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use SessionIdInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -26,8 +27,10 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class CommandeController extends AbstractController
 {
     #[Route('/commande', name: 'app_commande')]
-    public function index(): Response
-    {
+    public function index(SessionInterface $sessionInterface): Response
+    {if(!UserController::isAuthenticated($sessionInterface)){
+                return $this->redirectToRoute('app_user_login');
+            }
 
         $Commande = $this->getDoctrine()->getManager()->getRepository(Commande::class)->findAll();
 

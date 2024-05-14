@@ -22,8 +22,10 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class ArticleController extends AbstractController
 {
     #[Route('/show', name: 'app_article_index', methods: ['GET'])]
-    public function index(ArticleRepository $articleRepository, PaginatorInterface $paginator, Request $request): Response
-    {
+    public function index(ArticleRepository $articleRepository, PaginatorInterface $paginator, Request $request,SessionInterface $session): Response
+    { if (!UserController::hasPermissionRole($session,"journaliste")) {
+            return $this->redirectToRoute('app_user_login');
+        }
         // Récupérer les articles
         $articles = $articleRepository->findAll(); // Récupérer tous les articles depuis le dépôt
 
@@ -42,8 +44,12 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/news', name: 'app_article_news', methods: ['GET'])]
-    public function news(ArticleRepository $articleRepository): Response
-    {
+    public function news(ArticleRepository $articleRepository,SessionInterface $session): Response
+    { $userData = $session->get('user');
+       
+        if (!$userData) {
+            return $this->redirectToRoute('app_user_login');
+        }
         return $this->render('article/news.html.twig', [
             'Articles' => $articleRepository->findAll(),
         ]);
@@ -51,7 +57,9 @@ class ArticleController extends AbstractController
 
     #[Route('/new', name: 'app_article_new', methods: ['GET', 'POST'])]
     public function new(Request $request, SmsGenerator $smsGenerator, EntityManagerInterface $entityManager, SessionInterface $session): Response
-    {
+    { if (!UserController::hasPermissionRole($session,"journaliste")) {
+            return $this->redirectToRoute('app_user_login');
+        }
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
@@ -98,8 +106,10 @@ class ArticleController extends AbstractController
     
 
     #[Route('/{idarticle}/edit', name: 'app_article_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Article $article, EntityManagerInterface $entityManager): Response
-    {
+    public function edit(Request $request, Article $article, EntityManagerInterface $entityManager,SessionInterface $session): Response
+    { if (!UserController::hasPermissionRole($session,"journaliste")) {
+            return $this->redirectToRoute('app_user_login');
+        }
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
@@ -118,7 +128,10 @@ class ArticleController extends AbstractController
     
 
     #[Route('/{idarticle}', name: 'app_article_delete')]
-    public function delete(ManagerRegistry $manager , ArticleRepository $repo, $idarticle):Response{
+    public function delete(ManagerRegistry $manager , ArticleRepository $repo, $idarticle,SessionInterface $session):Response{
+       if (!UserController::hasPermissionRole($session,"journaliste")) {
+            return $this->redirectToRoute('app_user_login');
+        }
         $em = $manager->getManager();
 
         $Article = $repo->find($idarticle);
@@ -131,8 +144,10 @@ class ArticleController extends AbstractController
 
 
     #[Route('/article/search', name: 'app_article_search', methods: ['GET'])]
-public function search(Request $request, ArticleRepository $articleRepository): Response
-{
+public function search(Request $request, ArticleRepository $articleRepository,SessionInterface $session): Response
+{ if (!UserController::hasPermissionRole($session,"journaliste")) {
+            return $this->redirectToRoute('app_user_login');
+        }
     $query = $request->query->get('query');
     if ($query) {
         $articles = $articleRepository->createQueryBuilder('f')

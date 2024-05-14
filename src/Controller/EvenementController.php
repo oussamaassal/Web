@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Dompdf\Dompdf;
 use Dompdf\Options;
-
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 #[Route('/evenement')]
 class EvenementController extends AbstractController
@@ -34,8 +34,11 @@ class EvenementController extends AbstractController
     }
 
     #[Route('/front', name: 'front', methods: ['GET'])]
-    public function front(EvenementRepository $evenementRepository): Response
+    public function front(EvenementRepository $evenementRepository,SessionInterface $session): Response
     {
+         if (!UserController::hasPermissionRole($session,"membreplus")) {
+            return $this->redirectToRoute('app_user_login');
+        }
         $evenements = $evenementRepository->findEvenementsAujourdhui();
 
         return $this->render('evenement/evenement.html.twig', [

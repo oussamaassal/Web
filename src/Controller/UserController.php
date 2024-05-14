@@ -25,7 +25,6 @@ use Endroid\QrCode\Writer\Result\PngResult;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
-use function PHPUnit\Framework\equalTo;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -321,7 +320,12 @@ class UserController extends AbstractController
             if($this->isAuthenticated($sessionInterface)){
                 if($this->hasPermissionRole($sessionInterface,"admin")){
                     return $this->redirectToRoute('app_user_index');
-                }else{
+                }
+                else if($this->hasPermissionRole($sessionInterface,"journaliste")){
+                    return $this->redirectToRoute('app_article_new');
+ 
+                }
+                else{
                     return $this->redirectToRoute('app_user_profil');
  
                 }

@@ -12,12 +12,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ProduitController extends AbstractController
 {
     #[Route('/affichageproduit', name: 'app_produit')]
-    public function index(): Response
-    {
+    public function index(SessionInterface $session): Response
+    {   if (!UserController::hasPermissionRole($session,"admin")) {
+            return $this->redirectToRoute('app_user_login');
+        }
         $Produits = $this->getDoctrine()->getManager()->getRepository(Produit::class)->findAll();
 
         return $this->render('produit/index.html.twig', [
@@ -124,8 +127,11 @@ class ProduitController extends AbstractController
         return $this->redirectToRoute('app_produit');
     }
     #[Route('/boutique', name: 'app_boutique')]
-    public function Boutique(): Response
+    public function Boutique(SessionInterface $sessionInterface): Response
     {
+         if(!UserController::isAuthenticated($sessionInterface)){
+                return $this->redirectToRoute('app_user_login') ;
+            }
         $Produits = $this->getDoctrine()->getManager()->getRepository(Produit::class)->findAll();
         $Category = $this->getDoctrine()->getManager()->getRepository(Category::class)->findAll();
 
@@ -148,8 +154,10 @@ class ProduitController extends AbstractController
 
         
     #[Route('/boutiquelist', name: 'boutique_list')]
-    public function BoutiqueList(): Response
-    {
+    public function BoutiqueList(SessionInterface $sessionInterface): Response
+    { if(!UserController::isAuthenticated($sessionInterface)){
+                return $this->redirectToRoute('app_user_login') ;
+            }
         $Produits = $this->getDoctrine()->getManager()->getRepository(Produit::class)->findAll();
 
         return $this->render('produit/boutiqueList.html.twig', [
