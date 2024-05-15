@@ -144,7 +144,7 @@
         {% for evenement in evenements %}
             <div class="product-card">
                 <div class="product-image">
-                    <img src="{{ asset('uploads/' ~ evenement.imgepath) }}" alt="Product Image">
+                    <img src="http://localhost/Images/Elections/{{  evenement.imgepath() }}" alt="Product Image">
                 </div>
                 <div class="product-details">
                     <h2 class="product-name">{{ evenement.nome }}</h2>

@@ -70,13 +70,13 @@
             <article class="product">
               <header class="product-header">
                 <div class="product-figure">
-                  <img src="{{ asset('uploads/' ~ evenement.imgepath) }}" alt="Product Image">
+                  <img src="http://localhost/Images/Elections/{{  evenement.imgepath() }}" alt="Product Image">
                 </div>
                 <div class="product-buttons">
-<a class="product-button" href="{{ path('app_candidat_index_front', {'id_event': evenement.ide}) }}">
-    <i class="fas fa-user" style="font-size: 26px;"></i>
-</a>
-                  <a class="product-button fl-bigmug-line-zoom60" href="{{ asset('uploads/' ~ evenement.imgepath) }}" data-lightgallery="item" style="font-size: 25px"></a>
+                  <a class="product-button" href="{{ path('app_candidat_index_front', {'id_event': evenement.ide}) }}">
+                      <i class="fas fa-user" style="font-size: 26px;"></i>
+                  </a>
+                  <a class="product-button fl-bigmug-line-zoom60" href="http://localhost/Images/Elections/{{  evenement.imgepath() }}" data-lightgallery="item" style="font-size: 25px"></a>
                 </div>
               </header>
               <footer class="product-content">

@@ -70,7 +70,7 @@ return $this->render('candidat/listeCondidatFront.html.twig', [
 
             if ($file) {
                 // Specify the upload directory path directly
-                $uploadDirectory = $this->getParameter('kernel.project_dir') . '/public/uploads';
+                $uploadDirectory = $this->getParameter('candidat_image_directory');
                 $fileName = md5(uniqid()) . '.' . $file->guessExtension();
                 $file->move($uploadDirectory, $fileName);
                 $candidat->setImgcpath($fileName);

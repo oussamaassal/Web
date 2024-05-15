@@ -94,7 +94,7 @@
         {% for candidat in candidats %}
             <div class="product-card">
                 <div class="product-image">
-                    <img src="{{ asset('uploads/' ~ candidat.imgcpath) }}" alt="Candidate Image">
+                    <img src="http://localhost/Images/Candidats/{{  candidat.imgcpath() }}" alt="Candidate Image">
                 </div>
                 <div class="product-details">
                     <h2 class="product-name">{{ candidat.nomc }} {{ candidat.prenomc }}</h2>

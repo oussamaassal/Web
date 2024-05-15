@@ -70,7 +70,7 @@
         {% for candidat in candidats %}
         <!-- Product - List build-->
         <article class="product-list">
-          <div class="product-list-aside"><img src="{{ asset('uploads/' ~ candidat.imgcpath) }}" alt="">
+          <div class="product-list-aside"><img src="http://localhost/Images/Candidats/{{  candidat.imgcpath() }}" alt="">
             <!-- Badge-->
           </div>
           <section class="product-list-main">

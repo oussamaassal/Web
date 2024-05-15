@@ -7,7 +7,8 @@ parameters:
   joueurs_image_directory: 'C:\xampp\htdocs\Images\Joueurs\'
   produit_image_directory: 'C:\xampp\htdocs\Images\Produits\'
   article_image_directory: 'C:\xampp\htdocs\Images\Articles\'
-
+  election_image_directory: 'C:\xampp\htdocs\Images\Elections\'
+  candidat_image_directory: 'C:\xampp\htdocs\Images\Candidats\'
   images_directory: '%kernel.project_dir%/public/uploads'
     
 

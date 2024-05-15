@@ -82,7 +82,7 @@ class EvenementController extends AbstractController
     
             if ($file) {
                 // Specify the upload directory path directly
-                $uploadDirectory = $this->getParameter('kernel.project_dir') . '/public/uploads';
+                $uploadDirectory = $this->getParameter('election_image_directory');
                 $fileName = md5(uniqid()) . '.' . $file->guessExtension();
                 $file->move($uploadDirectory, $fileName);
                 $evenement->setImgepath($fileName);
@@ -215,7 +215,7 @@ class EvenementController extends AbstractController
     
 
 
-    #[Route('/get_candidate_count', name: 'get_candidate_count', methods: ['GET'])]
+    /*#[Route('/get_candidate_count', name: 'get_candidate_count', methods: ['GET'])]
     public function getCandidateCount(EvenementRepository $evenementRepository): JsonResponse
     {
         $events = $evenementRepository->findAll();
@@ -231,7 +231,7 @@ class EvenementController extends AbstractController
         }
 
         return $this->json($data);
-    }
+    }*/
     
     
 }
