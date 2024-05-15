@@ -36,7 +36,9 @@ class EvenementController extends AbstractController
     #[Route('/front', name: 'front', methods: ['GET'])]
     public function front(EvenementRepository $evenementRepository,SessionInterface $session): Response
     {
-         if (!UserController::hasPermissionRole($session,"membreplus")) {
+        $userData = $session->get('user');
+        $user = unserialize($userData);
+         if (!$user->getRole()=="membrePlus") {
             return $this->redirectToRoute('app_user_login');
         }
         $evenements = $evenementRepository->findEvenementsAujourdhui();
