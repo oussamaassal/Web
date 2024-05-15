@@ -167,22 +167,13 @@ class CommandeController extends AbstractController
             $html = $this->renderView('commande/pdf.html.twig', [
                 'commandes' => $commandes
             ]);
-
-            // Charger le HTML dans Dompdf
             $domPdf->loadHtml($html);
             $domPdf->setPaper('A4', 'portrait');
             $domPdf->render();
-
-            // Récupérer le contenu du PDF
             $pdfContent = $domPdf->output();
-
-            // Créer une réponse HTTP avec le contenu du PDF
             $response = new Response($pdfContent);
-
-            // Configuration de l'en-tête HTTP pour le téléchargement du fichier
             $response->headers->set('Content-Type', 'application/pdf');
             $response->headers->set('Content-Disposition', 'attachment; filename="details.pdf"');
-            // Enregistrer la réponse HTTP
             return $response;
         }
 
