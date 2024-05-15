@@ -17,6 +17,9 @@
           <li class="nav-item d-flex align-items-center">
             <div class="input-group search-area">
               <input type="text" class="form-control" id="searchInput" placeholder="Rechercher ...">
+ <button class="btn" type="button" style="background-color: transparent; border: none;" onclick="startSpeechRecognition()">
+        <i class="bi bi-mic" style="color: black;"></i> <!-- Bootstrap Icons microphone icon -->
+       </button>
               <span class="input-group-text"><a href="javascript:void(0)"><i class="flaticon-381-search-2"></i></a></span>
             </div>
           </li>
@@ -36,6 +39,29 @@
               }
             }
             document.getElementById('searchInput').addEventListener('keyup', filterTable);
+
+
+             function startSpeechRecognition() {
+        // Démarrer la reconnaissance vocale
+        const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+        recognition.lang = 'fr-FR'; // Définir la langue de la reconnaissance vocale (facultatif)
+        recognition.start();
+
+        // Écouter les résultats de la reconnaissance vocale
+        recognition.onresult = function(event) {
+            const recognizedText = event.results[0][0].transcript.trim(); // Récupérer le texte reconnu
+            const cleanedText = recognizedText.endsWith('.') ? recognizedText.slice(0, -1) : recognizedText; // Supprimer le dernier caractère s'il s'agit d'un point
+            document.getElementById('searchInput').value = cleanedText; // Afficher le résultat dans le champ de recherche
+
+            // Appel de la fonction de recherche lorsque du texte est reconnu
+            filterTable(cleanedText); 
+        };
+
+        // Gérer les erreurs éventuelles de la reconnaissance vocale
+        recognition.onerror = function(event) {
+            console.error('Erreur de reconnaissance vocale:', event.error);
+        };
+    }
           </script>
           {% if evenements is not empty %}
           {% for evenement in evenements %}

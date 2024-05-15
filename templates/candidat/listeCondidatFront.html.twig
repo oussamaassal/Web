@@ -14,10 +14,19 @@
         <li class="nav-item d-flex align-items-center">
           <div class="input-group search-area">
             <input type="text" class="form-control" id="searchInput" placeholder="Rechercher ..." onkeyup="filterTable()">
+<button class="btn" type="button" style="background-color: transparent; color:blue; border: none;" onclick="startSpeechRecognition()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-mic" viewBox="0 0 16 16">
+        <path d="M8 2a2 2 0 0 1 2 2v5a2 2 0 0 1-4 0V4a2 2 0 0 1 2-2zm4 6v2a4 4 0 0 1-8 0V8a4 4 0 0 1 8 0zm-4 6a2 2 0 0 1-2-2h4a2 2 0 0 1-2 2z"/>
+    </svg>
+</button>
+
+
             <span class="input-group-text"><a href="javascript:void(0)"><i class="flaticon-381-search-2"></i></a></span>
           </div>
         </li>
-        <script>
+        
+<script>
+        
           function filterTable() {
             const filter = document.getElementById('searchInput').value.toUpperCase();
             const candidats = document.querySelectorAll('.product-list');
@@ -31,7 +40,30 @@
                 candidat.style.display = 'none';
               }
             }
-          }</script>
+          }
+
+ function startSpeechRecognition() {
+        // Démarrer la reconnaissance vocale
+        const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+        recognition.lang = 'fr-FR'; // Définir la langue de la reconnaissance vocale (facultatif)
+        recognition.start();
+
+        // Écouter les résultats de la reconnaissance vocale
+        recognition.onresult = function(event) {
+            const recognizedText = event.results[0][0].transcript.trim(); // Récupérer le texte reconnu
+            const cleanedText = recognizedText.endsWith('.') ? recognizedText.slice(0, -1) : recognizedText; // Supprimer le dernier caractère s'il s'agit d'un point
+            document.getElementById('searchInput').value = cleanedText; // Afficher le résultat dans le champ de recherche
+
+            // Appel de la fonction de recherche lorsque du texte est reconnu
+            filterTable(cleanedText); 
+        };
+
+        // Gérer les erreurs éventuelles de la reconnaissance vocale
+        recognition.onerror = function(event) {
+            console.error('Erreur de reconnaissance vocale:', event.error);
+        };
+    }
+</script>
 
 
         {% if candidats is not empty %}
