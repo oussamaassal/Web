@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/rencontre')]
@@ -22,16 +23,25 @@ class RencontreController extends AbstractController
         ]);
     }
     #[Route('/rencontre', name: 'app_rencontre_rencontre', methods: ['GET'])]
-    public function news(RencontreRepository $rencontreRepository): Response
-    {
+    public function news(RencontreRepository $rencontreRepository,SessionInterface $session): Response
+    { $userData = $session->get('user');
+       
+        if (!$userData) {
+            return $this->redirectToRoute('app_user_login');
+        }
         return $this->render('rencontre/rencontre.html.twig', [
             'rencontres' => $rencontreRepository->findAll(),
         ]);
     }
 
     #[Route('/newRencontre', name: 'app_rencontre_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
+    public function new(Request $request, EntityManagerInterface $entityManager,SessionInterface $session): Response
+    { 
+        
+       
+        if (!UserController::hasPermissionRole($session,"admin")) {
+            return $this->redirectToRoute('app_user_login');
+        }
         $rencontre = new Rencontre();
         $form = $this->createForm(RencontreType::class, $rencontre);
         $form->handleRequest($request);
