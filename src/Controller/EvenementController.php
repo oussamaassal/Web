@@ -36,8 +36,13 @@ class EvenementController extends AbstractController
     #[Route('/front', name: 'front', methods: ['GET'])]
     public function front(EvenementRepository $evenementRepository,SessionInterface $session): Response
     {
-         if (!UserController::hasPermissionRole($session,"membreplus")) {
+        /* $userData = $session->get('user');
+        $user = unserialize($userData);
+        if (!$userData) {
             return $this->redirectToRoute('app_user_login');
+        }*/
+         if (!UserController::hasPermissionRole($session,"membreplus") && !UserController::hasPermissionRole($session,"admin") ) {
+            return $this->redirectToRoute('notallowed');
         }
         $evenements = $evenementRepository->findEvenementsAujourdhui();
 
@@ -45,6 +50,15 @@ class EvenementController extends AbstractController
             'evenements' => $evenements,
         ]);
     }
+
+     #[Route('/notallowed', name: 'notallowed', methods: ['GET'])]
+     public function notfound(): Response
+     {
+        return $this->render('evenement/404-error-page.html.twig', [
+        ]);
+     }
+
+
     #[Route('/eventcalendrier', name: 'app_rdv')]
     public function calendrierrdv(EvenementRepository $evenementRepository): Response
     {
