@@ -83,44 +83,90 @@ class VoteController extends AbstractController
     }
     
     
-    #[Route('/front/new/{idc}/{id_event}', name: 'app_vote_new_from_front', methods: ['GET', 'POST'])]
-    public function newVoteFromFront(Request $request, EntityManagerInterface $entityManager, int $idc, int $id_event,SessionInterface $session): Response
-    {
+    // #[Route('/front/new/{idc}/{id_event}', name: 'app_vote_new_from_front', methods: ['GET', 'POST'])]
+    // public function newVoteFromFront(Request $request, EntityManagerInterface $entityManager, int $idc, int $id_event,SessionInterface $session): Response
+    // {
 
-        $userData = $session->get('user');
-        $user = unserialize($userData);
-        if (!$userData) {
-            return $this->redirectToRoute('app_user_login');
-        }
-        $candidat = $entityManager->getRepository(Candidat::class)->find($idc);
-        $evenement = $entityManager->getRepository(Evenement::class)->find($id_event);
+    //     $userData = $session->get('user');
+    //     $user = unserialize($userData);
+    //     if (!$userData) {
+    //         return $this->redirectToRoute('app_user_login');
+    //     }
+    //     $candidat = $entityManager->getRepository(Candidat::class)->find($idc);
+    //     $evenement = $entityManager->getRepository(Evenement::class)->find($id_event);
     
-        $idUser = $user->getIdUser();
+    //     $idUser = $user->getIdUser();
 
-        // Créer un nouveau vote
-        $vote = new Vote();
-        $vote->setCandidat($candidat);
-        $vote->setEvenement($evenement);
-        $vote->setIdUser($idUser); // Set the idUser
+    //     // Créer un nouveau vote
+    //     $vote = new Vote();
+    //     $vote->setCandidat($candidat);
+    //     $vote->setEvenement($evenement);
+    //     $vote->setIdUser($idUser); // Set the idUser
     
-        // Persistez le vote
-        $entityManager->persist($vote);
-        $entityManager->flush();
+    //     // Persistez le vote
+    //     $entityManager->persist($vote);
+    //     $entityManager->flush();
     
-        // Redirection vers une page de succès ou autre
-        // Vous pouvez rediriger où vous le souhaitez
-        // return $this->redirectToRoute('app_vote_show', ['id_event' => $id_event]);    
-        return $this->redirectToRoute('app_evenement_index');
+    //     // Redirection vers une page de succès ou autre
+    //     // Vous pouvez rediriger où vous le souhaitez
+    //     // return $this->redirectToRoute('app_vote_show', ['id_event' => $id_event]);    
+    //     return $this->redirectToRoute('front');
+    // }
+    
+    
+    // #[Route('/{idv}', name: 'app_vote_show', methods: ['GET'])]
+    // public function show(Vote $vote): Response
+    // {
+    //     return $this->render('vote/show.html.twig', [
+    //         'vote' => $vote,
+    //     ]);
+    // }
+
+
+#[Route('/front/new/{idc}/{id_event}', name: 'app_vote_new_from_front', methods: ['GET', 'POST'])]
+public function newVoteFromFront(Request $request, EntityManagerInterface $entityManager, int $idc, int $id_event, SessionInterface $session): Response
+{
+    // Retrieve user data from the session
+    $userData = $session->get('user');
+    $user = unserialize($userData);
+
+    // Redirect to login if user is not authenticated
+    if (!$userData) {
+        return $this->redirectToRoute('app_user_login');
     }
-    
-    
-    #[Route('/{idv}', name: 'app_vote_show', methods: ['GET'])]
-    public function show(Vote $vote): Response
-    {
-        return $this->render('vote/show.html.twig', [
-            'vote' => $vote,
-        ]);
+
+    // Retrieve the candidate and event entities
+    $candidat = $entityManager->getRepository(Candidat::class)->find($idc);
+    $evenement = $entityManager->getRepository(Evenement::class)->find($id_event);
+
+    // Get the user's ID
+    $idUser = $user->getIdUser();
+
+    // Check if the user has already voted for this event
+    $existingVote = $entityManager->getRepository(Vote::class)->findOneBy([
+        'idUser' => $idUser,
+        'evenement' => $id_event,
+    ]);
+
+    // If a vote already exists, set a flash message and redirect
+    if ($existingVote) {
+        $this->addFlash('error', 'You have already voted in this event.');
+        return $this->redirectToRoute('front');
     }
+
+    // Create a new vote if no existing vote is found
+    $vote = new Vote();
+    $vote->setCandidat($candidat);
+    $vote->setEvenement($evenement);
+    $vote->setIdUser($idUser); // Set the idUser
+
+    // Persist the new vote
+    $entityManager->persist($vote);
+    $entityManager->flush();
+
+    // Redirect to a success page or another route
+    return $this->redirectToRoute('front');
+}
 
     #[Route('/{idv}/edit', name: 'app_vote_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Vote $vote, EntityManagerInterface $entityManager): Response
