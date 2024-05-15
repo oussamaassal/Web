@@ -7,7 +7,7 @@ use Twilio\Rest\Client;
 class TwilioService
 {
     private $accountSid = 'AC5bc580ea6b3b2aee76723258977dfd6a';
-    private $authToken = '5e3aadeeec1f3b00fb445bdfd68526ed';
+    private $authToken = 'ccccc';
     private $twilioPhoneNumber = '+17744257047';
 
     public function sendSMS()

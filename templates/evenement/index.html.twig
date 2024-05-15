@@ -187,8 +187,106 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <script>
 
-        // JavaScript code for chart generation...
 
+
+let eventPoste = [];
+let posteCount = [];
+let AxeX = [];
+var count = 0;
+
+{% for evenement in evenements %}
+    
+    eventPoste.push("{{ evenement.postee }}");
+
+
+    {# {% for poste in evenement.postee  %}
+            if (!eventPoste.includes("{{ poste }}")) {
+                count += 1;
+                eventPoste.push("{{ poste }}"); // Ajouter chaque poste individuellement
+            }
+    {% endfor %} #}
+{% endfor %}
+
+
+
+// Convertir tous les éléments en minuscules pour éviter la sensibilité à la casse
+var firstLetterUppercaseEventPoste = eventPoste.map(function(poste) {
+
+        return poste.charAt(0).toUpperCase() + poste.slice(1).toLowerCase();
+
+});
+
+// Compter le nombre d'occurrences de chaque élément
+var countMap = {};
+firstLetterUppercaseEventPoste.forEach(function(poste) {
+    countMap[poste] = (countMap[poste] || 0) + 1;
+});
+
+// Remplir les tableaux AxeX et posteCount
+for (var poste in countMap) {
+    AxeX.push(poste);
+    posteCount.push(countMap[poste]);
+}
+
+
+// Afficher les résultats
+console.log("AxeX:", AxeX);
+console.log("eventPoste:", eventPoste);
+console.log("posteCount:", posteCount);
+
+let chartData = {
+    labels: AxeX, // Utilisation de eventPoste au lieu de eventNames
+    datasets: [{
+        label: 'Nombre de postes',
+        data: posteCount, // Utilisation de posteCount au lieu de eventCount
+        backgroundColor: AxeX.map(() => getRandomColor()) // Utilisation de eventPoste pour générer des couleurs aléatoires
+    }]
+};
+
+// Configuration des options du graphique
+let chartOptions = {
+    legend: { display: false },
+    title: {
+        display: true,
+        text: "Statistiques des Posetes dans l'evenement"
+    },
+    scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero: true,
+                stepSize: 1 // Pour afficher uniquement des nombres entiers
+            },
+            scaleLabel: {
+                display: true,
+                labelString: 'Nombre des Postes'
+            }
+        }],
+        xAxes: [{
+            scaleLabel: {
+                display: true,
+                labelString: 'Poste'
+            }
+        }]
+    }
+};
+
+// Création du graphique
+let ctx = document.getElementById('myChart').getContext('2d');
+let myChart = new Chart(ctx, {
+    type: 'bar',
+    data: chartData,
+    options: chartOptions
+});
+
+// Fonction pour générer des couleurs aléatoires
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
     </script>
 
     <br>
